@@ -8,7 +8,7 @@ This repository contains three different sets of software for running SKA pointi
 
 ## Meqtrees
 
-Requires the installation of meqtrees: http://meqtrees.net/ and CASA: http://meqtrees.net/
+Requires the installation of meqtrees: http://meqtrees.net/ and CASA: https://casa.nrao.edu/casadocs-devel/stable/introduction/obtaining-and-installing
 
 #### Usage
 ```
