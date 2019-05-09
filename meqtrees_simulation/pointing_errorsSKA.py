@@ -375,10 +375,10 @@ def simulator_analyse(projectname, config_file_prefix, primary_beam_size, incell
     DO_ROB = 0
     if (DO_NAT):
       im.weight( type = 'natural')
-    FOV = '7200arcsec'
+    FOV = '10arcsec'
   #  BMAJ =  '0.8arcsec'  
     if (DO_UNIF):
-      im.weight( type = 'uniform', fieldofview = FOV)
+      im.weight( type = 'uniform')#, fieldofview = FOV)
      # im.filter( type = 'gaussian', bmaj = BMAJ, bmin = BMAJ) 
     if (DO_ROB):
       im.weight( type = 'briggs', rmode = 'norm', robust = 0.)
@@ -393,7 +393,8 @@ def simulator_analyse(projectname, config_file_prefix, primary_beam_size, incell
     #### probably only a problem for spectral line imaging?
     #### if needed, might be able to input with following or similar:
     ####note, in  location
-    ###For some unusual types of image, one needs to know the location to be used in calculating phase rotations. For example, one can specify images to be constructed in azel, in which case, an antenna position must be chosen. One can use functions of measures: 
+    ###For some unusual types of image, one needs to know the location to be used in calculating phase rotations. For example, one can specify images to be constructed in azel, in which case, an antenna position must be chosen. 
+
   #  im.makeimage( type = 'psf', image=output_im + 'psf' )
    # params = im.fitpsf( output_im + 'psf' )
    # print 'beam fit params: ', params
@@ -533,15 +534,9 @@ if sys.argv[3] == 'get_residuals':
     layout = 'single'
     ms_direction = 'J2000 8h00m00.031s -40d59m59.6s'
     fieldDir = me.direction( ms_direction.split()[0], ms_direction.split()[1], ms_direction.split()[2])# prepare to     convert to degrees f
-    
-   # projectname = 'PEs'
     config_file_prefix = '.'
     dirname = './'
-    
-   # simulator_analyse(projectname, config_file_prefix, primary_beam_size, incell_size ,NUM_SPW, fieldDir, dirname,  layout)
-   # projectname = 'PE_0.0_arcsec.ms'
-   # simulator_analyse(projectname, config_file_prefix, primary_beam_size, incell_size ,NUM_SPW, fieldDir, dirname,  layout)
-    errs = [0.0,1.0, 2.0]#, 4.0, 8.0, 16.0, 32.0, 128.0, 256.0]
+    errs = [0.0,1.0, 2.0, 4.0, 8.0, 16.0, 32.0, 128.0, 256.0]
     rmsarr = np.array([])
     maxabsarr = ([]) 
     medianabsarr = np.array([])
@@ -608,14 +603,10 @@ if sys.argv[3] == 'get_residuals':
 
 
 if sys.argv[3] == 'make_ms':# __name__ == "__main__":
-
-
-    config_file = '/data/simulations/Meq_tutorials/for_meqtrees/ska1mid.cfg' #treat as homogeneous
-    config_file_prefix = '.'+config_file.split('/')[-1].strip('cfg')
-    myVPim = '/home/p.hartley/Documents/CASA_sims/beam_conversion/convert-to-casa-images/results/main_beam_x-   directivity.image'
-    mycomplexvp = '/home/p.hartley/Documents/CASA_sims/beam_conversion/convert-to-casa-images/results/  main_beam_FrEnd_uv-voltage_pattern.image'
-    
-        
+    config_file = 'ska1mid.cfg' #treat as homogeneous
+    config_file_prefix = '.'+config_file.strip('cfg')
+   # myVPim = '/home/p.hartley/Documents/CASA_sims/beam_conversion/convert-to-casa-images/results/main_beam_x-   directivity.image'
+    #mycomplexvp = '/home/p.hartley/Documents/CASA_sims/beam_conversion/convert-to-casa-images/results/  main_beam_FrEnd_uv-voltage_pattern.image'
     dirname =  './' 
     frequency = 1.4e9
     dish_diameter = 15. # read this from conf file, assuming homogeneous
@@ -633,8 +624,6 @@ if sys.argv[3] == 'make_ms':# __name__ == "__main__":
     projectname = dirname+'setupvis' 
     # make a measurementset for overwriting - might not need predict, just observe
     observe_simulator(projectname, config_file,NUM_SPW, fieldDir , dirname , layout) 
-    # run meqtrees to simulate visibilities with no pointing errors
-    #make_meq_config()
     print 'vis set created'
 
     

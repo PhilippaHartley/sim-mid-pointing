@@ -18,7 +18,6 @@ def runit(pe):
     # A proper pipeline script may want to get the value of "-mt" from its own arguments (sys.argv).
     print "Starting meqserver";
     mqs = meqserver.default_mqs(wait_init=10,extra=["-mt","16"]);
-    print '===========Server started'
 
     # Once we're connected to a server, some cleanup is required before we can exit the script.
     # Since we want to perform this cleanup regardless of whether the script ran to completion
