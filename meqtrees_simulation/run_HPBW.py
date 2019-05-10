@@ -13,7 +13,7 @@ import h5py
 
 import h5py
 
-def runit(pe):
+def runit(pe, dirname):
     # This starts a meqserver. Note how we pass the "-mt 2" option to run two threads.
     # A proper pipeline script may want to get the value of "-mt" from its own arguments (sys.argv).
     print "Starting meqserver";
@@ -28,18 +28,19 @@ def runit(pe):
             print 'im 0.0'
             lerrs = np.array([0.0])
             merrs = np.array([0.0])
-            ms_name = 'PE_0.0_arcsec.ms'
-            os.system('rm -rf '+ms_name)
-            os.system('cp -r setupvis.ms '+ms_name)
+            ms_name = dirname+'PE_0.0_arcsec.ms'
+            os.system('rm -rf '+dirname+ms_name)
+            os.system('cp -r '+dirname+'setupvis.ms '+ms_name)
 
         else: 
-            ms_name = 'PE_%s_arcsec.ms'%str(pe)
+            ms_name = dirname+'PE_%s_arcsec.ms'%str(pe)
             os.system('rm -rf '+ms_name)
-            os.system('cp -r setupvis.ms '+ms_name)
+            os.system('cp -r '+dirname+'setupvis.ms '+ms_name)
             lerrs, merrs = hdf2npy(pe)
+        source_list_name = dirname+'source_list.lsm.html'
         print 'making ', ms_name
         print '========== Making config file';
-        make_config_file(lerrs,merrs,ms_name);
+        make_config_file(lerrs,merrs,ms_name, source_list_name);
         TDLOptions.config.read("PEs.tdl.conf");
         script = "turbo-sim.py";
         print "========== Compiling batch job 1";
@@ -88,7 +89,7 @@ def hdf2npy(pe):
 
 
 
-def make_config_file(lerrs, merrs,ms_name):
+def make_config_file(lerrs, merrs,ms_name, source_list_name):
     if len(lerrs) ==1:
         print 'zero ', lerrs
         lerrs = 0
@@ -113,7 +114,7 @@ def make_config_file(lerrs, merrs,ms_name):
     f.write('uvw_source = from MS\n')
     f.write('uvw_refant = default\n')
     f.write('me.sky.tiggerskymodel = 1\n')
-    f.write('tiggerlsm.filename = source_list.lsm.html\n')
+    f.write('tiggerlsm.filename = %s\n'%source_list_name)
     f.write('tiggerlsm.lsm_subset = all\n')
     f.write('tiggerlsm.null_subset = None\n')
     f.write('tiggerlsm.solvable_sources = 0\n')
@@ -188,7 +189,8 @@ if __name__ == '__main__':
     #for i in errs:
     i = np.float(sys.argv[1])
     print i
-    runit(i)
+    dirname= sys.argv[2]
+    runit(i, dirname)
 
 
 

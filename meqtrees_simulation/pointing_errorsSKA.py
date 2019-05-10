@@ -345,8 +345,8 @@ def corrupt(projectname, config_file_prefix,offset, dirname,PEs = False,  plot_a
     
     
 def simulator_analyse(projectname, config_file_prefix, primary_beam_size, incell_size, NUM_SPW, fieldDir, dirname, layout):
-    output_ms = projectname+config_file_prefix+'ms'
-    output_im = projectname+config_file_prefix
+    output_ms = dirname+projectname+config_file_prefix+'ms'
+    output_im = dirname+projectname+config_file_prefix
     spwmax = NUM_SPW
     # prepare input measurement set.
     print 'opening: ', output_ms
@@ -387,7 +387,7 @@ def simulator_analyse(projectname, config_file_prefix, primary_beam_size, incell
     os.system('rm -rf ' + output_im + 'map.fits')
     os.system('rm -rf ' + output_im + 'psf')
     os.system('rm -rf ' + output_im + 'psf.fits')
-    im.setvp( dovp = False, usedefaultvp = False, vptable = projectname+config_file_prefix + '-vp.tab', dosquint = False )
+    im.setvp( dovp = False, usedefaultvp = False, vptable =dirname+projectname+config_file_prefix + '-vp.tab', dosquint = False )
     im.makeimage( type = 'model', image=output_im + 'map' ) # observed vs corrected might be useful
     #### error Did not get the position of SKA1-MID from data repository Frequency conversion will not work
     #### probably only a problem for spectral line imaging?
@@ -519,7 +519,7 @@ def do_res(offset_value, NUM_SPW, fieldDir, primary_beam_size, incell_size, dirn
    # os.system('ds9 ideal/idealanalysed_image.fits corrupted/corruptedanalysed_image.fits diff_image.fits' )
     return rms,maxabs, medianabs
 
-
+dirname= sys.argv[4]
 if sys.argv[3] == 'get_residuals':
     frequency = 1.4e9
     dish_diameter = 15. # read this from conf file, assuming homogeneous
@@ -531,26 +531,28 @@ if sys.argv[3] == 'get_residuals':
     print 'PB, deg: ', primary_beam_size/3600.
     incell_size =0.0961 #  change to 0.09 again and change npix to 0.2*
     NUM_SPW = 1  
+    NPIX = 512
     layout = 'single'
     ms_direction = 'J2000 8h00m00.031s -40d59m59.6s'
     fieldDir = me.direction( ms_direction.split()[0], ms_direction.split()[1], ms_direction.split()[2])# prepare to     convert to degrees f
     config_file_prefix = '.'
-    dirname = './'
+   # dirname = './'
     errs = [0.0,1.0, 2.0, 4.0, 8.0, 16.0, 32.0, 128.0, 256.0]
     rmsarr = np.array([])
     maxabsarr = ([]) 
     medianabsarr = np.array([])
+    peak_pointarr = np.array([])
     for i in errs:
-        os.system('rm -rf residual.ms' )
+        os.system('rm -rf '+dirname+'residual.ms' )
         projectname = 'PE_%s_arcsec'%str(i)
         simulator_analyse(projectname, config_file_prefix, primary_beam_size, incell_size ,NUM_SPW, fieldDir, dirname, layout)
-        os.system('cp -r PE_%s_arcsec.ms residual.ms'%str(i))
+        os.system('cp -r '+dirname+'PE_%s_arcsec.ms '%i+dirname+'residual.ms')
 #get residuals and image
-        vis_ideal = 'PE_0.0_arcsec.ms'
+        vis_ideal = dirname+'PE_0.0_arcsec.ms'
         tb.open(vis_ideal, nomodify = True)
         ideal_corrected = tb.getcol('MODEL_DATA')
         tb.close()
-        vis_corrupted ='residual.ms'
+        vis_corrupted =dirname+'residual.ms'
         tb.open(vis_corrupted, nomodify = False)
         corrupt_corrected = tb.getcol('MODEL_DATA')
         new_ideal_corrected = corrupt_corrected-ideal_corrected
@@ -566,26 +568,31 @@ if sys.argv[3] == 'get_residuals':
         tb.flush()
         projectname2 = 'residual'
         simulator_analyse(projectname2, config_file_prefix, primary_beam_size, incell_size ,NUM_SPW, fieldDir, dirname, layout)
-        res = fits.getdata(projectname2+config_file_prefix+'map.fits')[0][0]
+        res = fits.getdata(dirname+projectname2+config_file_prefix+'map.fits')[0][0]
         rms = np.std(res)
         medianabs = np.median(np.abs(res))
         maxabs = np.max(np.abs(res))
         maxx = (np.max(res))
         minn = np.min(res)
-        print 'rms,maxabs, medianabs: ', rms, maxabs, medianabs
+   
+        peak_point = res[int(NPIX/2.), int(NPIX/2.)]
+        print 'rms,maxabs, medianabs: ', rms, maxabs, medianabs, peak_point
         plt.clf()
         plt.imshow(res,cmap = 'gray_r')
         plt.colorbar()
         plt.savefig(dirname+'residuals_'+str(i)+'_arcsec_normal.png')
-
         rmsarr = np.append(rmsarr,rms)
         maxabsarr = np.append(maxabsarr, maxabs)
         medianabsarr = np.append(medianabsarr, medianabs)
+        peak_pointarr= np.append(peak_pointarr, peak_point)
+        print 'peak_pointarr: ', peak_pointarr
     plt.clf()
-    
     plt.loglog(errs ,maxabsarr, label = 'maxabs')
     plt.loglog(errs, medianabsarr, label = 'medianabs')
     plt.loglog(errs, rmsarr, label = 'rms')
+    print peak_pointarr
+    plt.loglog(errs, np.abs(peak_pointarr), label = 'abs central point')
+   
     plt.xlim(1, 256)
     plt.legend(loc= 'upper left')
     plt.xlabel('sigma offset (arcsec)')
@@ -593,21 +600,12 @@ if sys.argv[3] == 'get_residuals':
     plt.savefig(dirname+'final_plot.png')    
 
 
-    
-    
-   # os.system('ds9 ideal/idealanalysed_image.fits corrupted/corruptedanalysed_image.fits diff_image.fits' )
-
-    
-
-
-
-
 if sys.argv[3] == 'make_ms':# __name__ == "__main__":
     config_file = 'ska1mid.cfg' #treat as homogeneous
     config_file_prefix = '.'+config_file.strip('cfg')
    # myVPim = '/home/p.hartley/Documents/CASA_sims/beam_conversion/convert-to-casa-images/results/main_beam_x-   directivity.image'
     #mycomplexvp = '/home/p.hartley/Documents/CASA_sims/beam_conversion/convert-to-casa-images/results/  main_beam_FrEnd_uv-voltage_pattern.image'
-    dirname =  './' 
+   # dirname =  './' 
     frequency = 1.4e9
     dish_diameter = 15. # read this from conf file, assuming homogeneous
     c = 3e8
