@@ -1,0 +1,996 @@
+2019-05-10 09:29:19	INFO	::casa	
+2019-05-10 09:29:19	INFO	::casa	Checking telemetry submission interval
+2019-05-10 09:29:19	INFO	::casa	Telemetry submit interval not reached. Not submitting data.
+2019-05-10 09:29:19	INFO	::casa	Next telemetry data submission in: 6 days, 22:44:25.071940
+2019-05-10 09:29:19	INFO	::casa	CASA Version 5.4.1-32  
+2019-05-10 09:29:20	WARN	componentlist::close	componentlist closed
+2019-05-10 09:29:20	INFO	NewMSSimulator::initAnt() 	Using global coordinates for the antennas
+2019-05-10 09:29:20	INFO	NewMSSimulator::initAnt() 	Added rows to ANTENNA table
+2019-05-10 09:29:20	INFO	MSsimulator::initSpWindows() 	Creating new spectral window IF0, ID 1
+2019-05-10 09:29:20	INFO	MSsimulator::initFeeds() 	Added rows to FEED table
+2019-05-10 09:29:20	INFO	simulator::settimes()	Times 
+2019-05-10 09:29:20	INFO	simulator::settimes()+	     Integration time 1s
+2019-05-10 09:29:20	INFO	simulator::settimes()	     Times will be interpreted as hour angles for first source
+2019-05-10 09:29:20	INFO	NewMSSimulator::observe()	First source: ptcentre @ 08:00:00.03   -40.59.59.60       J2000
+2019-05-10 09:29:20	INFO	NewMSSimulator::observe()+	Full time range: 10-Oct-1995/01:22:02.5 -- 10-Oct-1995/01:22:03.5 TAI with int = 1
+2019-05-10 09:29:20	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-05-10 09:29:20	INFO	NewMSSimulator::observe()	First source: ptcentre @ 08:00:00.03   -40.59.59.60       J2000
+2019-05-10 09:29:20	INFO	NewMSSimulator::observe()+	Full time range: 10-Oct-1995/01:29:32.5 -- 10-Oct-1995/01:29:33.5 TAI with int = 1
+2019-05-10 09:29:20	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-05-10 09:29:21	INFO	NewMSSimulator::observe()	First source: ptcentre @ 08:00:00.03   -40.59.59.60       J2000
+2019-05-10 09:29:21	INFO	NewMSSimulator::observe()+	Full time range: 10-Oct-1995/01:37:02.5 -- 10-Oct-1995/01:37:03.5 TAI with int = 1
+2019-05-10 09:29:21	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-05-10 09:29:21	INFO	NewMSSimulator::observe()	First source: ptcentre @ 08:00:00.03   -40.59.59.60       J2000
+2019-05-10 09:29:21	INFO	NewMSSimulator::observe()+	Full time range: 10-Oct-1995/01:44:32.5 -- 10-Oct-1995/01:44:33.5 TAI with int = 1
+2019-05-10 09:29:21	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-05-10 09:29:21	INFO	NewMSSimulator::observe()	First source: ptcentre @ 08:00:00.03   -40.59.59.60       J2000
+2019-05-10 09:29:21	INFO	NewMSSimulator::observe()+	Full time range: 10-Oct-1995/01:52:02.5 -- 10-Oct-1995/01:52:03.5 TAI with int = 1
+2019-05-10 09:29:21	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-05-10 09:29:21	INFO	NewMSSimulator::observe()	First source: ptcentre @ 08:00:00.03   -40.59.59.60       J2000
+2019-05-10 09:29:21	INFO	NewMSSimulator::observe()+	Full time range: 10-Oct-1995/01:59:32.5 -- 10-Oct-1995/01:59:33.5 TAI with int = 1
+2019-05-10 09:29:21	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-05-10 09:29:21	INFO	NewMSSimulator::observe()	First source: ptcentre @ 08:00:00.03   -40.59.59.60       J2000
+2019-05-10 09:29:21	INFO	NewMSSimulator::observe()+	Full time range: 10-Oct-1995/02:07:02.5 -- 10-Oct-1995/02:07:03.5 TAI with int = 1
+2019-05-10 09:29:21	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-05-10 09:29:21	INFO	NewMSSimulator::observe()	First source: ptcentre @ 08:00:00.03   -40.59.59.60       J2000
+2019-05-10 09:29:21	INFO	NewMSSimulator::observe()+	Full time range: 10-Oct-1995/02:14:32.5 -- 10-Oct-1995/02:14:33.5 TAI with int = 1
+2019-05-10 09:29:21	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-05-10 09:29:21	INFO	NewMSSimulator::observe()	First source: ptcentre @ 08:00:00.03   -40.59.59.60       J2000
+2019-05-10 09:29:21	INFO	NewMSSimulator::observe()+	Full time range: 10-Oct-1995/02:22:02.5 -- 10-Oct-1995/02:22:03.5 TAI with int = 1
+2019-05-10 09:29:21	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-05-10 09:29:22	INFO	NewMSSimulator::observe()	First source: ptcentre @ 08:00:00.03   -40.59.59.60       J2000
+2019-05-10 09:29:22	INFO	NewMSSimulator::observe()+	Full time range: 10-Oct-1995/02:29:32.5 -- 10-Oct-1995/02:29:33.5 TAI with int = 1
+2019-05-10 09:29:22	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-05-10 09:29:22	INFO	NewMSSimulator::observe()	First source: ptcentre @ 08:00:00.03   -40.59.59.60       J2000
+2019-05-10 09:29:22	INFO	NewMSSimulator::observe()+	Full time range: 10-Oct-1995/02:37:02.5 -- 10-Oct-1995/02:37:03.5 TAI with int = 1
+2019-05-10 09:29:22	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-05-10 09:29:22	INFO	NewMSSimulator::observe()	First source: ptcentre @ 08:00:00.03   -40.59.59.60       J2000
+2019-05-10 09:29:22	INFO	NewMSSimulator::observe()+	Full time range: 10-Oct-1995/02:44:32.5 -- 10-Oct-1995/02:44:33.5 TAI with int = 1
+2019-05-10 09:29:22	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-05-10 09:29:22	INFO	NewMSSimulator::observe()	First source: ptcentre @ 08:00:00.03   -40.59.59.60       J2000
+2019-05-10 09:29:22	INFO	NewMSSimulator::observe()+	Full time range: 10-Oct-1995/02:52:02.5 -- 10-Oct-1995/02:52:03.5 TAI with int = 1
+2019-05-10 09:29:22	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-05-10 09:29:22	INFO	NewMSSimulator::observe()	First source: ptcentre @ 08:00:00.03   -40.59.59.60       J2000
+2019-05-10 09:29:22	INFO	NewMSSimulator::observe()+	Full time range: 10-Oct-1995/02:59:32.5 -- 10-Oct-1995/02:59:33.5 TAI with int = 1
+2019-05-10 09:29:22	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-05-10 09:29:22	INFO	NewMSSimulator::observe()	First source: ptcentre @ 08:00:00.03   -40.59.59.60       J2000
+2019-05-10 09:29:22	INFO	NewMSSimulator::observe()+	Full time range: 10-Oct-1995/03:07:02.5 -- 10-Oct-1995/03:07:03.5 TAI with int = 1
+2019-05-10 09:29:22	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-05-10 09:29:23	INFO	NewMSSimulator::observe()	First source: ptcentre @ 08:00:00.03   -40.59.59.60       J2000
+2019-05-10 09:29:23	INFO	NewMSSimulator::observe()+	Full time range: 10-Oct-1995/03:14:32.5 -- 10-Oct-1995/03:14:33.5 TAI with int = 1
+2019-05-10 09:29:23	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-05-10 09:29:23	INFO	NewMSSimulator::observe()	First source: ptcentre @ 08:00:00.03   -40.59.59.60       J2000
+2019-05-10 09:29:23	INFO	NewMSSimulator::observe()+	Full time range: 10-Oct-1995/03:22:02.5 -- 10-Oct-1995/03:22:03.5 TAI with int = 1
+2019-05-10 09:29:23	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-05-10 09:29:23	INFO	NewMSSimulator::observe()	First source: ptcentre @ 08:00:00.03   -40.59.59.60       J2000
+2019-05-10 09:29:23	INFO	NewMSSimulator::observe()+	Full time range: 10-Oct-1995/03:29:32.5 -- 10-Oct-1995/03:29:33.5 TAI with int = 1
+2019-05-10 09:29:23	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-05-10 09:29:23	INFO	NewMSSimulator::observe()	First source: ptcentre @ 08:00:00.03   -40.59.59.60       J2000
+2019-05-10 09:29:23	INFO	NewMSSimulator::observe()+	Full time range: 10-Oct-1995/03:37:02.5 -- 10-Oct-1995/03:37:03.5 TAI with int = 1
+2019-05-10 09:29:23	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-05-10 09:29:23	INFO	NewMSSimulator::observe()	First source: ptcentre @ 08:00:00.03   -40.59.59.60       J2000
+2019-05-10 09:29:23	INFO	NewMSSimulator::observe()+	Full time range: 10-Oct-1995/03:44:32.5 -- 10-Oct-1995/03:44:33.5 TAI with int = 1
+2019-05-10 09:29:23	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-05-10 09:29:23	INFO	NewMSSimulator::observe()	First source: ptcentre @ 08:00:00.03   -40.59.59.60       J2000
+2019-05-10 09:29:23	INFO	NewMSSimulator::observe()+	Full time range: 10-Oct-1995/03:52:02.5 -- 10-Oct-1995/03:52:03.5 TAI with int = 1
+2019-05-10 09:29:23	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-05-10 09:29:23	INFO	NewMSSimulator::observe()	First source: ptcentre @ 08:00:00.03   -40.59.59.60       J2000
+2019-05-10 09:29:23	INFO	NewMSSimulator::observe()+	Full time range: 10-Oct-1995/03:59:32.5 -- 10-Oct-1995/03:59:33.5 TAI with int = 1
+2019-05-10 09:29:23	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-05-10 09:29:24	INFO	NewMSSimulator::observe()	First source: ptcentre @ 08:00:00.03   -40.59.59.60       J2000
+2019-05-10 09:29:24	INFO	NewMSSimulator::observe()+	Full time range: 10-Oct-1995/04:07:02.5 -- 10-Oct-1995/04:07:03.5 TAI with int = 1
+2019-05-10 09:29:24	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-05-10 09:29:24	INFO	NewMSSimulator::observe()	First source: ptcentre @ 08:00:00.03   -40.59.59.60       J2000
+2019-05-10 09:29:24	INFO	NewMSSimulator::observe()+	Full time range: 10-Oct-1995/04:14:32.5 -- 10-Oct-1995/04:14:33.5 TAI with int = 1
+2019-05-10 09:29:24	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-05-10 09:29:24	INFO	NewMSSimulator::observe()	First source: ptcentre @ 08:00:00.03   -40.59.59.60       J2000
+2019-05-10 09:29:24	INFO	NewMSSimulator::observe()+	Full time range: 10-Oct-1995/04:22:02.5 -- 10-Oct-1995/04:22:03.5 TAI with int = 1
+2019-05-10 09:29:24	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-05-10 09:29:24	INFO	NewMSSimulator::observe()	First source: ptcentre @ 08:00:00.03   -40.59.59.60       J2000
+2019-05-10 09:29:24	INFO	NewMSSimulator::observe()+	Full time range: 10-Oct-1995/04:29:32.5 -- 10-Oct-1995/04:29:33.5 TAI with int = 1
+2019-05-10 09:29:24	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-05-10 09:29:24	INFO	NewMSSimulator::observe()	First source: ptcentre @ 08:00:00.03   -40.59.59.60       J2000
+2019-05-10 09:29:24	INFO	NewMSSimulator::observe()+	Full time range: 10-Oct-1995/04:37:02.5 -- 10-Oct-1995/04:37:03.5 TAI with int = 1
+2019-05-10 09:29:24	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-05-10 09:29:24	INFO	NewMSSimulator::observe()	First source: ptcentre @ 08:00:00.03   -40.59.59.60       J2000
+2019-05-10 09:29:24	INFO	NewMSSimulator::observe()+	Full time range: 10-Oct-1995/04:44:32.5 -- 10-Oct-1995/04:44:33.5 TAI with int = 1
+2019-05-10 09:29:24	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-05-10 09:29:25	INFO	NewMSSimulator::observe()	First source: ptcentre @ 08:00:00.03   -40.59.59.60       J2000
+2019-05-10 09:29:25	INFO	NewMSSimulator::observe()+	Full time range: 10-Oct-1995/04:52:02.5 -- 10-Oct-1995/04:52:03.5 TAI with int = 1
+2019-05-10 09:29:25	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-05-10 09:29:25	INFO	NewMSSimulator::observe()	First source: ptcentre @ 08:00:00.03   -40.59.59.60       J2000
+2019-05-10 09:29:25	INFO	NewMSSimulator::observe()+	Full time range: 10-Oct-1995/04:59:32.5 -- 10-Oct-1995/04:59:33.5 TAI with int = 1
+2019-05-10 09:29:25	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-05-10 09:29:25	INFO	NewMSSimulator::observe()	First source: ptcentre @ 08:00:00.03   -40.59.59.60       J2000
+2019-05-10 09:29:25	INFO	NewMSSimulator::observe()+	Full time range: 10-Oct-1995/05:07:02.5 -- 10-Oct-1995/05:07:03.5 TAI with int = 1
+2019-05-10 09:29:25	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-05-10 09:29:25	INFO	NewMSSimulator::observe()	First source: ptcentre @ 08:00:00.03   -40.59.59.60       J2000
+2019-05-10 09:29:25	INFO	NewMSSimulator::observe()+	Full time range: 10-Oct-1995/05:14:32.5 -- 10-Oct-1995/05:14:33.5 TAI with int = 1
+2019-05-10 09:29:25	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-05-10 09:29:25	INFO	NewMSSimulator::observe()	First source: ptcentre @ 08:00:00.03   -40.59.59.60       J2000
+2019-05-10 09:29:25	INFO	NewMSSimulator::observe()+	Full time range: 10-Oct-1995/05:22:02.5 -- 10-Oct-1995/05:22:03.5 TAI with int = 1
+2019-05-10 09:29:25	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-05-10 09:29:25	INFO	NewMSSimulator::observe()	First source: ptcentre @ 08:00:00.03   -40.59.59.60       J2000
+2019-05-10 09:29:25	INFO	NewMSSimulator::observe()+	Full time range: 10-Oct-1995/05:29:32.5 -- 10-Oct-1995/05:29:33.5 TAI with int = 1
+2019-05-10 09:29:25	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-05-10 09:29:26	INFO	NewMSSimulator::observe()	First source: ptcentre @ 08:00:00.03   -40.59.59.60       J2000
+2019-05-10 09:29:26	INFO	NewMSSimulator::observe()+	Full time range: 10-Oct-1995/05:37:02.5 -- 10-Oct-1995/05:37:03.5 TAI with int = 1
+2019-05-10 09:29:26	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-05-10 09:29:26	INFO	NewMSSimulator::observe()	First source: ptcentre @ 08:00:00.03   -40.59.59.60       J2000
+2019-05-10 09:29:26	INFO	NewMSSimulator::observe()+	Full time range: 10-Oct-1995/05:44:32.5 -- 10-Oct-1995/05:44:33.5 TAI with int = 1
+2019-05-10 09:29:26	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-05-10 09:29:26	INFO	NewMSSimulator::observe()	First source: ptcentre @ 08:00:00.03   -40.59.59.60       J2000
+2019-05-10 09:29:26	INFO	NewMSSimulator::observe()+	Full time range: 10-Oct-1995/05:52:02.5 -- 10-Oct-1995/05:52:03.5 TAI with int = 1
+2019-05-10 09:29:26	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-05-10 09:29:26	INFO	NewMSSimulator::observe()	First source: ptcentre @ 08:00:00.03   -40.59.59.60       J2000
+2019-05-10 09:29:26	INFO	NewMSSimulator::observe()+	Full time range: 10-Oct-1995/05:59:32.5 -- 10-Oct-1995/05:59:33.5 TAI with int = 1
+2019-05-10 09:29:26	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-05-10 09:29:26	INFO	NewMSSimulator::observe()	First source: ptcentre @ 08:00:00.03   -40.59.59.60       J2000
+2019-05-10 09:29:26	INFO	NewMSSimulator::observe()+	Full time range: 10-Oct-1995/06:07:02.5 -- 10-Oct-1995/06:07:03.5 TAI with int = 1
+2019-05-10 09:29:26	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-05-10 09:29:26	INFO	NewMSSimulator::observe()	First source: ptcentre @ 08:00:00.03   -40.59.59.60       J2000
+2019-05-10 09:29:26	INFO	NewMSSimulator::observe()+	Full time range: 10-Oct-1995/06:14:32.5 -- 10-Oct-1995/06:14:33.5 TAI with int = 1
+2019-05-10 09:29:26	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-05-10 09:29:26	INFO	NewMSSimulator::observe()	First source: ptcentre @ 08:00:00.03   -40.59.59.60       J2000
+2019-05-10 09:29:26	INFO	NewMSSimulator::observe()+	Full time range: 10-Oct-1995/06:22:02.5 -- 10-Oct-1995/06:22:03.5 TAI with int = 1
+2019-05-10 09:29:26	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-05-10 09:29:27	INFO	NewMSSimulator::observe()	First source: ptcentre @ 08:00:00.03   -40.59.59.60       J2000
+2019-05-10 09:29:27	INFO	NewMSSimulator::observe()+	Full time range: 10-Oct-1995/06:29:32.5 -- 10-Oct-1995/06:29:33.5 TAI with int = 1
+2019-05-10 09:29:27	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-05-10 09:29:27	INFO	NewMSSimulator::observe()	First source: ptcentre @ 08:00:00.03   -40.59.59.60       J2000
+2019-05-10 09:29:27	INFO	NewMSSimulator::observe()+	Full time range: 10-Oct-1995/06:37:02.5 -- 10-Oct-1995/06:37:03.5 TAI with int = 1
+2019-05-10 09:29:27	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-05-10 09:29:27	INFO	NewMSSimulator::observe()	First source: ptcentre @ 08:00:00.03   -40.59.59.60       J2000
+2019-05-10 09:29:27	INFO	NewMSSimulator::observe()+	Full time range: 10-Oct-1995/06:44:32.5 -- 10-Oct-1995/06:44:33.5 TAI with int = 1
+2019-05-10 09:29:27	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-05-10 09:29:27	INFO	NewMSSimulator::observe()	First source: ptcentre @ 08:00:00.03   -40.59.59.60       J2000
+2019-05-10 09:29:27	INFO	NewMSSimulator::observe()+	Full time range: 10-Oct-1995/06:52:02.5 -- 10-Oct-1995/06:52:03.5 TAI with int = 1
+2019-05-10 09:29:27	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-05-10 09:29:27	INFO	NewMSSimulator::observe()	First source: ptcentre @ 08:00:00.03   -40.59.59.60       J2000
+2019-05-10 09:29:27	INFO	NewMSSimulator::observe()+	Full time range: 10-Oct-1995/06:59:32.5 -- 10-Oct-1995/06:59:33.5 TAI with int = 1
+2019-05-10 09:29:27	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-05-10 09:29:27	INFO	NewMSSimulator::observe()	First source: ptcentre @ 08:00:00.03   -40.59.59.60       J2000
+2019-05-10 09:29:27	INFO	NewMSSimulator::observe()+	Full time range: 10-Oct-1995/07:07:02.5 -- 10-Oct-1995/07:07:03.5 TAI with int = 1
+2019-05-10 09:29:27	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-05-10 09:29:28	INFO	NewMSSimulator::observe()	First source: ptcentre @ 08:00:00.03   -40.59.59.60       J2000
+2019-05-10 09:29:28	INFO	NewMSSimulator::observe()+	Full time range: 10-Oct-1995/07:14:32.5 -- 10-Oct-1995/07:14:33.5 TAI with int = 1
+2019-05-10 09:29:28	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-05-10 09:29:28	INFO	NewMSSimulator::observe()	First source: ptcentre @ 08:00:00.03   -40.59.59.60       J2000
+2019-05-10 09:29:28	INFO	NewMSSimulator::observe()+	Full time range: 10-Oct-1995/07:22:02.5 -- 10-Oct-1995/07:22:03.5 TAI with int = 1
+2019-05-10 09:29:28	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-05-10 09:29:28	INFO	NewMSSimulator::observe()	First source: ptcentre @ 08:00:00.03   -40.59.59.60       J2000
+2019-05-10 09:29:28	INFO	NewMSSimulator::observe()+	Full time range: 10-Oct-1995/07:29:32.5 -- 10-Oct-1995/07:29:33.5 TAI with int = 1
+2019-05-10 09:29:28	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-05-10 09:29:28	INFO	NewMSSimulator::observe()	First source: ptcentre @ 08:00:00.03   -40.59.59.60       J2000
+2019-05-10 09:29:28	INFO	NewMSSimulator::observe()+	Full time range: 10-Oct-1995/07:37:02.5 -- 10-Oct-1995/07:37:03.5 TAI with int = 1
+2019-05-10 09:29:28	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-05-10 09:29:28	INFO	NewMSSimulator::observe()	First source: ptcentre @ 08:00:00.03   -40.59.59.60       J2000
+2019-05-10 09:29:28	INFO	NewMSSimulator::observe()+	Full time range: 10-Oct-1995/07:44:32.5 -- 10-Oct-1995/07:44:33.5 TAI with int = 1
+2019-05-10 09:29:28	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-05-10 09:29:28	INFO	NewMSSimulator::observe()	First source: ptcentre @ 08:00:00.03   -40.59.59.60       J2000
+2019-05-10 09:29:28	INFO	NewMSSimulator::observe()+	Full time range: 10-Oct-1995/07:52:02.5 -- 10-Oct-1995/07:52:03.5 TAI with int = 1
+2019-05-10 09:29:28	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-05-10 09:29:28	INFO	NewMSSimulator::observe()	First source: ptcentre @ 08:00:00.03   -40.59.59.60       J2000
+2019-05-10 09:29:28	INFO	NewMSSimulator::observe()+	Full time range: 10-Oct-1995/07:59:32.5 -- 10-Oct-1995/07:59:33.5 TAI with int = 1
+2019-05-10 09:29:28	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-05-10 09:29:29	INFO	NewMSSimulator::observe()	First source: ptcentre @ 08:00:00.03   -40.59.59.60       J2000
+2019-05-10 09:29:29	INFO	NewMSSimulator::observe()+	Full time range: 10-Oct-1995/08:07:02.5 -- 10-Oct-1995/08:07:03.5 TAI with int = 1
+2019-05-10 09:29:29	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-05-10 09:29:29	INFO	NewMSSimulator::observe()	First source: ptcentre @ 08:00:00.03   -40.59.59.60       J2000
+2019-05-10 09:29:29	INFO	NewMSSimulator::observe()+	Full time range: 10-Oct-1995/08:14:32.5 -- 10-Oct-1995/08:14:33.5 TAI with int = 1
+2019-05-10 09:29:29	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-05-10 09:29:29	INFO	NewMSSimulator::observe()	First source: ptcentre @ 08:00:00.03   -40.59.59.60       J2000
+2019-05-10 09:29:29	INFO	NewMSSimulator::observe()+	Full time range: 10-Oct-1995/08:22:02.5 -- 10-Oct-1995/08:22:03.5 TAI with int = 1
+2019-05-10 09:29:29	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-05-10 09:29:29	INFO	NewMSSimulator::observe()	First source: ptcentre @ 08:00:00.03   -40.59.59.60       J2000
+2019-05-10 09:29:29	INFO	NewMSSimulator::observe()+	Full time range: 10-Oct-1995/08:29:32.5 -- 10-Oct-1995/08:29:33.5 TAI with int = 1
+2019-05-10 09:29:29	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-05-10 09:29:29	INFO	NewMSSimulator::observe()	First source: ptcentre @ 08:00:00.03   -40.59.59.60       J2000
+2019-05-10 09:29:29	INFO	NewMSSimulator::observe()+	Full time range: 10-Oct-1995/08:37:02.5 -- 10-Oct-1995/08:37:03.5 TAI with int = 1
+2019-05-10 09:29:29	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-05-10 09:29:29	INFO	NewMSSimulator::observe()	First source: ptcentre @ 08:00:00.03   -40.59.59.60       J2000
+2019-05-10 09:29:29	INFO	NewMSSimulator::observe()+	Full time range: 10-Oct-1995/08:44:32.5 -- 10-Oct-1995/08:44:33.5 TAI with int = 1
+2019-05-10 09:29:29	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-05-10 09:29:29	INFO	NewMSSimulator::observe()	First source: ptcentre @ 08:00:00.03   -40.59.59.60       J2000
+2019-05-10 09:29:29	INFO	NewMSSimulator::observe()+	Full time range: 10-Oct-1995/08:52:02.5 -- 10-Oct-1995/08:52:03.5 TAI with int = 1
+2019-05-10 09:29:29	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-05-10 09:29:30	INFO	NewMSSimulator::observe()	First source: ptcentre @ 08:00:00.03   -40.59.59.60       J2000
+2019-05-10 09:29:30	INFO	NewMSSimulator::observe()+	Full time range: 10-Oct-1995/08:59:32.5 -- 10-Oct-1995/08:59:33.5 TAI with int = 1
+2019-05-10 09:29:30	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-05-10 09:29:30	INFO	NewMSSimulator::observe()	First source: ptcentre @ 08:00:00.03   -40.59.59.60       J2000
+2019-05-10 09:29:30	INFO	NewMSSimulator::observe()+	Full time range: 10-Oct-1995/09:07:02.5 -- 10-Oct-1995/09:07:03.5 TAI with int = 1
+2019-05-10 09:29:30	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-05-10 09:29:30	INFO	NewMSSimulator::observe()	First source: ptcentre @ 08:00:00.03   -40.59.59.60       J2000
+2019-05-10 09:29:30	INFO	NewMSSimulator::observe()+	Full time range: 10-Oct-1995/09:14:32.5 -- 10-Oct-1995/09:14:33.5 TAI with int = 1
+2019-05-10 09:29:30	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-05-10 09:29:30	INFO	NewMSSimulator::observe()	First source: ptcentre @ 08:00:00.03   -40.59.59.60       J2000
+2019-05-10 09:29:30	INFO	NewMSSimulator::observe()+	Full time range: 10-Oct-1995/09:22:02.5 -- 10-Oct-1995/09:22:03.5 TAI with int = 1
+2019-05-10 09:29:30	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-05-10 09:29:30	INFO	Simulator::setvp()	Setting voltage pattern parameters
+2019-05-10 09:29:30	INFO	Simulator::setvp()	Using user defined voltage patterns in Table simulation1/vis_setup.ska1mid.-vp.tab
+2019-05-10 09:29:30	INFO	Simulator::predict() 	Predicting visibilities using model: [] and componentList: simulation1/points_grid.cl
+2019-05-10 09:29:30	INFO	Simulator::predict() 	The data column will be replaced
+2019-05-10 09:29:31	INFO	Simulator::getVPRecord 	Loading Voltage Pattern information from simulation1/vis_setup.ska1mid.-vp.tab
+2019-05-10 09:29:31	INFO	vpmanager::loadfromtable	Loaded 1 VP definitions and 42 VP default settings from table simulation1/vis_setup.ska1mid.-vp.tab
+2019-05-10 09:29:31	INFO	Simulator::getVPRecord 	Temporary alert : The state of the vpmanager tool has been modified by loading these primary beam models. If any of your scripts rely on the vpmanager state being preserved throughout your CASA session, please use vp.saveastable() and vp.loadfromtable() as needed. 
+2019-05-10 09:29:31	INFO	Simulator::createSkyEquation() 	Synthesis gridding 
+2019-05-10 09:29:31	INFO	Simulator::createSkyEquation() 	Fourier transforms will use image centers as tangent points
+2019-05-10 09:29:31	INFO	BeamSkyJones::summary	Beam Summary: 
+2019-05-10 09:29:31	INFO	BeamSkyJones::summary	Model 1 for SKA1-MID ant=-1 feed=-1 uses PB: AIRY
+2019-05-10 09:29:31	INFO	PBMath1D::summary	Using AIRY PB Class 
+2019-05-10 09:29:31	INFO	PBMathInterface::summary	These parameters are for Voltage Pattern
+2019-05-10 09:29:31	INFO	PBMathInterface::summary	No Beam Squint
+2019-05-10 09:29:31	INFO	PBMath1D::summary	Max Radius at 1 GHz: 300 arcmin 
+2019-05-10 09:29:31	INFO	PBMath1DAiry::summary	   Dish Diameter: 15 m 
+2019-05-10 09:29:31	INFO	PBMath1DAiry::summary	Blocked Diameter: 2.5 m 
+2019-05-10 09:29:35	INFO	Simulator::reset() 	Resetting all visibility corruption components
+2019-05-10 09:29:35	INFO	Simulator::reset() 	Reset all image-plane corruption components
+2019-05-10 09:29:35	INFO	Imager::open() 	Opening MeasurementSet /data/home/p.hartley/Documents/CASA_sims/casa_scripts/run_scripts/skagit/casa_simulation/simulation1/vis_setup.ska1mid.ms
+2019-05-10 09:29:36	INFO	imager::defineimage()	Defining image properties:nx=512 ny=512 cellx='0.0961arcsec' celly='0.0961arcsec' stokes=I' mode=MFS nchan=-1 start=0 step=0 spwids=[0] fieldid=-1 facets=1 frame=1 distance='0'
+2019-05-10 09:29:36	INFO	imager::defineimage()	 phaseCenter='08:00:00.03,  319.30.00.40, ' mStart='Radialvelocity: 0' qStep='0 '' mFreqStart='Frequency: 0
+2019-05-10 09:29:36	INFO	imager::setoptions() 	Setting processing options
+2019-05-10 09:29:36	INFO	imager::data selection	Performing selection on MeasurementSet : /data/home/p.hartley/Documents/CASA_sims/casa_scripts/run_scripts/skagit/casa_simulation/simulation1/vis_setup.ska1mid.ms
+2019-05-10 09:29:36	INFO	imager::data selection	Selecting on spectral windows expression : 0
+2019-05-10 09:29:37	INFO	imager::data selection	Selected all 1254890 rows
+2019-05-10 09:29:37	INFO	imager::data selection	Selected: [1 chans in spw 0]
+2019-05-10 09:29:37	INFO	imager::weight()	Weighting MS: Imaging weights will be changed
+2019-05-10 09:29:37	INFO	imager::weight()	Uniform weighting: sidelobes will be suppressed over full image
+2019-05-10 09:29:38	INFO	imager::makeimage() 	Calculating image (without full skyequation)
+2019-05-10 09:29:38	INFO	imager::makeimage() 	Making dirty image from corrected data 
+2019-05-10 09:29:38	INFO	imager::makeimage() 	Image is : simulation1/vis_setup.ska1mid.map
+2019-05-10 09:29:38	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-10 09:29:38	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-10 09:29:38	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-10 09:29:38	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-10 09:29:38	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-10 09:29:38	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-10 09:29:38	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-10 09:29:38	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-10 09:29:38	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-10 09:29:38	INFO	imager::createFTMachine() 	Performing interferometric gridding...
+2019-05-10 09:29:41	INFO	exportfits::::	
+2019-05-10 09:29:41	INFO	exportfits::::+	##########################################
+2019-05-10 09:29:41	INFO	exportfits::::+	##### Begin Task: exportfits         #####
+2019-05-10 09:29:41	INFO	exportfits::::	exportfits(imagename="simulation1/vis_setup.ska1mid.map",fitsimage="simulation1/vis_setup.ska1mid.map.fits",velocity=False,optical=False,bitpix=-32,
+2019-05-10 09:29:41	INFO	exportfits::::+	        minpix=0,maxpix=-1,overwrite=False,dropstokes=False,stokeslast=True,
+2019-05-10 09:29:41	INFO	exportfits::::+	        history=True,dropdeg=False)
+2019-05-10 09:29:41	INFO	exportfits::::	##### End Task: exportfits           #####
+2019-05-10 09:29:41	INFO	exportfits::::+	##########################################
+2019-05-10 09:29:55	INFO	NewMSSimulator::NewMSSimulator(MeasurementSet& theMS) 	Opening MeasurementSet /data/home/p.hartley/Documents/CASA_sims/casa_scripts/run_scripts/skagit/casa_simulation/simulation1/corrupted.ska1mid.ms with 1254890 rows
+2019-05-10 09:29:55	INFO	NewMSSimulator::NewMSSimulator(MeasurementSet& theMS) 	   last spectral window ID = 1
+2019-05-10 09:29:55	INFO	Simulator::setvp()	Setting voltage pattern parameters
+2019-05-10 09:29:55	INFO	Simulator::setvp()	Beam Squint will be included in the VP model
+2019-05-10 09:29:55	INFO	Simulator::setvp()	and the parallactic angle increment is 360 degrees
+2019-05-10 09:29:55	INFO	Simulator::predict() 	Predicting visibilities using model: [] and componentList: simulation1/points_grid.cl
+2019-05-10 09:29:55	INFO	Simulator::predict() 	The data column will be replaced
+2019-05-10 09:29:56	INFO	Simulator::getVPRecord 	Using Voltage Patterns from the VPManager
+2019-05-10 09:29:56	INFO	Simulator::createSkyEquation() 	Synthesis gridding 
+2019-05-10 09:29:56	INFO	Simulator::createSkyEquation() 	Fourier transforms will use image centers as tangent points
+2019-05-10 09:29:56	INFO	BeamSkyJones::summary	Beam Summary: 
+2019-05-10 09:29:56	INFO	BeamSkyJones::summary	Model 1 for SKA1-MID ant=-1 feed=-1 uses PB: AIRY
+2019-05-10 09:29:56	INFO	PBMath1D::summary	Using AIRY PB Class 
+2019-05-10 09:29:56	INFO	PBMathInterface::summary	These parameters are for Voltage Pattern
+2019-05-10 09:29:56	INFO	PBMathInterface::summary	No Beam Squint
+2019-05-10 09:29:56	INFO	PBMath1D::summary	Max Radius at 1 GHz: 300 arcmin 
+2019-05-10 09:29:56	INFO	PBMath1DAiry::summary	   Dish Diameter: 15 m 
+2019-05-10 09:29:56	INFO	PBMath1DAiry::summary	Blocked Diameter: 2.5 m 
+2019-05-10 09:30:00	INFO	Simulator::reset() 	Resetting all visibility corruption components
+2019-05-10 09:30:01	INFO	Simulator::reset() 	Reset all image-plane corruption components
+2019-05-10 09:30:01	INFO	Imager::open() 	Opening MeasurementSet /data/home/p.hartley/Documents/CASA_sims/casa_scripts/run_scripts/skagit/casa_simulation/simulation1/corrupted.ska1mid.ms
+2019-05-10 09:30:01	INFO	imager::defineimage()	Defining image properties:nx=512 ny=512 cellx='0.0961arcsec' celly='0.0961arcsec' stokes=I' mode=MFS nchan=-1 start=0 step=0 spwids=[0] fieldid=-1 facets=1 frame=1 distance='0'
+2019-05-10 09:30:01	INFO	imager::defineimage()	 phaseCenter='08:00:00.03,  319.30.00.40, ' mStart='Radialvelocity: 0' qStep='0 '' mFreqStart='Frequency: 0
+2019-05-10 09:30:01	INFO	imager::setoptions() 	Setting processing options
+2019-05-10 09:30:01	INFO	imager::data selection	Performing selection on MeasurementSet : /data/home/p.hartley/Documents/CASA_sims/casa_scripts/run_scripts/skagit/casa_simulation/simulation1/corrupted.ska1mid.ms
+2019-05-10 09:30:01	INFO	imager::data selection	Selecting on spectral windows expression : 0
+2019-05-10 09:30:02	INFO	imager::data selection	Selected all 1254890 rows
+2019-05-10 09:30:02	INFO	imager::data selection	Selected: [1 chans in spw 0]
+2019-05-10 09:30:02	INFO	imager::weight()	Weighting MS: Imaging weights will be changed
+2019-05-10 09:30:02	INFO	imager::weight()	Uniform weighting: sidelobes will be suppressed over full image
+2019-05-10 09:30:03	INFO	imager::makeimage() 	Calculating image (without full skyequation)
+2019-05-10 09:30:03	INFO	imager::makeimage() 	Making dirty image from corrected data 
+2019-05-10 09:30:03	INFO	imager::makeimage() 	Image is : simulation1/corrupted.ska1mid.map
+2019-05-10 09:30:03	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-10 09:30:03	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-10 09:30:03	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-10 09:30:03	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-10 09:30:03	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-10 09:30:03	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-10 09:30:03	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-10 09:30:03	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-10 09:30:03	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-10 09:30:03	INFO	imager::createFTMachine() 	Performing interferometric gridding...
+2019-05-10 09:30:06	INFO	exportfits::::	
+2019-05-10 09:30:06	INFO	exportfits::::+	##########################################
+2019-05-10 09:30:06	INFO	exportfits::::+	##### Begin Task: exportfits         #####
+2019-05-10 09:30:06	INFO	exportfits::::	exportfits(imagename="simulation1/corrupted.ska1mid.map",fitsimage="simulation1/corrupted.ska1mid.map.fits",velocity=False,optical=False,bitpix=-32,
+2019-05-10 09:30:06	INFO	exportfits::::+	        minpix=0,maxpix=-1,overwrite=False,dropstokes=False,stokeslast=True,
+2019-05-10 09:30:06	INFO	exportfits::::+	        history=True,dropdeg=False)
+2019-05-10 09:30:06	INFO	exportfits::::	##### End Task: exportfits           #####
+2019-05-10 09:30:06	INFO	exportfits::::+	##########################################
+2019-05-10 09:30:07	INFO	Imager::open() 	Opening MeasurementSet /data/home/p.hartley/Documents/CASA_sims/casa_scripts/run_scripts/skagit/casa_simulation/simulation1/corrupted.ska1mid.ms
+2019-05-10 09:30:08	INFO	imager::defineimage()	Defining image properties:nx=512 ny=512 cellx='0.0961arcsec' celly='0.0961arcsec' stokes=I' mode=MFS nchan=-1 start=0 step=0 spwids=[0] fieldid=-1 facets=1 frame=1 distance='0'
+2019-05-10 09:30:08	INFO	imager::defineimage()	 phaseCenter='08:00:00.03,  319.30.00.40, ' mStart='Radialvelocity: 0' qStep='0 '' mFreqStart='Frequency: 0
+2019-05-10 09:30:08	INFO	imager::setoptions() 	Setting processing options
+2019-05-10 09:30:08	INFO	imager::data selection	Performing selection on MeasurementSet : /data/home/p.hartley/Documents/CASA_sims/casa_scripts/run_scripts/skagit/casa_simulation/simulation1/corrupted.ska1mid.ms
+2019-05-10 09:30:08	INFO	imager::data selection	Selecting on spectral windows expression : 0
+2019-05-10 09:30:08	INFO	imager::data selection	Selected all 1254890 rows
+2019-05-10 09:30:08	INFO	imager::data selection	Selected: [1 chans in spw 0]
+2019-05-10 09:30:08	INFO	imager::weight()	Weighting MS: Imaging weights will be changed
+2019-05-10 09:30:08	INFO	imager::weight()	Uniform weighting: sidelobes will be suppressed over full image
+2019-05-10 09:30:10	INFO	imager::makeimage() 	Calculating image (without full skyequation)
+2019-05-10 09:30:10	INFO	imager::makeimage() 	Making dirty image from corrected data 
+2019-05-10 09:30:10	INFO	imager::makeimage() 	Image is : simulation1/corrupted.ska1mid.map
+2019-05-10 09:30:10	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-10 09:30:10	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-10 09:30:10	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-10 09:30:10	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-10 09:30:10	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-10 09:30:10	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-10 09:30:10	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-10 09:30:10	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-10 09:30:10	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-10 09:30:10	INFO	imager::createFTMachine() 	Performing interferometric gridding...
+2019-05-10 09:30:13	INFO	exportfits::::	
+2019-05-10 09:30:13	INFO	exportfits::::+	##########################################
+2019-05-10 09:30:13	INFO	exportfits::::+	##### Begin Task: exportfits         #####
+2019-05-10 09:30:13	INFO	exportfits::::	exportfits(imagename="simulation1/corrupted.ska1mid.map",fitsimage="simulation1/corrupted.ska1mid.map.fits",velocity=False,optical=False,bitpix=-32,
+2019-05-10 09:30:13	INFO	exportfits::::+	        minpix=0,maxpix=-1,overwrite=False,dropstokes=False,stokeslast=True,
+2019-05-10 09:30:13	INFO	exportfits::::+	        history=True,dropdeg=False)
+2019-05-10 09:30:13	INFO	exportfits::::	##### End Task: exportfits           #####
+2019-05-10 09:30:13	INFO	exportfits::::+	##########################################
+2019-05-10 09:30:27	INFO	NewMSSimulator::NewMSSimulator(MeasurementSet& theMS) 	Opening MeasurementSet /data/home/p.hartley/Documents/CASA_sims/casa_scripts/run_scripts/skagit/casa_simulation/simulation1/corrupted.ska1mid.ms with 1254890 rows
+2019-05-10 09:30:27	INFO	NewMSSimulator::NewMSSimulator(MeasurementSet& theMS) 	   last spectral window ID = 1
+2019-05-10 09:30:27	INFO	Simulator::setvp()	Setting voltage pattern parameters
+2019-05-10 09:30:27	INFO	Simulator::setvp()	Beam Squint will be included in the VP model
+2019-05-10 09:30:27	INFO	Simulator::setvp()	and the parallactic angle increment is 360 degrees
+2019-05-10 09:30:27	INFO	Simulator::predict() 	Predicting visibilities using model: [] and componentList: simulation1/points_grid.cl
+2019-05-10 09:30:27	INFO	Simulator::predict() 	The data column will be replaced
+2019-05-10 09:30:28	INFO	Simulator::getVPRecord 	Using Voltage Patterns from the VPManager
+2019-05-10 09:30:28	INFO	Simulator::createSkyEquation() 	Synthesis gridding 
+2019-05-10 09:30:28	INFO	Simulator::createSkyEquation() 	Fourier transforms will use image centers as tangent points
+2019-05-10 09:30:28	INFO	BeamSkyJones::summary	Beam Summary: 
+2019-05-10 09:30:28	INFO	BeamSkyJones::summary	Model 1 for SKA1-MID ant=-1 feed=-1 uses PB: AIRY
+2019-05-10 09:30:28	INFO	PBMath1D::summary	Using AIRY PB Class 
+2019-05-10 09:30:28	INFO	PBMathInterface::summary	These parameters are for Voltage Pattern
+2019-05-10 09:30:28	INFO	PBMathInterface::summary	No Beam Squint
+2019-05-10 09:30:28	INFO	PBMath1D::summary	Max Radius at 1 GHz: 300 arcmin 
+2019-05-10 09:30:28	INFO	PBMath1DAiry::summary	   Dish Diameter: 15 m 
+2019-05-10 09:30:28	INFO	PBMath1DAiry::summary	Blocked Diameter: 2.5 m 
+2019-05-10 09:30:33	INFO	Simulator::reset() 	Resetting all visibility corruption components
+2019-05-10 09:30:33	INFO	Simulator::reset() 	Reset all image-plane corruption components
+2019-05-10 09:30:33	INFO	Imager::open() 	Opening MeasurementSet /data/home/p.hartley/Documents/CASA_sims/casa_scripts/run_scripts/skagit/casa_simulation/simulation1/corrupted.ska1mid.ms
+2019-05-10 09:30:33	INFO	imager::defineimage()	Defining image properties:nx=512 ny=512 cellx='0.0961arcsec' celly='0.0961arcsec' stokes=I' mode=MFS nchan=-1 start=0 step=0 spwids=[0] fieldid=-1 facets=1 frame=1 distance='0'
+2019-05-10 09:30:33	INFO	imager::defineimage()	 phaseCenter='08:00:00.03,  319.30.00.40, ' mStart='Radialvelocity: 0' qStep='0 '' mFreqStart='Frequency: 0
+2019-05-10 09:30:33	INFO	imager::setoptions() 	Setting processing options
+2019-05-10 09:30:33	INFO	imager::data selection	Performing selection on MeasurementSet : /data/home/p.hartley/Documents/CASA_sims/casa_scripts/run_scripts/skagit/casa_simulation/simulation1/corrupted.ska1mid.ms
+2019-05-10 09:30:33	INFO	imager::data selection	Selecting on spectral windows expression : 0
+2019-05-10 09:30:34	INFO	imager::data selection	Selected all 1254890 rows
+2019-05-10 09:30:34	INFO	imager::data selection	Selected: [1 chans in spw 0]
+2019-05-10 09:30:34	INFO	imager::weight()	Weighting MS: Imaging weights will be changed
+2019-05-10 09:30:34	INFO	imager::weight()	Uniform weighting: sidelobes will be suppressed over full image
+2019-05-10 09:30:35	INFO	imager::makeimage() 	Calculating image (without full skyequation)
+2019-05-10 09:30:35	INFO	imager::makeimage() 	Making dirty image from corrected data 
+2019-05-10 09:30:35	INFO	imager::makeimage() 	Image is : simulation1/corrupted.ska1mid.map
+2019-05-10 09:30:35	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-10 09:30:35	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-10 09:30:35	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-10 09:30:35	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-10 09:30:35	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-10 09:30:35	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-10 09:30:35	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-10 09:30:35	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-10 09:30:35	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-10 09:30:36	INFO	imager::createFTMachine() 	Performing interferometric gridding...
+2019-05-10 09:30:39	INFO	exportfits::::	
+2019-05-10 09:30:39	INFO	exportfits::::+	##########################################
+2019-05-10 09:30:39	INFO	exportfits::::+	##### Begin Task: exportfits         #####
+2019-05-10 09:30:39	INFO	exportfits::::	exportfits(imagename="simulation1/corrupted.ska1mid.map",fitsimage="simulation1/corrupted.ska1mid.map.fits",velocity=False,optical=False,bitpix=-32,
+2019-05-10 09:30:39	INFO	exportfits::::+	        minpix=0,maxpix=-1,overwrite=False,dropstokes=False,stokeslast=True,
+2019-05-10 09:30:39	INFO	exportfits::::+	        history=True,dropdeg=False)
+2019-05-10 09:30:39	INFO	exportfits::::	##### End Task: exportfits           #####
+2019-05-10 09:30:39	INFO	exportfits::::+	##########################################
+2019-05-10 09:30:39	INFO	Imager::open() 	Opening MeasurementSet /data/home/p.hartley/Documents/CASA_sims/casa_scripts/run_scripts/skagit/casa_simulation/simulation1/corrupted.ska1mid.ms
+2019-05-10 09:30:40	INFO	imager::defineimage()	Defining image properties:nx=512 ny=512 cellx='0.0961arcsec' celly='0.0961arcsec' stokes=I' mode=MFS nchan=-1 start=0 step=0 spwids=[0] fieldid=-1 facets=1 frame=1 distance='0'
+2019-05-10 09:30:40	INFO	imager::defineimage()	 phaseCenter='08:00:00.03,  319.30.00.40, ' mStart='Radialvelocity: 0' qStep='0 '' mFreqStart='Frequency: 0
+2019-05-10 09:30:40	INFO	imager::setoptions() 	Setting processing options
+2019-05-10 09:30:40	INFO	imager::data selection	Performing selection on MeasurementSet : /data/home/p.hartley/Documents/CASA_sims/casa_scripts/run_scripts/skagit/casa_simulation/simulation1/corrupted.ska1mid.ms
+2019-05-10 09:30:40	INFO	imager::data selection	Selecting on spectral windows expression : 0
+2019-05-10 09:30:41	INFO	imager::data selection	Selected all 1254890 rows
+2019-05-10 09:30:41	INFO	imager::data selection	Selected: [1 chans in spw 0]
+2019-05-10 09:30:41	INFO	imager::weight()	Weighting MS: Imaging weights will be changed
+2019-05-10 09:30:41	INFO	imager::weight()	Uniform weighting: sidelobes will be suppressed over full image
+2019-05-10 09:30:42	INFO	imager::makeimage() 	Calculating image (without full skyequation)
+2019-05-10 09:30:42	INFO	imager::makeimage() 	Making dirty image from corrected data 
+2019-05-10 09:30:42	INFO	imager::makeimage() 	Image is : simulation1/corrupted.ska1mid.map
+2019-05-10 09:30:42	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-10 09:30:42	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-10 09:30:42	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-10 09:30:42	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-10 09:30:42	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-10 09:30:42	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-10 09:30:42	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-10 09:30:42	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-10 09:30:42	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-10 09:30:42	INFO	imager::createFTMachine() 	Performing interferometric gridding...
+2019-05-10 09:30:45	INFO	exportfits::::	
+2019-05-10 09:30:45	INFO	exportfits::::+	##########################################
+2019-05-10 09:30:45	INFO	exportfits::::+	##### Begin Task: exportfits         #####
+2019-05-10 09:30:45	INFO	exportfits::::	exportfits(imagename="simulation1/corrupted.ska1mid.map",fitsimage="simulation1/corrupted.ska1mid.map.fits",velocity=False,optical=False,bitpix=-32,
+2019-05-10 09:30:45	INFO	exportfits::::+	        minpix=0,maxpix=-1,overwrite=False,dropstokes=False,stokeslast=True,
+2019-05-10 09:30:45	INFO	exportfits::::+	        history=True,dropdeg=False)
+2019-05-10 09:30:45	INFO	exportfits::::	##### End Task: exportfits           #####
+2019-05-10 09:30:45	INFO	exportfits::::+	##########################################
+2019-05-10 09:31:01	INFO	NewMSSimulator::NewMSSimulator(MeasurementSet& theMS) 	Opening MeasurementSet /data/home/p.hartley/Documents/CASA_sims/casa_scripts/run_scripts/skagit/casa_simulation/simulation1/corrupted.ska1mid.ms with 1254890 rows
+2019-05-10 09:31:01	INFO	NewMSSimulator::NewMSSimulator(MeasurementSet& theMS) 	   last spectral window ID = 1
+2019-05-10 09:31:01	INFO	Simulator::setvp()	Setting voltage pattern parameters
+2019-05-10 09:31:01	INFO	Simulator::setvp()	Beam Squint will be included in the VP model
+2019-05-10 09:31:01	INFO	Simulator::setvp()	and the parallactic angle increment is 360 degrees
+2019-05-10 09:31:01	INFO	Simulator::predict() 	Predicting visibilities using model: [] and componentList: simulation1/points_grid.cl
+2019-05-10 09:31:01	INFO	Simulator::predict() 	The data column will be replaced
+2019-05-10 09:31:02	INFO	Simulator::getVPRecord 	Using Voltage Patterns from the VPManager
+2019-05-10 09:31:02	INFO	Simulator::createSkyEquation() 	Synthesis gridding 
+2019-05-10 09:31:02	INFO	Simulator::createSkyEquation() 	Fourier transforms will use image centers as tangent points
+2019-05-10 09:31:02	INFO	BeamSkyJones::summary	Beam Summary: 
+2019-05-10 09:31:02	INFO	BeamSkyJones::summary	Model 1 for SKA1-MID ant=-1 feed=-1 uses PB: AIRY
+2019-05-10 09:31:02	INFO	PBMath1D::summary	Using AIRY PB Class 
+2019-05-10 09:31:02	INFO	PBMathInterface::summary	These parameters are for Voltage Pattern
+2019-05-10 09:31:02	INFO	PBMathInterface::summary	No Beam Squint
+2019-05-10 09:31:02	INFO	PBMath1D::summary	Max Radius at 1 GHz: 300 arcmin 
+2019-05-10 09:31:02	INFO	PBMath1DAiry::summary	   Dish Diameter: 15 m 
+2019-05-10 09:31:02	INFO	PBMath1DAiry::summary	Blocked Diameter: 2.5 m 
+2019-05-10 09:31:06	INFO	Simulator::reset() 	Resetting all visibility corruption components
+2019-05-10 09:31:06	INFO	Simulator::reset() 	Reset all image-plane corruption components
+2019-05-10 09:31:06	INFO	Imager::open() 	Opening MeasurementSet /data/home/p.hartley/Documents/CASA_sims/casa_scripts/run_scripts/skagit/casa_simulation/simulation1/corrupted.ska1mid.ms
+2019-05-10 09:31:07	INFO	imager::defineimage()	Defining image properties:nx=512 ny=512 cellx='0.0961arcsec' celly='0.0961arcsec' stokes=I' mode=MFS nchan=-1 start=0 step=0 spwids=[0] fieldid=-1 facets=1 frame=1 distance='0'
+2019-05-10 09:31:07	INFO	imager::defineimage()	 phaseCenter='08:00:00.03,  319.30.00.40, ' mStart='Radialvelocity: 0' qStep='0 '' mFreqStart='Frequency: 0
+2019-05-10 09:31:07	INFO	imager::setoptions() 	Setting processing options
+2019-05-10 09:31:07	INFO	imager::data selection	Performing selection on MeasurementSet : /data/home/p.hartley/Documents/CASA_sims/casa_scripts/run_scripts/skagit/casa_simulation/simulation1/corrupted.ska1mid.ms
+2019-05-10 09:31:07	INFO	imager::data selection	Selecting on spectral windows expression : 0
+2019-05-10 09:31:07	INFO	imager::data selection	Selected all 1254890 rows
+2019-05-10 09:31:07	INFO	imager::data selection	Selected: [1 chans in spw 0]
+2019-05-10 09:31:07	INFO	imager::weight()	Weighting MS: Imaging weights will be changed
+2019-05-10 09:31:07	INFO	imager::weight()	Uniform weighting: sidelobes will be suppressed over full image
+2019-05-10 09:31:08	INFO	imager::makeimage() 	Calculating image (without full skyequation)
+2019-05-10 09:31:08	INFO	imager::makeimage() 	Making dirty image from corrected data 
+2019-05-10 09:31:08	INFO	imager::makeimage() 	Image is : simulation1/corrupted.ska1mid.map
+2019-05-10 09:31:08	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-10 09:31:08	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-10 09:31:08	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-10 09:31:08	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-10 09:31:08	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-10 09:31:08	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-10 09:31:09	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-10 09:31:09	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-10 09:31:09	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-10 09:31:09	INFO	imager::createFTMachine() 	Performing interferometric gridding...
+2019-05-10 09:31:12	INFO	exportfits::::	
+2019-05-10 09:31:12	INFO	exportfits::::+	##########################################
+2019-05-10 09:31:12	INFO	exportfits::::+	##### Begin Task: exportfits         #####
+2019-05-10 09:31:12	INFO	exportfits::::	exportfits(imagename="simulation1/corrupted.ska1mid.map",fitsimage="simulation1/corrupted.ska1mid.map.fits",velocity=False,optical=False,bitpix=-32,
+2019-05-10 09:31:12	INFO	exportfits::::+	        minpix=0,maxpix=-1,overwrite=False,dropstokes=False,stokeslast=True,
+2019-05-10 09:31:12	INFO	exportfits::::+	        history=True,dropdeg=False)
+2019-05-10 09:31:12	INFO	exportfits::::	##### End Task: exportfits           #####
+2019-05-10 09:31:12	INFO	exportfits::::+	##########################################
+2019-05-10 09:31:12	INFO	Imager::open() 	Opening MeasurementSet /data/home/p.hartley/Documents/CASA_sims/casa_scripts/run_scripts/skagit/casa_simulation/simulation1/corrupted.ska1mid.ms
+2019-05-10 09:31:13	INFO	imager::defineimage()	Defining image properties:nx=512 ny=512 cellx='0.0961arcsec' celly='0.0961arcsec' stokes=I' mode=MFS nchan=-1 start=0 step=0 spwids=[0] fieldid=-1 facets=1 frame=1 distance='0'
+2019-05-10 09:31:13	INFO	imager::defineimage()	 phaseCenter='08:00:00.03,  319.30.00.40, ' mStart='Radialvelocity: 0' qStep='0 '' mFreqStart='Frequency: 0
+2019-05-10 09:31:13	INFO	imager::setoptions() 	Setting processing options
+2019-05-10 09:31:13	INFO	imager::data selection	Performing selection on MeasurementSet : /data/home/p.hartley/Documents/CASA_sims/casa_scripts/run_scripts/skagit/casa_simulation/simulation1/corrupted.ska1mid.ms
+2019-05-10 09:31:13	INFO	imager::data selection	Selecting on spectral windows expression : 0
+2019-05-10 09:31:14	INFO	imager::data selection	Selected all 1254890 rows
+2019-05-10 09:31:14	INFO	imager::data selection	Selected: [1 chans in spw 0]
+2019-05-10 09:31:14	INFO	imager::weight()	Weighting MS: Imaging weights will be changed
+2019-05-10 09:31:14	INFO	imager::weight()	Uniform weighting: sidelobes will be suppressed over full image
+2019-05-10 09:31:15	INFO	imager::makeimage() 	Calculating image (without full skyequation)
+2019-05-10 09:31:15	INFO	imager::makeimage() 	Making dirty image from corrected data 
+2019-05-10 09:31:15	INFO	imager::makeimage() 	Image is : simulation1/corrupted.ska1mid.map
+2019-05-10 09:31:15	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-10 09:31:15	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-10 09:31:15	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-10 09:31:15	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-10 09:31:15	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-10 09:31:15	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-10 09:31:15	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-10 09:31:15	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-10 09:31:15	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-10 09:31:15	INFO	imager::createFTMachine() 	Performing interferometric gridding...
+2019-05-10 09:31:18	INFO	exportfits::::	
+2019-05-10 09:31:18	INFO	exportfits::::+	##########################################
+2019-05-10 09:31:18	INFO	exportfits::::+	##### Begin Task: exportfits         #####
+2019-05-10 09:31:18	INFO	exportfits::::	exportfits(imagename="simulation1/corrupted.ska1mid.map",fitsimage="simulation1/corrupted.ska1mid.map.fits",velocity=False,optical=False,bitpix=-32,
+2019-05-10 09:31:18	INFO	exportfits::::+	        minpix=0,maxpix=-1,overwrite=False,dropstokes=False,stokeslast=True,
+2019-05-10 09:31:18	INFO	exportfits::::+	        history=True,dropdeg=False)
+2019-05-10 09:31:18	INFO	exportfits::::	##### End Task: exportfits           #####
+2019-05-10 09:31:18	INFO	exportfits::::+	##########################################
+2019-05-10 09:31:32	INFO	NewMSSimulator::NewMSSimulator(MeasurementSet& theMS) 	Opening MeasurementSet /data/home/p.hartley/Documents/CASA_sims/casa_scripts/run_scripts/skagit/casa_simulation/simulation1/corrupted.ska1mid.ms with 1254890 rows
+2019-05-10 09:31:32	INFO	NewMSSimulator::NewMSSimulator(MeasurementSet& theMS) 	   last spectral window ID = 1
+2019-05-10 09:31:32	INFO	Simulator::setvp()	Setting voltage pattern parameters
+2019-05-10 09:31:32	INFO	Simulator::setvp()	Beam Squint will be included in the VP model
+2019-05-10 09:31:32	INFO	Simulator::setvp()	and the parallactic angle increment is 360 degrees
+2019-05-10 09:31:32	INFO	Simulator::predict() 	Predicting visibilities using model: [] and componentList: simulation1/points_grid.cl
+2019-05-10 09:31:32	INFO	Simulator::predict() 	The data column will be replaced
+2019-05-10 09:31:33	INFO	Simulator::getVPRecord 	Using Voltage Patterns from the VPManager
+2019-05-10 09:31:33	INFO	Simulator::createSkyEquation() 	Synthesis gridding 
+2019-05-10 09:31:33	INFO	Simulator::createSkyEquation() 	Fourier transforms will use image centers as tangent points
+2019-05-10 09:31:33	INFO	BeamSkyJones::summary	Beam Summary: 
+2019-05-10 09:31:33	INFO	BeamSkyJones::summary	Model 1 for SKA1-MID ant=-1 feed=-1 uses PB: AIRY
+2019-05-10 09:31:33	INFO	PBMath1D::summary	Using AIRY PB Class 
+2019-05-10 09:31:33	INFO	PBMathInterface::summary	These parameters are for Voltage Pattern
+2019-05-10 09:31:33	INFO	PBMathInterface::summary	No Beam Squint
+2019-05-10 09:31:33	INFO	PBMath1D::summary	Max Radius at 1 GHz: 300 arcmin 
+2019-05-10 09:31:33	INFO	PBMath1DAiry::summary	   Dish Diameter: 15 m 
+2019-05-10 09:31:33	INFO	PBMath1DAiry::summary	Blocked Diameter: 2.5 m 
+2019-05-10 09:31:37	INFO	Simulator::reset() 	Resetting all visibility corruption components
+2019-05-10 09:31:37	INFO	Simulator::reset() 	Reset all image-plane corruption components
+2019-05-10 09:31:37	INFO	Imager::open() 	Opening MeasurementSet /data/home/p.hartley/Documents/CASA_sims/casa_scripts/run_scripts/skagit/casa_simulation/simulation1/corrupted.ska1mid.ms
+2019-05-10 09:31:38	INFO	imager::defineimage()	Defining image properties:nx=512 ny=512 cellx='0.0961arcsec' celly='0.0961arcsec' stokes=I' mode=MFS nchan=-1 start=0 step=0 spwids=[0] fieldid=-1 facets=1 frame=1 distance='0'
+2019-05-10 09:31:38	INFO	imager::defineimage()	 phaseCenter='08:00:00.03,  319.30.00.40, ' mStart='Radialvelocity: 0' qStep='0 '' mFreqStart='Frequency: 0
+2019-05-10 09:31:38	INFO	imager::setoptions() 	Setting processing options
+2019-05-10 09:31:38	INFO	imager::data selection	Performing selection on MeasurementSet : /data/home/p.hartley/Documents/CASA_sims/casa_scripts/run_scripts/skagit/casa_simulation/simulation1/corrupted.ska1mid.ms
+2019-05-10 09:31:38	INFO	imager::data selection	Selecting on spectral windows expression : 0
+2019-05-10 09:31:39	INFO	imager::data selection	Selected all 1254890 rows
+2019-05-10 09:31:39	INFO	imager::data selection	Selected: [1 chans in spw 0]
+2019-05-10 09:31:39	INFO	imager::weight()	Weighting MS: Imaging weights will be changed
+2019-05-10 09:31:39	INFO	imager::weight()	Uniform weighting: sidelobes will be suppressed over full image
+2019-05-10 09:31:40	INFO	imager::makeimage() 	Calculating image (without full skyequation)
+2019-05-10 09:31:40	INFO	imager::makeimage() 	Making dirty image from corrected data 
+2019-05-10 09:31:40	INFO	imager::makeimage() 	Image is : simulation1/corrupted.ska1mid.map
+2019-05-10 09:31:40	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-10 09:31:40	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-10 09:31:40	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-10 09:31:40	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-10 09:31:40	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-10 09:31:40	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-10 09:31:40	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-10 09:31:40	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-10 09:31:40	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-10 09:31:40	INFO	imager::createFTMachine() 	Performing interferometric gridding...
+2019-05-10 09:31:43	INFO	exportfits::::	
+2019-05-10 09:31:43	INFO	exportfits::::+	##########################################
+2019-05-10 09:31:43	INFO	exportfits::::+	##### Begin Task: exportfits         #####
+2019-05-10 09:31:43	INFO	exportfits::::	exportfits(imagename="simulation1/corrupted.ska1mid.map",fitsimage="simulation1/corrupted.ska1mid.map.fits",velocity=False,optical=False,bitpix=-32,
+2019-05-10 09:31:43	INFO	exportfits::::+	        minpix=0,maxpix=-1,overwrite=False,dropstokes=False,stokeslast=True,
+2019-05-10 09:31:43	INFO	exportfits::::+	        history=True,dropdeg=False)
+2019-05-10 09:31:43	INFO	exportfits::::	##### End Task: exportfits           #####
+2019-05-10 09:31:43	INFO	exportfits::::+	##########################################
+2019-05-10 09:31:43	INFO	Imager::open() 	Opening MeasurementSet /data/home/p.hartley/Documents/CASA_sims/casa_scripts/run_scripts/skagit/casa_simulation/simulation1/corrupted.ska1mid.ms
+2019-05-10 09:31:44	INFO	imager::defineimage()	Defining image properties:nx=512 ny=512 cellx='0.0961arcsec' celly='0.0961arcsec' stokes=I' mode=MFS nchan=-1 start=0 step=0 spwids=[0] fieldid=-1 facets=1 frame=1 distance='0'
+2019-05-10 09:31:44	INFO	imager::defineimage()	 phaseCenter='08:00:00.03,  319.30.00.40, ' mStart='Radialvelocity: 0' qStep='0 '' mFreqStart='Frequency: 0
+2019-05-10 09:31:44	INFO	imager::setoptions() 	Setting processing options
+2019-05-10 09:31:44	INFO	imager::data selection	Performing selection on MeasurementSet : /data/home/p.hartley/Documents/CASA_sims/casa_scripts/run_scripts/skagit/casa_simulation/simulation1/corrupted.ska1mid.ms
+2019-05-10 09:31:44	INFO	imager::data selection	Selecting on spectral windows expression : 0
+2019-05-10 09:31:45	INFO	imager::data selection	Selected all 1254890 rows
+2019-05-10 09:31:45	INFO	imager::data selection	Selected: [1 chans in spw 0]
+2019-05-10 09:31:45	INFO	imager::weight()	Weighting MS: Imaging weights will be changed
+2019-05-10 09:31:45	INFO	imager::weight()	Uniform weighting: sidelobes will be suppressed over full image
+2019-05-10 09:31:46	INFO	imager::makeimage() 	Calculating image (without full skyequation)
+2019-05-10 09:31:46	INFO	imager::makeimage() 	Making dirty image from corrected data 
+2019-05-10 09:31:46	INFO	imager::makeimage() 	Image is : simulation1/corrupted.ska1mid.map
+2019-05-10 09:31:46	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-10 09:31:46	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-10 09:31:46	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-10 09:31:46	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-10 09:31:46	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-10 09:31:46	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-10 09:31:46	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-10 09:31:46	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-10 09:31:46	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-10 09:31:46	INFO	imager::createFTMachine() 	Performing interferometric gridding...
+2019-05-10 09:31:49	INFO	exportfits::::	
+2019-05-10 09:31:49	INFO	exportfits::::+	##########################################
+2019-05-10 09:31:49	INFO	exportfits::::+	##### Begin Task: exportfits         #####
+2019-05-10 09:31:49	INFO	exportfits::::	exportfits(imagename="simulation1/corrupted.ska1mid.map",fitsimage="simulation1/corrupted.ska1mid.map.fits",velocity=False,optical=False,bitpix=-32,
+2019-05-10 09:31:49	INFO	exportfits::::+	        minpix=0,maxpix=-1,overwrite=False,dropstokes=False,stokeslast=True,
+2019-05-10 09:31:49	INFO	exportfits::::+	        history=True,dropdeg=False)
+2019-05-10 09:31:49	INFO	exportfits::::	##### End Task: exportfits           #####
+2019-05-10 09:31:49	INFO	exportfits::::+	##########################################
+2019-05-10 09:32:04	INFO	NewMSSimulator::NewMSSimulator(MeasurementSet& theMS) 	Opening MeasurementSet /data/home/p.hartley/Documents/CASA_sims/casa_scripts/run_scripts/skagit/casa_simulation/simulation1/corrupted.ska1mid.ms with 1254890 rows
+2019-05-10 09:32:04	INFO	NewMSSimulator::NewMSSimulator(MeasurementSet& theMS) 	   last spectral window ID = 1
+2019-05-10 09:32:04	INFO	Simulator::setvp()	Setting voltage pattern parameters
+2019-05-10 09:32:04	INFO	Simulator::setvp()	Beam Squint will be included in the VP model
+2019-05-10 09:32:04	INFO	Simulator::setvp()	and the parallactic angle increment is 360 degrees
+2019-05-10 09:32:04	INFO	Simulator::predict() 	Predicting visibilities using model: [] and componentList: simulation1/points_grid.cl
+2019-05-10 09:32:04	INFO	Simulator::predict() 	The data column will be replaced
+2019-05-10 09:32:05	INFO	Simulator::getVPRecord 	Using Voltage Patterns from the VPManager
+2019-05-10 09:32:05	INFO	Simulator::createSkyEquation() 	Synthesis gridding 
+2019-05-10 09:32:05	INFO	Simulator::createSkyEquation() 	Fourier transforms will use image centers as tangent points
+2019-05-10 09:32:05	INFO	BeamSkyJones::summary	Beam Summary: 
+2019-05-10 09:32:05	INFO	BeamSkyJones::summary	Model 1 for SKA1-MID ant=-1 feed=-1 uses PB: AIRY
+2019-05-10 09:32:05	INFO	PBMath1D::summary	Using AIRY PB Class 
+2019-05-10 09:32:05	INFO	PBMathInterface::summary	These parameters are for Voltage Pattern
+2019-05-10 09:32:05	INFO	PBMathInterface::summary	No Beam Squint
+2019-05-10 09:32:05	INFO	PBMath1D::summary	Max Radius at 1 GHz: 300 arcmin 
+2019-05-10 09:32:05	INFO	PBMath1DAiry::summary	   Dish Diameter: 15 m 
+2019-05-10 09:32:05	INFO	PBMath1DAiry::summary	Blocked Diameter: 2.5 m 
+2019-05-10 09:32:09	INFO	Simulator::reset() 	Resetting all visibility corruption components
+2019-05-10 09:32:09	INFO	Simulator::reset() 	Reset all image-plane corruption components
+2019-05-10 09:32:09	INFO	Imager::open() 	Opening MeasurementSet /data/home/p.hartley/Documents/CASA_sims/casa_scripts/run_scripts/skagit/casa_simulation/simulation1/corrupted.ska1mid.ms
+2019-05-10 09:32:10	INFO	imager::defineimage()	Defining image properties:nx=512 ny=512 cellx='0.0961arcsec' celly='0.0961arcsec' stokes=I' mode=MFS nchan=-1 start=0 step=0 spwids=[0] fieldid=-1 facets=1 frame=1 distance='0'
+2019-05-10 09:32:10	INFO	imager::defineimage()	 phaseCenter='08:00:00.03,  319.30.00.40, ' mStart='Radialvelocity: 0' qStep='0 '' mFreqStart='Frequency: 0
+2019-05-10 09:32:10	INFO	imager::setoptions() 	Setting processing options
+2019-05-10 09:32:10	INFO	imager::data selection	Performing selection on MeasurementSet : /data/home/p.hartley/Documents/CASA_sims/casa_scripts/run_scripts/skagit/casa_simulation/simulation1/corrupted.ska1mid.ms
+2019-05-10 09:32:10	INFO	imager::data selection	Selecting on spectral windows expression : 0
+2019-05-10 09:32:11	INFO	imager::data selection	Selected all 1254890 rows
+2019-05-10 09:32:11	INFO	imager::data selection	Selected: [1 chans in spw 0]
+2019-05-10 09:32:11	INFO	imager::weight()	Weighting MS: Imaging weights will be changed
+2019-05-10 09:32:11	INFO	imager::weight()	Uniform weighting: sidelobes will be suppressed over full image
+2019-05-10 09:32:12	INFO	imager::makeimage() 	Calculating image (without full skyequation)
+2019-05-10 09:32:12	INFO	imager::makeimage() 	Making dirty image from corrected data 
+2019-05-10 09:32:12	INFO	imager::makeimage() 	Image is : simulation1/corrupted.ska1mid.map
+2019-05-10 09:32:12	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-10 09:32:12	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-10 09:32:12	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-10 09:32:12	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-10 09:32:12	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-10 09:32:12	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-10 09:32:12	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-10 09:32:12	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-10 09:32:12	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-10 09:32:12	INFO	imager::createFTMachine() 	Performing interferometric gridding...
+2019-05-10 09:32:15	INFO	exportfits::::	
+2019-05-10 09:32:15	INFO	exportfits::::+	##########################################
+2019-05-10 09:32:15	INFO	exportfits::::+	##### Begin Task: exportfits         #####
+2019-05-10 09:32:15	INFO	exportfits::::	exportfits(imagename="simulation1/corrupted.ska1mid.map",fitsimage="simulation1/corrupted.ska1mid.map.fits",velocity=False,optical=False,bitpix=-32,
+2019-05-10 09:32:15	INFO	exportfits::::+	        minpix=0,maxpix=-1,overwrite=False,dropstokes=False,stokeslast=True,
+2019-05-10 09:32:15	INFO	exportfits::::+	        history=True,dropdeg=False)
+2019-05-10 09:32:15	INFO	exportfits::::	##### End Task: exportfits           #####
+2019-05-10 09:32:15	INFO	exportfits::::+	##########################################
+2019-05-10 09:32:16	INFO	Imager::open() 	Opening MeasurementSet /data/home/p.hartley/Documents/CASA_sims/casa_scripts/run_scripts/skagit/casa_simulation/simulation1/corrupted.ska1mid.ms
+2019-05-10 09:32:16	INFO	imager::defineimage()	Defining image properties:nx=512 ny=512 cellx='0.0961arcsec' celly='0.0961arcsec' stokes=I' mode=MFS nchan=-1 start=0 step=0 spwids=[0] fieldid=-1 facets=1 frame=1 distance='0'
+2019-05-10 09:32:16	INFO	imager::defineimage()	 phaseCenter='08:00:00.03,  319.30.00.40, ' mStart='Radialvelocity: 0' qStep='0 '' mFreqStart='Frequency: 0
+2019-05-10 09:32:16	INFO	imager::setoptions() 	Setting processing options
+2019-05-10 09:32:16	INFO	imager::data selection	Performing selection on MeasurementSet : /data/home/p.hartley/Documents/CASA_sims/casa_scripts/run_scripts/skagit/casa_simulation/simulation1/corrupted.ska1mid.ms
+2019-05-10 09:32:16	INFO	imager::data selection	Selecting on spectral windows expression : 0
+2019-05-10 09:32:17	INFO	imager::data selection	Selected all 1254890 rows
+2019-05-10 09:32:17	INFO	imager::data selection	Selected: [1 chans in spw 0]
+2019-05-10 09:32:17	INFO	imager::weight()	Weighting MS: Imaging weights will be changed
+2019-05-10 09:32:17	INFO	imager::weight()	Uniform weighting: sidelobes will be suppressed over full image
+2019-05-10 09:32:18	INFO	imager::makeimage() 	Calculating image (without full skyequation)
+2019-05-10 09:32:18	INFO	imager::makeimage() 	Making dirty image from corrected data 
+2019-05-10 09:32:18	INFO	imager::makeimage() 	Image is : simulation1/corrupted.ska1mid.map
+2019-05-10 09:32:18	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-10 09:32:18	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-10 09:32:18	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-10 09:32:18	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-10 09:32:18	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-10 09:32:18	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-10 09:32:19	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-10 09:32:19	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-10 09:32:19	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-10 09:32:19	INFO	imager::createFTMachine() 	Performing interferometric gridding...
+2019-05-10 09:32:21	INFO	exportfits::::	
+2019-05-10 09:32:21	INFO	exportfits::::+	##########################################
+2019-05-10 09:32:21	INFO	exportfits::::+	##### Begin Task: exportfits         #####
+2019-05-10 09:32:21	INFO	exportfits::::	exportfits(imagename="simulation1/corrupted.ska1mid.map",fitsimage="simulation1/corrupted.ska1mid.map.fits",velocity=False,optical=False,bitpix=-32,
+2019-05-10 09:32:21	INFO	exportfits::::+	        minpix=0,maxpix=-1,overwrite=False,dropstokes=False,stokeslast=True,
+2019-05-10 09:32:21	INFO	exportfits::::+	        history=True,dropdeg=False)
+2019-05-10 09:32:21	INFO	exportfits::::	##### End Task: exportfits           #####
+2019-05-10 09:32:21	INFO	exportfits::::+	##########################################
+2019-05-10 09:32:35	INFO	NewMSSimulator::NewMSSimulator(MeasurementSet& theMS) 	Opening MeasurementSet /data/home/p.hartley/Documents/CASA_sims/casa_scripts/run_scripts/skagit/casa_simulation/simulation1/corrupted.ska1mid.ms with 1254890 rows
+2019-05-10 09:32:35	INFO	NewMSSimulator::NewMSSimulator(MeasurementSet& theMS) 	   last spectral window ID = 1
+2019-05-10 09:32:35	INFO	Simulator::setvp()	Setting voltage pattern parameters
+2019-05-10 09:32:35	INFO	Simulator::setvp()	Beam Squint will be included in the VP model
+2019-05-10 09:32:35	INFO	Simulator::setvp()	and the parallactic angle increment is 360 degrees
+2019-05-10 09:32:35	INFO	Simulator::predict() 	Predicting visibilities using model: [] and componentList: simulation1/points_grid.cl
+2019-05-10 09:32:35	INFO	Simulator::predict() 	The data column will be replaced
+2019-05-10 09:32:36	INFO	Simulator::getVPRecord 	Using Voltage Patterns from the VPManager
+2019-05-10 09:32:36	INFO	Simulator::createSkyEquation() 	Synthesis gridding 
+2019-05-10 09:32:36	INFO	Simulator::createSkyEquation() 	Fourier transforms will use image centers as tangent points
+2019-05-10 09:32:36	INFO	BeamSkyJones::summary	Beam Summary: 
+2019-05-10 09:32:36	INFO	BeamSkyJones::summary	Model 1 for SKA1-MID ant=-1 feed=-1 uses PB: AIRY
+2019-05-10 09:32:36	INFO	PBMath1D::summary	Using AIRY PB Class 
+2019-05-10 09:32:36	INFO	PBMathInterface::summary	These parameters are for Voltage Pattern
+2019-05-10 09:32:36	INFO	PBMathInterface::summary	No Beam Squint
+2019-05-10 09:32:36	INFO	PBMath1D::summary	Max Radius at 1 GHz: 300 arcmin 
+2019-05-10 09:32:36	INFO	PBMath1DAiry::summary	   Dish Diameter: 15 m 
+2019-05-10 09:32:36	INFO	PBMath1DAiry::summary	Blocked Diameter: 2.5 m 
+2019-05-10 09:32:40	INFO	Simulator::reset() 	Resetting all visibility corruption components
+2019-05-10 09:32:40	INFO	Simulator::reset() 	Reset all image-plane corruption components
+2019-05-10 09:32:40	INFO	Imager::open() 	Opening MeasurementSet /data/home/p.hartley/Documents/CASA_sims/casa_scripts/run_scripts/skagit/casa_simulation/simulation1/corrupted.ska1mid.ms
+2019-05-10 09:32:41	INFO	imager::defineimage()	Defining image properties:nx=512 ny=512 cellx='0.0961arcsec' celly='0.0961arcsec' stokes=I' mode=MFS nchan=-1 start=0 step=0 spwids=[0] fieldid=-1 facets=1 frame=1 distance='0'
+2019-05-10 09:32:41	INFO	imager::defineimage()	 phaseCenter='08:00:00.03,  319.30.00.40, ' mStart='Radialvelocity: 0' qStep='0 '' mFreqStart='Frequency: 0
+2019-05-10 09:32:41	INFO	imager::setoptions() 	Setting processing options
+2019-05-10 09:32:41	INFO	imager::data selection	Performing selection on MeasurementSet : /data/home/p.hartley/Documents/CASA_sims/casa_scripts/run_scripts/skagit/casa_simulation/simulation1/corrupted.ska1mid.ms
+2019-05-10 09:32:41	INFO	imager::data selection	Selecting on spectral windows expression : 0
+2019-05-10 09:32:42	INFO	imager::data selection	Selected all 1254890 rows
+2019-05-10 09:32:42	INFO	imager::data selection	Selected: [1 chans in spw 0]
+2019-05-10 09:32:42	INFO	imager::weight()	Weighting MS: Imaging weights will be changed
+2019-05-10 09:32:42	INFO	imager::weight()	Uniform weighting: sidelobes will be suppressed over full image
+2019-05-10 09:32:43	INFO	imager::makeimage() 	Calculating image (without full skyequation)
+2019-05-10 09:32:43	INFO	imager::makeimage() 	Making dirty image from corrected data 
+2019-05-10 09:32:43	INFO	imager::makeimage() 	Image is : simulation1/corrupted.ska1mid.map
+2019-05-10 09:32:43	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-10 09:32:43	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-10 09:32:43	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-10 09:32:43	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-10 09:32:43	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-10 09:32:43	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-10 09:32:43	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-10 09:32:43	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-10 09:32:43	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-10 09:32:43	INFO	imager::createFTMachine() 	Performing interferometric gridding...
+2019-05-10 09:32:46	INFO	exportfits::::	
+2019-05-10 09:32:46	INFO	exportfits::::+	##########################################
+2019-05-10 09:32:46	INFO	exportfits::::+	##### Begin Task: exportfits         #####
+2019-05-10 09:32:46	INFO	exportfits::::	exportfits(imagename="simulation1/corrupted.ska1mid.map",fitsimage="simulation1/corrupted.ska1mid.map.fits",velocity=False,optical=False,bitpix=-32,
+2019-05-10 09:32:46	INFO	exportfits::::+	        minpix=0,maxpix=-1,overwrite=False,dropstokes=False,stokeslast=True,
+2019-05-10 09:32:46	INFO	exportfits::::+	        history=True,dropdeg=False)
+2019-05-10 09:32:46	INFO	exportfits::::	##### End Task: exportfits           #####
+2019-05-10 09:32:46	INFO	exportfits::::+	##########################################
+2019-05-10 09:32:46	INFO	Imager::open() 	Opening MeasurementSet /data/home/p.hartley/Documents/CASA_sims/casa_scripts/run_scripts/skagit/casa_simulation/simulation1/corrupted.ska1mid.ms
+2019-05-10 09:32:47	INFO	imager::defineimage()	Defining image properties:nx=512 ny=512 cellx='0.0961arcsec' celly='0.0961arcsec' stokes=I' mode=MFS nchan=-1 start=0 step=0 spwids=[0] fieldid=-1 facets=1 frame=1 distance='0'
+2019-05-10 09:32:47	INFO	imager::defineimage()	 phaseCenter='08:00:00.03,  319.30.00.40, ' mStart='Radialvelocity: 0' qStep='0 '' mFreqStart='Frequency: 0
+2019-05-10 09:32:47	INFO	imager::setoptions() 	Setting processing options
+2019-05-10 09:32:47	INFO	imager::data selection	Performing selection on MeasurementSet : /data/home/p.hartley/Documents/CASA_sims/casa_scripts/run_scripts/skagit/casa_simulation/simulation1/corrupted.ska1mid.ms
+2019-05-10 09:32:47	INFO	imager::data selection	Selecting on spectral windows expression : 0
+2019-05-10 09:32:48	INFO	imager::data selection	Selected all 1254890 rows
+2019-05-10 09:32:48	INFO	imager::data selection	Selected: [1 chans in spw 0]
+2019-05-10 09:32:48	INFO	imager::weight()	Weighting MS: Imaging weights will be changed
+2019-05-10 09:32:48	INFO	imager::weight()	Uniform weighting: sidelobes will be suppressed over full image
+2019-05-10 09:32:49	INFO	imager::makeimage() 	Calculating image (without full skyequation)
+2019-05-10 09:32:49	INFO	imager::makeimage() 	Making dirty image from corrected data 
+2019-05-10 09:32:49	INFO	imager::makeimage() 	Image is : simulation1/corrupted.ska1mid.map
+2019-05-10 09:32:49	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-10 09:32:49	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-10 09:32:49	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-10 09:32:49	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-10 09:32:49	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-10 09:32:49	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-10 09:32:49	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-10 09:32:49	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-10 09:32:49	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-10 09:32:49	INFO	imager::createFTMachine() 	Performing interferometric gridding...
+2019-05-10 09:32:52	INFO	exportfits::::	
+2019-05-10 09:32:52	INFO	exportfits::::+	##########################################
+2019-05-10 09:32:52	INFO	exportfits::::+	##### Begin Task: exportfits         #####
+2019-05-10 09:32:52	INFO	exportfits::::	exportfits(imagename="simulation1/corrupted.ska1mid.map",fitsimage="simulation1/corrupted.ska1mid.map.fits",velocity=False,optical=False,bitpix=-32,
+2019-05-10 09:32:52	INFO	exportfits::::+	        minpix=0,maxpix=-1,overwrite=False,dropstokes=False,stokeslast=True,
+2019-05-10 09:32:52	INFO	exportfits::::+	        history=True,dropdeg=False)
+2019-05-10 09:32:52	INFO	exportfits::::	##### End Task: exportfits           #####
+2019-05-10 09:32:52	INFO	exportfits::::+	##########################################
+2019-05-10 09:33:06	INFO	NewMSSimulator::NewMSSimulator(MeasurementSet& theMS) 	Opening MeasurementSet /data/home/p.hartley/Documents/CASA_sims/casa_scripts/run_scripts/skagit/casa_simulation/simulation1/corrupted.ska1mid.ms with 1254890 rows
+2019-05-10 09:33:06	INFO	NewMSSimulator::NewMSSimulator(MeasurementSet& theMS) 	   last spectral window ID = 1
+2019-05-10 09:33:06	INFO	Simulator::setvp()	Setting voltage pattern parameters
+2019-05-10 09:33:06	INFO	Simulator::setvp()	Beam Squint will be included in the VP model
+2019-05-10 09:33:06	INFO	Simulator::setvp()	and the parallactic angle increment is 360 degrees
+2019-05-10 09:33:06	INFO	Simulator::predict() 	Predicting visibilities using model: [] and componentList: simulation1/points_grid.cl
+2019-05-10 09:33:06	INFO	Simulator::predict() 	The data column will be replaced
+2019-05-10 09:33:07	INFO	Simulator::getVPRecord 	Using Voltage Patterns from the VPManager
+2019-05-10 09:33:07	INFO	Simulator::createSkyEquation() 	Synthesis gridding 
+2019-05-10 09:33:07	INFO	Simulator::createSkyEquation() 	Fourier transforms will use image centers as tangent points
+2019-05-10 09:33:07	INFO	BeamSkyJones::summary	Beam Summary: 
+2019-05-10 09:33:07	INFO	BeamSkyJones::summary	Model 1 for SKA1-MID ant=-1 feed=-1 uses PB: AIRY
+2019-05-10 09:33:07	INFO	PBMath1D::summary	Using AIRY PB Class 
+2019-05-10 09:33:07	INFO	PBMathInterface::summary	These parameters are for Voltage Pattern
+2019-05-10 09:33:07	INFO	PBMathInterface::summary	No Beam Squint
+2019-05-10 09:33:07	INFO	PBMath1D::summary	Max Radius at 1 GHz: 300 arcmin 
+2019-05-10 09:33:07	INFO	PBMath1DAiry::summary	   Dish Diameter: 15 m 
+2019-05-10 09:33:07	INFO	PBMath1DAiry::summary	Blocked Diameter: 2.5 m 
+2019-05-10 09:33:11	INFO	Simulator::reset() 	Resetting all visibility corruption components
+2019-05-10 09:33:11	INFO	Simulator::reset() 	Reset all image-plane corruption components
+2019-05-10 09:33:11	INFO	Imager::open() 	Opening MeasurementSet /data/home/p.hartley/Documents/CASA_sims/casa_scripts/run_scripts/skagit/casa_simulation/simulation1/corrupted.ska1mid.ms
+2019-05-10 09:33:12	INFO	imager::defineimage()	Defining image properties:nx=512 ny=512 cellx='0.0961arcsec' celly='0.0961arcsec' stokes=I' mode=MFS nchan=-1 start=0 step=0 spwids=[0] fieldid=-1 facets=1 frame=1 distance='0'
+2019-05-10 09:33:12	INFO	imager::defineimage()	 phaseCenter='08:00:00.03,  319.30.00.40, ' mStart='Radialvelocity: 0' qStep='0 '' mFreqStart='Frequency: 0
+2019-05-10 09:33:12	INFO	imager::setoptions() 	Setting processing options
+2019-05-10 09:33:12	INFO	imager::data selection	Performing selection on MeasurementSet : /data/home/p.hartley/Documents/CASA_sims/casa_scripts/run_scripts/skagit/casa_simulation/simulation1/corrupted.ska1mid.ms
+2019-05-10 09:33:12	INFO	imager::data selection	Selecting on spectral windows expression : 0
+2019-05-10 09:33:13	INFO	imager::data selection	Selected all 1254890 rows
+2019-05-10 09:33:13	INFO	imager::data selection	Selected: [1 chans in spw 0]
+2019-05-10 09:33:13	INFO	imager::weight()	Weighting MS: Imaging weights will be changed
+2019-05-10 09:33:13	INFO	imager::weight()	Uniform weighting: sidelobes will be suppressed over full image
+2019-05-10 09:33:13	INFO	imager::makeimage() 	Calculating image (without full skyequation)
+2019-05-10 09:33:13	INFO	imager::makeimage() 	Making dirty image from corrected data 
+2019-05-10 09:33:13	INFO	imager::makeimage() 	Image is : simulation1/corrupted.ska1mid.map
+2019-05-10 09:33:13	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-10 09:33:13	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-10 09:33:13	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-10 09:33:14	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-10 09:33:14	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-10 09:33:14	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-10 09:33:14	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-10 09:33:14	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-10 09:33:14	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-10 09:33:14	INFO	imager::createFTMachine() 	Performing interferometric gridding...
+2019-05-10 09:33:17	INFO	exportfits::::	
+2019-05-10 09:33:17	INFO	exportfits::::+	##########################################
+2019-05-10 09:33:17	INFO	exportfits::::+	##### Begin Task: exportfits         #####
+2019-05-10 09:33:17	INFO	exportfits::::	exportfits(imagename="simulation1/corrupted.ska1mid.map",fitsimage="simulation1/corrupted.ska1mid.map.fits",velocity=False,optical=False,bitpix=-32,
+2019-05-10 09:33:17	INFO	exportfits::::+	        minpix=0,maxpix=-1,overwrite=False,dropstokes=False,stokeslast=True,
+2019-05-10 09:33:17	INFO	exportfits::::+	        history=True,dropdeg=False)
+2019-05-10 09:33:17	INFO	exportfits::::	##### End Task: exportfits           #####
+2019-05-10 09:33:17	INFO	exportfits::::+	##########################################
+2019-05-10 09:33:17	INFO	Imager::open() 	Opening MeasurementSet /data/home/p.hartley/Documents/CASA_sims/casa_scripts/run_scripts/skagit/casa_simulation/simulation1/corrupted.ska1mid.ms
+2019-05-10 09:33:18	INFO	imager::defineimage()	Defining image properties:nx=512 ny=512 cellx='0.0961arcsec' celly='0.0961arcsec' stokes=I' mode=MFS nchan=-1 start=0 step=0 spwids=[0] fieldid=-1 facets=1 frame=1 distance='0'
+2019-05-10 09:33:18	INFO	imager::defineimage()	 phaseCenter='08:00:00.03,  319.30.00.40, ' mStart='Radialvelocity: 0' qStep='0 '' mFreqStart='Frequency: 0
+2019-05-10 09:33:18	INFO	imager::setoptions() 	Setting processing options
+2019-05-10 09:33:18	INFO	imager::data selection	Performing selection on MeasurementSet : /data/home/p.hartley/Documents/CASA_sims/casa_scripts/run_scripts/skagit/casa_simulation/simulation1/corrupted.ska1mid.ms
+2019-05-10 09:33:18	INFO	imager::data selection	Selecting on spectral windows expression : 0
+2019-05-10 09:33:19	INFO	imager::data selection	Selected all 1254890 rows
+2019-05-10 09:33:19	INFO	imager::data selection	Selected: [1 chans in spw 0]
+2019-05-10 09:33:19	INFO	imager::weight()	Weighting MS: Imaging weights will be changed
+2019-05-10 09:33:19	INFO	imager::weight()	Uniform weighting: sidelobes will be suppressed over full image
+2019-05-10 09:33:19	INFO	imager::makeimage() 	Calculating image (without full skyequation)
+2019-05-10 09:33:19	INFO	imager::makeimage() 	Making dirty image from corrected data 
+2019-05-10 09:33:19	INFO	imager::makeimage() 	Image is : simulation1/corrupted.ska1mid.map
+2019-05-10 09:33:19	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-10 09:33:19	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-10 09:33:19	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-10 09:33:20	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-10 09:33:20	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-10 09:33:20	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-10 09:33:20	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-10 09:33:20	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-10 09:33:20	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-10 09:33:20	INFO	imager::createFTMachine() 	Performing interferometric gridding...
+2019-05-10 09:33:23	INFO	exportfits::::	
+2019-05-10 09:33:23	INFO	exportfits::::+	##########################################
+2019-05-10 09:33:23	INFO	exportfits::::+	##### Begin Task: exportfits         #####
+2019-05-10 09:33:23	INFO	exportfits::::	exportfits(imagename="simulation1/corrupted.ska1mid.map",fitsimage="simulation1/corrupted.ska1mid.map.fits",velocity=False,optical=False,bitpix=-32,
+2019-05-10 09:33:23	INFO	exportfits::::+	        minpix=0,maxpix=-1,overwrite=False,dropstokes=False,stokeslast=True,
+2019-05-10 09:33:23	INFO	exportfits::::+	        history=True,dropdeg=False)
+2019-05-10 09:33:23	INFO	exportfits::::	##### End Task: exportfits           #####
+2019-05-10 09:33:23	INFO	exportfits::::+	##########################################
+2019-05-10 09:33:37	INFO	NewMSSimulator::NewMSSimulator(MeasurementSet& theMS) 	Opening MeasurementSet /data/home/p.hartley/Documents/CASA_sims/casa_scripts/run_scripts/skagit/casa_simulation/simulation1/corrupted.ska1mid.ms with 1254890 rows
+2019-05-10 09:33:37	INFO	NewMSSimulator::NewMSSimulator(MeasurementSet& theMS) 	   last spectral window ID = 1
+2019-05-10 09:33:37	INFO	Simulator::setvp()	Setting voltage pattern parameters
+2019-05-10 09:33:37	INFO	Simulator::setvp()	Beam Squint will be included in the VP model
+2019-05-10 09:33:37	INFO	Simulator::setvp()	and the parallactic angle increment is 360 degrees
+2019-05-10 09:33:37	INFO	Simulator::predict() 	Predicting visibilities using model: [] and componentList: simulation1/points_grid.cl
+2019-05-10 09:33:37	INFO	Simulator::predict() 	The data column will be replaced
+2019-05-10 09:33:37	INFO	Simulator::getVPRecord 	Using Voltage Patterns from the VPManager
+2019-05-10 09:33:37	INFO	Simulator::createSkyEquation() 	Synthesis gridding 
+2019-05-10 09:33:37	INFO	Simulator::createSkyEquation() 	Fourier transforms will use image centers as tangent points
+2019-05-10 09:33:37	INFO	BeamSkyJones::summary	Beam Summary: 
+2019-05-10 09:33:37	INFO	BeamSkyJones::summary	Model 1 for SKA1-MID ant=-1 feed=-1 uses PB: AIRY
+2019-05-10 09:33:37	INFO	PBMath1D::summary	Using AIRY PB Class 
+2019-05-10 09:33:37	INFO	PBMathInterface::summary	These parameters are for Voltage Pattern
+2019-05-10 09:33:37	INFO	PBMathInterface::summary	No Beam Squint
+2019-05-10 09:33:37	INFO	PBMath1D::summary	Max Radius at 1 GHz: 300 arcmin 
+2019-05-10 09:33:37	INFO	PBMath1DAiry::summary	   Dish Diameter: 15 m 
+2019-05-10 09:33:37	INFO	PBMath1DAiry::summary	Blocked Diameter: 2.5 m 
+2019-05-10 09:33:41	INFO	Simulator::reset() 	Resetting all visibility corruption components
+2019-05-10 09:33:41	INFO	Simulator::reset() 	Reset all image-plane corruption components
+2019-05-10 09:33:41	INFO	Imager::open() 	Opening MeasurementSet /data/home/p.hartley/Documents/CASA_sims/casa_scripts/run_scripts/skagit/casa_simulation/simulation1/corrupted.ska1mid.ms
+2019-05-10 09:33:42	INFO	imager::defineimage()	Defining image properties:nx=512 ny=512 cellx='0.0961arcsec' celly='0.0961arcsec' stokes=I' mode=MFS nchan=-1 start=0 step=0 spwids=[0] fieldid=-1 facets=1 frame=1 distance='0'
+2019-05-10 09:33:42	INFO	imager::defineimage()	 phaseCenter='08:00:00.03,  319.30.00.40, ' mStart='Radialvelocity: 0' qStep='0 '' mFreqStart='Frequency: 0
+2019-05-10 09:33:42	INFO	imager::setoptions() 	Setting processing options
+2019-05-10 09:33:42	INFO	imager::data selection	Performing selection on MeasurementSet : /data/home/p.hartley/Documents/CASA_sims/casa_scripts/run_scripts/skagit/casa_simulation/simulation1/corrupted.ska1mid.ms
+2019-05-10 09:33:42	INFO	imager::data selection	Selecting on spectral windows expression : 0
+2019-05-10 09:33:43	INFO	imager::data selection	Selected all 1254890 rows
+2019-05-10 09:33:43	INFO	imager::data selection	Selected: [1 chans in spw 0]
+2019-05-10 09:33:43	INFO	imager::weight()	Weighting MS: Imaging weights will be changed
+2019-05-10 09:33:43	INFO	imager::weight()	Uniform weighting: sidelobes will be suppressed over full image
+2019-05-10 09:33:44	INFO	imager::makeimage() 	Calculating image (without full skyequation)
+2019-05-10 09:33:44	INFO	imager::makeimage() 	Making dirty image from corrected data 
+2019-05-10 09:33:44	INFO	imager::makeimage() 	Image is : simulation1/corrupted.ska1mid.map
+2019-05-10 09:33:44	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-10 09:33:44	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-10 09:33:44	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-10 09:33:44	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-10 09:33:44	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-10 09:33:44	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-10 09:33:44	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-10 09:33:44	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-10 09:33:44	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-10 09:33:44	INFO	imager::createFTMachine() 	Performing interferometric gridding...
+2019-05-10 09:33:47	INFO	exportfits::::	
+2019-05-10 09:33:47	INFO	exportfits::::+	##########################################
+2019-05-10 09:33:47	INFO	exportfits::::+	##### Begin Task: exportfits         #####
+2019-05-10 09:33:47	INFO	exportfits::::	exportfits(imagename="simulation1/corrupted.ska1mid.map",fitsimage="simulation1/corrupted.ska1mid.map.fits",velocity=False,optical=False,bitpix=-32,
+2019-05-10 09:33:47	INFO	exportfits::::+	        minpix=0,maxpix=-1,overwrite=False,dropstokes=False,stokeslast=True,
+2019-05-10 09:33:47	INFO	exportfits::::+	        history=True,dropdeg=False)
+2019-05-10 09:33:47	INFO	exportfits::::	##### End Task: exportfits           #####
+2019-05-10 09:33:47	INFO	exportfits::::+	##########################################
+2019-05-10 09:33:48	INFO	Imager::open() 	Opening MeasurementSet /data/home/p.hartley/Documents/CASA_sims/casa_scripts/run_scripts/skagit/casa_simulation/simulation1/corrupted.ska1mid.ms
+2019-05-10 09:33:48	INFO	imager::defineimage()	Defining image properties:nx=512 ny=512 cellx='0.0961arcsec' celly='0.0961arcsec' stokes=I' mode=MFS nchan=-1 start=0 step=0 spwids=[0] fieldid=-1 facets=1 frame=1 distance='0'
+2019-05-10 09:33:48	INFO	imager::defineimage()	 phaseCenter='08:00:00.03,  319.30.00.40, ' mStart='Radialvelocity: 0' qStep='0 '' mFreqStart='Frequency: 0
+2019-05-10 09:33:48	INFO	imager::setoptions() 	Setting processing options
+2019-05-10 09:33:48	INFO	imager::data selection	Performing selection on MeasurementSet : /data/home/p.hartley/Documents/CASA_sims/casa_scripts/run_scripts/skagit/casa_simulation/simulation1/corrupted.ska1mid.ms
+2019-05-10 09:33:48	INFO	imager::data selection	Selecting on spectral windows expression : 0
+2019-05-10 09:33:49	INFO	imager::data selection	Selected all 1254890 rows
+2019-05-10 09:33:49	INFO	imager::data selection	Selected: [1 chans in spw 0]
+2019-05-10 09:33:49	INFO	imager::weight()	Weighting MS: Imaging weights will be changed
+2019-05-10 09:33:49	INFO	imager::weight()	Uniform weighting: sidelobes will be suppressed over full image
+2019-05-10 09:33:50	INFO	imager::makeimage() 	Calculating image (without full skyequation)
+2019-05-10 09:33:50	INFO	imager::makeimage() 	Making dirty image from corrected data 
+2019-05-10 09:33:50	INFO	imager::makeimage() 	Image is : simulation1/corrupted.ska1mid.map
+2019-05-10 09:33:50	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-10 09:33:50	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-10 09:33:50	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-10 09:33:50	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-10 09:33:50	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-10 09:33:50	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-10 09:33:50	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-10 09:33:50	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-10 09:33:50	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-10 09:33:50	INFO	imager::createFTMachine() 	Performing interferometric gridding...
+2019-05-10 09:33:53	INFO	exportfits::::	
+2019-05-10 09:33:53	INFO	exportfits::::+	##########################################
+2019-05-10 09:33:53	INFO	exportfits::::+	##### Begin Task: exportfits         #####
+2019-05-10 09:33:53	INFO	exportfits::::	exportfits(imagename="simulation1/corrupted.ska1mid.map",fitsimage="simulation1/corrupted.ska1mid.map.fits",velocity=False,optical=False,bitpix=-32,
+2019-05-10 09:33:53	INFO	exportfits::::+	        minpix=0,maxpix=-1,overwrite=False,dropstokes=False,stokeslast=True,
+2019-05-10 09:33:53	INFO	exportfits::::+	        history=True,dropdeg=False)
+2019-05-10 09:33:53	INFO	exportfits::::	##### End Task: exportfits           #####
+2019-05-10 09:33:53	INFO	exportfits::::+	##########################################
+2019-05-10 09:34:07	INFO	NewMSSimulator::NewMSSimulator(MeasurementSet& theMS) 	Opening MeasurementSet /data/home/p.hartley/Documents/CASA_sims/casa_scripts/run_scripts/skagit/casa_simulation/simulation1/corrupted.ska1mid.ms with 1254890 rows
+2019-05-10 09:34:07	INFO	NewMSSimulator::NewMSSimulator(MeasurementSet& theMS) 	   last spectral window ID = 1
+2019-05-10 09:34:07	INFO	Simulator::setvp()	Setting voltage pattern parameters
+2019-05-10 09:34:07	INFO	Simulator::setvp()	Beam Squint will be included in the VP model
+2019-05-10 09:34:07	INFO	Simulator::setvp()	and the parallactic angle increment is 360 degrees
+2019-05-10 09:34:07	INFO	Simulator::predict() 	Predicting visibilities using model: [] and componentList: simulation1/points_grid.cl
+2019-05-10 09:34:07	INFO	Simulator::predict() 	The data column will be replaced
+2019-05-10 09:34:08	INFO	Simulator::getVPRecord 	Using Voltage Patterns from the VPManager
+2019-05-10 09:34:08	INFO	Simulator::createSkyEquation() 	Synthesis gridding 
+2019-05-10 09:34:08	INFO	Simulator::createSkyEquation() 	Fourier transforms will use image centers as tangent points
+2019-05-10 09:34:08	INFO	BeamSkyJones::summary	Beam Summary: 
+2019-05-10 09:34:08	INFO	BeamSkyJones::summary	Model 1 for SKA1-MID ant=-1 feed=-1 uses PB: AIRY
+2019-05-10 09:34:08	INFO	PBMath1D::summary	Using AIRY PB Class 
+2019-05-10 09:34:08	INFO	PBMathInterface::summary	These parameters are for Voltage Pattern
+2019-05-10 09:34:08	INFO	PBMathInterface::summary	No Beam Squint
+2019-05-10 09:34:08	INFO	PBMath1D::summary	Max Radius at 1 GHz: 300 arcmin 
+2019-05-10 09:34:08	INFO	PBMath1DAiry::summary	   Dish Diameter: 15 m 
+2019-05-10 09:34:08	INFO	PBMath1DAiry::summary	Blocked Diameter: 2.5 m 
+2019-05-10 09:34:12	INFO	Simulator::reset() 	Resetting all visibility corruption components
+2019-05-10 09:34:12	INFO	Simulator::reset() 	Reset all image-plane corruption components
+2019-05-10 09:34:12	INFO	Imager::open() 	Opening MeasurementSet /data/home/p.hartley/Documents/CASA_sims/casa_scripts/run_scripts/skagit/casa_simulation/simulation1/corrupted.ska1mid.ms
+2019-05-10 09:34:13	INFO	imager::defineimage()	Defining image properties:nx=512 ny=512 cellx='0.0961arcsec' celly='0.0961arcsec' stokes=I' mode=MFS nchan=-1 start=0 step=0 spwids=[0] fieldid=-1 facets=1 frame=1 distance='0'
+2019-05-10 09:34:13	INFO	imager::defineimage()	 phaseCenter='08:00:00.03,  319.30.00.40, ' mStart='Radialvelocity: 0' qStep='0 '' mFreqStart='Frequency: 0
+2019-05-10 09:34:13	INFO	imager::setoptions() 	Setting processing options
+2019-05-10 09:34:13	INFO	imager::data selection	Performing selection on MeasurementSet : /data/home/p.hartley/Documents/CASA_sims/casa_scripts/run_scripts/skagit/casa_simulation/simulation1/corrupted.ska1mid.ms
+2019-05-10 09:34:13	INFO	imager::data selection	Selecting on spectral windows expression : 0
+2019-05-10 09:34:14	INFO	imager::data selection	Selected all 1254890 rows
+2019-05-10 09:34:14	INFO	imager::data selection	Selected: [1 chans in spw 0]
+2019-05-10 09:34:14	INFO	imager::weight()	Weighting MS: Imaging weights will be changed
+2019-05-10 09:34:14	INFO	imager::weight()	Uniform weighting: sidelobes will be suppressed over full image
+2019-05-10 09:34:15	INFO	imager::makeimage() 	Calculating image (without full skyequation)
+2019-05-10 09:34:15	INFO	imager::makeimage() 	Making dirty image from corrected data 
+2019-05-10 09:34:15	INFO	imager::makeimage() 	Image is : simulation1/corrupted.ska1mid.map
+2019-05-10 09:34:15	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-10 09:34:15	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-10 09:34:15	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-10 09:34:15	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-10 09:34:15	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-10 09:34:15	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-10 09:34:15	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-10 09:34:15	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-10 09:34:15	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-10 09:34:15	INFO	imager::createFTMachine() 	Performing interferometric gridding...
+2019-05-10 09:34:18	INFO	exportfits::::	
+2019-05-10 09:34:18	INFO	exportfits::::+	##########################################
+2019-05-10 09:34:18	INFO	exportfits::::+	##### Begin Task: exportfits         #####
+2019-05-10 09:34:18	INFO	exportfits::::	exportfits(imagename="simulation1/corrupted.ska1mid.map",fitsimage="simulation1/corrupted.ska1mid.map.fits",velocity=False,optical=False,bitpix=-32,
+2019-05-10 09:34:18	INFO	exportfits::::+	        minpix=0,maxpix=-1,overwrite=False,dropstokes=False,stokeslast=True,
+2019-05-10 09:34:18	INFO	exportfits::::+	        history=True,dropdeg=False)
+2019-05-10 09:34:18	INFO	exportfits::::	##### End Task: exportfits           #####
+2019-05-10 09:34:18	INFO	exportfits::::+	##########################################
+2019-05-10 09:34:18	INFO	Imager::open() 	Opening MeasurementSet /data/home/p.hartley/Documents/CASA_sims/casa_scripts/run_scripts/skagit/casa_simulation/simulation1/corrupted.ska1mid.ms
+2019-05-10 09:34:19	INFO	imager::defineimage()	Defining image properties:nx=512 ny=512 cellx='0.0961arcsec' celly='0.0961arcsec' stokes=I' mode=MFS nchan=-1 start=0 step=0 spwids=[0] fieldid=-1 facets=1 frame=1 distance='0'
+2019-05-10 09:34:19	INFO	imager::defineimage()	 phaseCenter='08:00:00.03,  319.30.00.40, ' mStart='Radialvelocity: 0' qStep='0 '' mFreqStart='Frequency: 0
+2019-05-10 09:34:19	INFO	imager::setoptions() 	Setting processing options
+2019-05-10 09:34:19	INFO	imager::data selection	Performing selection on MeasurementSet : /data/home/p.hartley/Documents/CASA_sims/casa_scripts/run_scripts/skagit/casa_simulation/simulation1/corrupted.ska1mid.ms
+2019-05-10 09:34:19	INFO	imager::data selection	Selecting on spectral windows expression : 0
+2019-05-10 09:34:20	INFO	imager::data selection	Selected all 1254890 rows
+2019-05-10 09:34:20	INFO	imager::data selection	Selected: [1 chans in spw 0]
+2019-05-10 09:34:20	INFO	imager::weight()	Weighting MS: Imaging weights will be changed
+2019-05-10 09:34:20	INFO	imager::weight()	Uniform weighting: sidelobes will be suppressed over full image
+2019-05-10 09:34:21	INFO	imager::makeimage() 	Calculating image (without full skyequation)
+2019-05-10 09:34:21	INFO	imager::makeimage() 	Making dirty image from corrected data 
+2019-05-10 09:34:21	INFO	imager::makeimage() 	Image is : simulation1/corrupted.ska1mid.map
+2019-05-10 09:34:21	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-10 09:34:21	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-10 09:34:21	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-10 09:34:21	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-10 09:34:21	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-10 09:34:21	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-10 09:34:21	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-10 09:34:21	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-10 09:34:21	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-10 09:34:21	INFO	imager::createFTMachine() 	Performing interferometric gridding...
+2019-05-10 09:34:24	INFO	exportfits::::	
+2019-05-10 09:34:24	INFO	exportfits::::+	##########################################
+2019-05-10 09:34:24	INFO	exportfits::::+	##### Begin Task: exportfits         #####
+2019-05-10 09:34:24	INFO	exportfits::::	exportfits(imagename="simulation1/corrupted.ska1mid.map",fitsimage="simulation1/corrupted.ska1mid.map.fits",velocity=False,optical=False,bitpix=-32,
+2019-05-10 09:34:24	INFO	exportfits::::+	        minpix=0,maxpix=-1,overwrite=False,dropstokes=False,stokeslast=True,
+2019-05-10 09:34:24	INFO	exportfits::::+	        history=True,dropdeg=False)
+2019-05-10 09:34:24	INFO	exportfits::::	##### End Task: exportfits           #####
+2019-05-10 09:34:24	INFO	exportfits::::+	##########################################
