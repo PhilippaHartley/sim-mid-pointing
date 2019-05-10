@@ -1,6 +1,6 @@
 # sim-mid-pointing
 
-This repository contains three different sets of software for running SKA pointing error simulations
+This repository contains three different sets of software for running SKA pointing error simulations.
 
 ## ARL
 
@@ -8,7 +8,9 @@ This repository contains three different sets of software for running SKA pointi
 
 ## Meqtrees
 
-Requires the installation of meqtrees: http://meqtrees.net/ and CASA: https://casa.nrao.edu/casadocs-devel/stable/introduction/obtaining-and-installing
+Requires the installation of meqtrees: http://meqtrees.net/ and CASA: https://casa.nrao.edu/casadocs-devel/stable/introduction/obtaining-and-installing.
+
+Requires Python (2 or 3)
 
 #### Usage
 ```
@@ -18,4 +20,15 @@ python run_meqtrees.py
 
 ## CASA
 
-...to be added 
+Install CASA from https://casa.nrao.edu/casadocs-devel/stable/introduction/obtaining-and-installing. 
+
+Requires Python (2 or 3)
+
+#### Usage
+```
+cd casa_simulation
+casa -c pointing_errorsSKA.py
+```
+
+
+
