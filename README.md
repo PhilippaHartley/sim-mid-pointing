@@ -8,6 +8,8 @@ This repository contains three different sets of software for running SKA pointi
 
 ## Meqtrees
 
+Notes: The current output of the meqtrees script produces very similar results to the ARL output, except that the residuals look different. This could be an image weighting issue but needs checking.
+
 Requires the installation of meqtrees: http://meqtrees.net/ and CASA: https://casa.nrao.edu/casadocs-devel/stable/introduction/obtaining-and-installing.
 
 Requires Python (2 or 3)
@@ -19,6 +21,8 @@ python run_meqtrees.py
 ```
 
 ## CASA
+
+Notes: CASA simulator tool contains a function for simulating pointing errors -- sm.setpointingerror -- but this function is not yet functional. The script below attempts a workround by modifiying the pointing table manually before predicting visibilities, but this does not work. The CASA EPJones table does not appear to be fully supported yet. 
 
 Install CASA from https://casa.nrao.edu/casadocs-devel/stable/introduction/obtaining-and-installing. 
 
