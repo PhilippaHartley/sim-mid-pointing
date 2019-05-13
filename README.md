@@ -10,7 +10,7 @@ This repository contains three different sets of software for running SKA pointi
 
 Notes: The current output of the meqtrees script produces very similar results to the ARL output, except that the residuals look different. This could be an image weighting issue but needs checking.
 
-Requires the installation of meqtrees: http://meqtrees.net/. Some libraries required for the installtion are out of date; up-to-date libraries are included in the instructions for building from source on Ubuntu 18: https://confluence.skatelescope.org/display/SE/Installing+and+running+meqtrees
+Requires the installation of meqtrees: http://meqtrees.net/. Some libraries required for the installation are out of date; up-to-date libraries are included in the instructions for building from source on Ubuntu 18: https://confluence.skatelescope.org/display/SE/Installing+and+running+meqtrees
 
 Requires the installation of CASA: https://casa.nrao.edu/casadocs-devel/stable/introduction/obtaining-and-installing.
 
