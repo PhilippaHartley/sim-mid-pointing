@@ -201,51 +201,44 @@ def corrupt(projectname, config_file_prefix,offset, dirname,PEs = False,  plot_a
 
         # apply a random static offset to each antenna in polar coords and decompose to az el
         # example error: rms 30 arcsec = 0.5arcmin not 0.5deg!
-   #     ant_offsets = np.zeros(len(ant))+0.5/60.# offsets in degrees here for plotting
-        ant_offsets =np.zeros(len(ant))+(0.5/60.)#np.random.normal(0, 0./60., len(ant)) # offsets in degrees here for plotting
-        print 'len dataRA = ', len(dataRA)
-        time_offsets = np.zeros(len(dataRA))#np.random.normal(0,60/3600., len(dataRA))
+   #     ant_offsets = np.zeros(len(ant))+0.5/60.# offsets in degrees here for plotting\
         np.random.seed(0)
-        radec_offsets = np.random.normal(0,1, len(dataRA))
-        print 'offset rands: ', radec_offsets
-        radec_offsets*= (offset/3600.)
+        ant_offsets =np.random.normal(0, 0.5, len(ant)) # offsets in degrees here for plotting
+        print 'len dataRA = ', len(dataRA)
+       # time_offsets = np.zeros(len(dataRA))#np.random.normal(0,60/3600., len(dataRA))
+
+       # radec_offsets = np.random.normal(0,1, len(dataRA))
+       # print 'offset rands: ', radec_offsets
+      #  radec_offsets*= (offset/3600.)
         
         #ant_thetas = ((2*np.pi)/len(ant))*(np.arange(len(ant))+1)##np.random.rand(len(ant))*2*np.pi#2*np.pi)/(np.arange(len(ant))+1)#  
-        ant_thetas = np.zeros(len(ant))#)))np.random.rand(len(ant))*2*np.pi
-        time_thetas = np.zeros(len(dataRA))#)p.random.rand(len(dataRA))*2*np.pi
+        np.random_seed(1)
+        ant_thetas = np.random.rand(len(ant))*2*np.pi
+       # time_thetas = np.zeros(len(dataRA))#)p.random.rand(len(dataRA))*2*np.pi
  #np    .zeros(len(ant))#
-        np.random.seed(2)
-        radec_thetas = np.random.rand(len(dataRA))
-        print 'theta rands: ', radec_thetas
-        radec_thetas*= 2*np.pi
-        offset/=3600.
-        np.random.seed(5)
-        ra_offsets = ((np.random.normal(0,1,len(dataRA)))*offset)
-        np.random.seed(6)
-        dec_offsets = (np.random.normal(0,1,len(dataRA)))*offset
-        ra_offsets = (ra_offsets/360.)*2*pi
-        dec_offsets = (dec_offsets/360.)*2*pi
-        print dec_offsets.shape
-        if 0:
+       # np.random.seed(2)
+       # radec_thetas = np.random.rand(len(dataRA))
+       # print 'theta rands: ', radec_thetas
+       # radec_thetas*= 2*np.pi
+       # offset/=3600.
+       # np.random.seed(5)
+       # ra_offsets = ((np.random.normal(0,1,len(dataRA)))*offset)
+       # np.random.seed(6)
+       # dec_offsets = (np.random.normal(0,1,len(dataRA)))*offset
+     #   ra_offsets = (ra_offsets/360.)*2*pi
+     #   dec_offsets = (dec_offsets/360.)*2*pi
+     #   print dec_offsets.shape
+        if 1:
             ant_az_offsets = np.cos(ant_thetas)*ant_offsets 
             ant_el_offsets = np.sin(ant_thetas)*ant_offsets
-            time_az_offsets = np.cos(time_thetas)*time_offsets 
-            time_el_offsets = np.sin(time_thetas)*time_offsets
-            ra_offsets = (np.cos(radec_thetas))*radec_offsets
-            dec_offsets = (np.sin(radec_thetas))*radec_offsets
-        print ra_offsets
-        print dec_offsets
-        print 'ra dec ave', np.mean(ra_offsets), np.mean(dec_offsets)   
-        print 'ra dec median', np.median(ra_offsets), np.median(dec_offsets)    
-        pe32 = np.load('arcsec%s.npy'%offset_name)
-        print pe32.shape
-        for i in range(65):
-            try:
-                pearr = np.vstack((pearr,pe32[:,:,i]))
-            except:
-                pearr = pe32[:,:,i]
-        ra_offsets = pearr[:,0].astype(np.float)                    ##### ARL PEs
-        dec_offsets= pearr[:,1].astype(np.float)
+          #  time_az_offsets = np.cos(time_thetas)*time_offsets 
+          #  time_el_offsets = np.sin(time_thetas)*time_offsets
+          #  ra_offsets = (np.cos(radec_thetas))*radec_offsets
+          #  dec_offsets = (np.sin(radec_thetas))*radec_offsets
+      #  print ra_offsets
+      #  print dec_offsets
+      #  print 'ra dec ave', np.mean(ra_offsets), np.mean(dec_offsets)   
+      #  print 'ra dec median', np.median(ra_offsets), np.median(dec_offsets)    
 
      #   plt.clf()
      #   print ant_az_offsets.shape
@@ -279,23 +272,23 @@ def corrupt(projectname, config_file_prefix,offset, dirname,PEs = False,  plot_a
            # qa.angle(me.getvalue(me.measure(b,'azel'))['m0'])     # show as angles   
            # print qa.angle(me.getvalue(me.measure(b,'azel'))['m1'])  
             
-          ###  az_el['m0']['value'] = (az_el['m0']['value'])+(ant_az_offsets[antenna[scan]]/360.)*2*np.pi + \
-               ###    (time_az_offsets[scan]/360.)*2*np.pi
+            az_el['m0']['value'] = (az_el['m0']['value'])+(ant_az_offsets[antenna[scan]]/360.)*2*np.pi + \
+                 (time_az_offsets[scan]/360.)*2*np.pi
                     
-        ###    az_el['m1']['value'] = (az_el['m1']['value'])+(ant_el_offsets[antenna[scan]]/360.)*2*np.pi + \dataRA[scadataRA[scan]n]
-                 ###  (time_el_offsets[scan]/360.)*2*np.pi
-            
-         ###   b2 = me.measure(az_el, 'J2000')
-         ###   RA_offset=dataRA[scan]-b2['m0']['value']
-          ###  Dec_offset = dataDec[scan] - b2['m1']['value']
-            dataRA[scan] +=(ra_offsets[scan])  #  b2['m0']['value']
-            dataDec[scan] +=(dec_offsets[scan])#b2['m1']['value']
+            az_el['m1']['value'] = (az_el['m1']['value'])+(ant_el_offsets[antenna[scan]]/360.)*2*np.pi + \
+                 (time_el_offsets[scan]/360.)*2*np.pi
+            #dataRA[scadataRA[scan]n]
+            b2 = me.measure(az_el, 'J2000')
+            RA_offset=dataRA[scan]-b2['m0']['value']
+            Dec_offset = dataDec[scan] - b2['m1']['value']
+            dataRA[scan] +=  b2['m0']['value']
+            dataDec[scan] +=b2['m1']['value']
            # az_tot+=(ant_az_offsets[antenna[scan]]/360.)*2*np.pi
            # el_tot+=(ant_el_offsets[antenna[scan]]/360.)*2*np.pi
            # RA_tot += RA_offset
            # Dec_tot += Dec_offset
-            ##RA_offsets = np.append(RA_offsets,RA_offset)
-            ##Dec_offsets = np.append(Dec_offsets, Dec_offset)
+            RA_offsets = np.append(RA_offsets,RA_offset)
+            Dec_offsets = np.append(Dec_offsets, Dec_offset)
         print ra_offsets.shape    
         plt.clf()
         plt.scatter(ra_offsets, dec_offsets, color = '#ac0c4b', linewidth = 0.0)
@@ -322,26 +315,26 @@ def corrupt(projectname, config_file_prefix,offset, dirname,PEs = False,  plot_a
         print '*** data'
         print data
         print data2
-        tb.putcol('DIRECTION', data2)
-        tb.flush()
-        
-    sm.openfromms(projectname+config_file_prefix+'ms/')
+       # tb.putcol('DIRECTION', data2)
+       # tb.flush()
+        tb.close()
+   # sm.openfromms(projectname+config_file_prefix+'ms/')
     ##sm.setvp(dovp=True, usedefaultvp=True)
     # airy disk vp 
     
     
     
-    vp.setpbairy(telescope='ALMA',dishdiam='15m',maxrad='5deg')
+   # vp.setpbairy(telescope='ALMA',dishdiam='15m',maxrad='5deg')
     # converted GRASP files as a pb image
     ####vp.setpbimage(telescope="ALMA", compleximage=mycomplexvp,antnames='*')
     ###vp.saveastable('mypb.tab')     # save it as a table - step probably not needed
-    sm.setvp(dovp=True, usedefaultvp=False)
-    sm.predict(complist = dirname+'points_grid.cl', incremental=False)
-    print 'predicting'
+   # sm.setvp(dovp=True, usedefaultvp=False)
+   # sm.predict(complist = dirname+'points_grid.cl', incremental=False)
+   # print 'predicting'
     #sm.setnoise(simplenoise='1Jy')
     # sm.setgain(interval='100s', amplitude=0.01)
-    sm.corrupt()
-    sm.close()
+   # sm.corrupt()
+   # sm.close()
     
     
 def simulator_analyse(projectname, config_file_prefix, primary_beam_size, incell_size, NUM_SPW, fieldDir, dirname, layout):
@@ -520,6 +513,33 @@ def do_res(offset_value, NUM_SPW, fieldDir, primary_beam_size, incell_size, dirn
     return rms,maxabs, medianabs
 
 dirname= sys.argv[4]
+
+
+if sys.argv[3] == 'make_ms':# __name__ == "__main__":
+    config_file = 'ska1mid.cfg' #treat as homogeneous
+    config_file_prefix = '.'+config_file.strip('cfg')
+   # myVPim = '/home/p.hartley/Documents/CASA_sims/beam_conversion/convert-to-casa-images/results/main_beam_x-   directivity.image'
+    #mycomplexvp = '/home/p.hartley/Documents/CASA_sims/beam_conversion/convert-to-casa-images/results/  main_beam_FrEnd_uv-voltage_pattern.image'
+   # dirname =  './' 
+    frequency = 1.4e9
+    dish_diameter = 15. # read this from conf file, assuming homogeneous
+    c = 3e8
+    rad2arcsec = 206265.
+    primary_beam_size =  (1.22*c)/(dish_diameter*frequency) # angle to first null from centre !get this from .conf
+    # 1.22 for circular
+    primary_beam_size*=rad2arcsec
+    print 'PB, deg: ', primary_beam_size/3600.
+    incell_size =0.0961 #  change to 0.09 again and change npix to 0.2*
+    NUM_SPW = 1  
+    layout = 'single'
+    ms_direction = 'J2000 8h00m00.031s -40d59m59.6s'
+    fieldDir = me.direction( ms_direction.split()[0], ms_direction.split()[1], ms_direction.split()[2])# prepare to     convert to degrees f
+    projectname = dirname+'setupvis' 
+    # make a measurementset for overwriting - might not need predict, just observe
+    observe_simulator(projectname, config_file,NUM_SPW, fieldDir , dirname , layout) 
+    print 'vis set created'
+
+
 if sys.argv[3] == 'get_residuals':
     frequency = 1.4e9
     dish_diameter = 15. # read this from conf file, assuming homogeneous
@@ -586,6 +606,8 @@ if sys.argv[3] == 'get_residuals':
         medianabsarr = np.append(medianabsarr, medianabs)
         peak_pointarr= np.append(peak_pointarr, peak_point)
         print 'peak_pointarr: ', peak_pointarr
+        fits.writeto(dirname+'residuals_%i_arcsec_normal.fits'%i, res)
+
     plt.clf()
     plt.loglog(errs ,maxabsarr, label = 'maxabs')
     plt.loglog(errs, medianabsarr, label = 'medianabs')
@@ -599,30 +621,6 @@ if sys.argv[3] == 'get_residuals':
     plt.ylabel('error (Jy)')
     plt.savefig(dirname+'final_plot.png')    
 
-
-if sys.argv[3] == 'make_ms':# __name__ == "__main__":
-    config_file = 'ska1mid.cfg' #treat as homogeneous
-    config_file_prefix = '.'+config_file.strip('cfg')
-   # myVPim = '/home/p.hartley/Documents/CASA_sims/beam_conversion/convert-to-casa-images/results/main_beam_x-   directivity.image'
-    #mycomplexvp = '/home/p.hartley/Documents/CASA_sims/beam_conversion/convert-to-casa-images/results/  main_beam_FrEnd_uv-voltage_pattern.image'
-   # dirname =  './' 
-    frequency = 1.4e9
-    dish_diameter = 15. # read this from conf file, assuming homogeneous
-    c = 3e8
-    rad2arcsec = 206265.
-    primary_beam_size =  (1.22*c)/(dish_diameter*frequency) # angle to first null from centre !get this from .conf
-    # 1.22 for circular
-    primary_beam_size*=rad2arcsec
-    print 'PB, deg: ', primary_beam_size/3600.
-    incell_size =0.0961 #  change to 0.09 again and change npix to 0.2*
-    NUM_SPW = 1  
-    layout = 'single'
-    ms_direction = 'J2000 8h00m00.031s -40d59m59.6s'
-    fieldDir = me.direction( ms_direction.split()[0], ms_direction.split()[1], ms_direction.split()[2])# prepare to     convert to degrees f
-    projectname = dirname+'setupvis' 
-    # make a measurementset for overwriting - might not need predict, just observe
-    observe_simulator(projectname, config_file,NUM_SPW, fieldDir , dirname , layout) 
-    print 'vis set created'
 
     
 
