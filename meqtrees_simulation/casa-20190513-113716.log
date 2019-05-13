@@ -1,0 +1,209 @@
+2019-05-13 11:37:18	INFO	::casa	
+2019-05-13 11:37:18	INFO	::casa	Checking telemetry submission interval
+2019-05-13 11:37:18	INFO	::casa	Telemetry submit interval not reached. Not submitting data.
+2019-05-13 11:37:18	INFO	::casa	Next telemetry data submission in: 1 day, 4:10:59.602800
+2019-05-13 11:37:18	INFO	::casa	CASA Version 5.4.1-32  
+2019-05-13 11:37:20	INFO	Imager::open() 	Opening MeasurementSet /data/simulations/Meq_tutorials/for_meqtrees/MID_pointing_sims/skagit/sim-mid-pointing/meqtrees_simulation/simulation0/PE_0.0_arcsec.ms
+2019-05-13 11:37:21	INFO	imager::defineimage()	Defining image properties:nx=512 ny=512 cellx='0.0961arcsec' celly='0.0961arcsec' stokes=I' mode=MFS nchan=-1 start=0 step=0 spwids=[0] fieldid=-1 facets=1 frame=1 distance='0'
+2019-05-13 11:37:21	INFO	imager::defineimage()	 phaseCenter='08:00:00.03,  319.25.17.92, ' mStart='Radialvelocity: 0' qStep='0 '' mFreqStart='Frequency: 0
+2019-05-13 11:37:21	INFO	imager::setoptions() 	Setting processing options
+2019-05-13 11:37:21	INFO	imager::data selection	Performing selection on MeasurementSet : /data/simulations/Meq_tutorials/for_meqtrees/MID_pointing_sims/skagit/sim-mid-pointing/meqtrees_simulation/simulation0/PE_0.0_arcsec.ms
+2019-05-13 11:37:21	INFO	imager::data selection	Selecting on spectral windows expression : 0
+2019-05-13 11:37:22	INFO	imager::data selection	Selected all 1254890 rows
+2019-05-13 11:37:22	INFO	imager::data selection	Selected: [1 chans in spw 0]
+2019-05-13 11:37:22	INFO	imager::weight()	Weighting MS: Imaging weights will be changed
+2019-05-13 11:37:22	INFO	imager::weight()	Uniform weighting: sidelobes will be suppressed over full image
+2019-05-13 11:37:23	INFO	Imager::setvp() 	Setting voltage pattern parameters
+2019-05-13 11:37:23	INFO	Imager::setvp() 	Sky position tolerance is 180 degrees
+2019-05-13 11:37:23	INFO	Imager::setvp() 	Using user defined voltage patterns in Table simulation0/PE_0.0_arcsec.-vp.tab
+2019-05-13 11:37:23	INFO	imager::makeimage() 	Calculating image (without full skyequation)
+2019-05-13 11:37:23	INFO	imager::makeimage() 	Making dirty image from model data 
+2019-05-13 11:37:23	INFO	imager::makeimage() 	Image is : simulation0/PE_0.0_arcsec.map
+2019-05-13 11:37:23	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-13 11:37:23	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-13 11:37:23	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-13 11:37:23	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-13 11:37:23	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-13 11:37:23	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-13 11:37:23	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-13 11:37:23	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-13 11:37:23	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-13 11:37:23	INFO	imager::createFTMachine() 	Performing interferometric gridding...
+2019-05-13 11:37:27	INFO	exportfits::::	
+2019-05-13 11:37:27	INFO	exportfits::::+	##########################################
+2019-05-13 11:37:27	INFO	exportfits::::+	##### Begin Task: exportfits         #####
+2019-05-13 11:37:27	INFO	exportfits::::	exportfits(imagename="simulation0/PE_0.0_arcsec.map",fitsimage="simulation0/PE_0.0_arcsec.map.fits",velocity=False,optical=False,bitpix=-32,
+2019-05-13 11:37:27	INFO	exportfits::::+	        minpix=0,maxpix=-1,overwrite=False,dropstokes=False,stokeslast=True,
+2019-05-13 11:37:27	INFO	exportfits::::+	        history=True,dropdeg=False)
+2019-05-13 11:37:27	INFO	exportfits::::	##### End Task: exportfits           #####
+2019-05-13 11:37:27	INFO	exportfits::::+	##########################################
+2019-05-13 11:37:27	INFO	Imager::open() 	Opening MeasurementSet /data/simulations/Meq_tutorials/for_meqtrees/MID_pointing_sims/skagit/sim-mid-pointing/meqtrees_simulation/simulation0/residual.ms
+2019-05-13 11:37:28	INFO	imager::defineimage()	Defining image properties:nx=512 ny=512 cellx='0.0961arcsec' celly='0.0961arcsec' stokes=I' mode=MFS nchan=-1 start=0 step=0 spwids=[0] fieldid=-1 facets=1 frame=1 distance='0'
+2019-05-13 11:37:28	INFO	imager::defineimage()	 phaseCenter='08:00:00.03,  319.25.17.92, ' mStart='Radialvelocity: 0' qStep='0 '' mFreqStart='Frequency: 0
+2019-05-13 11:37:28	INFO	imager::setoptions() 	Setting processing options
+2019-05-13 11:37:28	INFO	imager::data selection	Performing selection on MeasurementSet : /data/simulations/Meq_tutorials/for_meqtrees/MID_pointing_sims/skagit/sim-mid-pointing/meqtrees_simulation/simulation0/residual.ms
+2019-05-13 11:37:28	INFO	imager::data selection	Selecting on spectral windows expression : 0
+2019-05-13 11:37:29	INFO	imager::data selection	Selected all 1254890 rows
+2019-05-13 11:37:29	INFO	imager::data selection	Selected: [1 chans in spw 0]
+2019-05-13 11:37:29	INFO	imager::weight()	Weighting MS: Imaging weights will be changed
+2019-05-13 11:37:29	INFO	imager::weight()	Uniform weighting: sidelobes will be suppressed over full image
+2019-05-13 11:37:30	INFO	Imager::setvp() 	Setting voltage pattern parameters
+2019-05-13 11:37:30	INFO	Imager::setvp() 	Sky position tolerance is 180 degrees
+2019-05-13 11:37:30	INFO	Imager::setvp() 	Using user defined voltage patterns in Table simulation0/residual.-vp.tab
+2019-05-13 11:37:30	INFO	imager::makeimage() 	Calculating image (without full skyequation)
+2019-05-13 11:37:30	INFO	imager::makeimage() 	Making dirty image from model data 
+2019-05-13 11:37:30	INFO	imager::makeimage() 	Image is : simulation0/residual.map
+2019-05-13 11:37:30	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-13 11:37:30	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-13 11:37:30	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-13 11:37:30	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-13 11:37:30	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-13 11:37:30	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-13 11:37:30	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-13 11:37:30	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-13 11:37:30	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-13 11:37:30	INFO	imager::createFTMachine() 	Performing interferometric gridding...
+2019-05-13 11:37:33	INFO	exportfits::::	
+2019-05-13 11:37:33	INFO	exportfits::::+	##########################################
+2019-05-13 11:37:33	INFO	exportfits::::+	##### Begin Task: exportfits         #####
+2019-05-13 11:37:33	INFO	exportfits::::	exportfits(imagename="simulation0/residual.map",fitsimage="simulation0/residual.map.fits",velocity=False,optical=False,bitpix=-32,
+2019-05-13 11:37:33	INFO	exportfits::::+	        minpix=0,maxpix=-1,overwrite=False,dropstokes=False,stokeslast=True,
+2019-05-13 11:37:33	INFO	exportfits::::+	        history=True,dropdeg=False)
+2019-05-13 11:37:33	INFO	exportfits::::	##### End Task: exportfits           #####
+2019-05-13 11:37:33	INFO	exportfits::::+	##########################################
+2019-05-13 11:37:34	INFO	Imager::open() 	Opening MeasurementSet /data/simulations/Meq_tutorials/for_meqtrees/MID_pointing_sims/skagit/sim-mid-pointing/meqtrees_simulation/simulation0/PE_1.0_arcsec.ms
+2019-05-13 11:37:35	INFO	imager::defineimage()	Defining image properties:nx=512 ny=512 cellx='0.0961arcsec' celly='0.0961arcsec' stokes=I' mode=MFS nchan=-1 start=0 step=0 spwids=[0] fieldid=-1 facets=1 frame=1 distance='0'
+2019-05-13 11:37:35	INFO	imager::defineimage()	 phaseCenter='08:00:00.03,  319.25.17.92, ' mStart='Radialvelocity: 0' qStep='0 '' mFreqStart='Frequency: 0
+2019-05-13 11:37:35	INFO	imager::setoptions() 	Setting processing options
+2019-05-13 11:37:35	INFO	imager::data selection	Performing selection on MeasurementSet : /data/simulations/Meq_tutorials/for_meqtrees/MID_pointing_sims/skagit/sim-mid-pointing/meqtrees_simulation/simulation0/PE_1.0_arcsec.ms
+2019-05-13 11:37:35	INFO	imager::data selection	Selecting on spectral windows expression : 0
+2019-05-13 11:37:36	INFO	imager::data selection	Selected all 1254890 rows
+2019-05-13 11:37:36	INFO	imager::data selection	Selected: [1 chans in spw 0]
+2019-05-13 11:37:36	INFO	imager::weight()	Weighting MS: Imaging weights will be changed
+2019-05-13 11:37:36	INFO	imager::weight()	Uniform weighting: sidelobes will be suppressed over full image
+2019-05-13 11:37:37	INFO	Imager::setvp() 	Setting voltage pattern parameters
+2019-05-13 11:37:37	INFO	Imager::setvp() 	Sky position tolerance is 180 degrees
+2019-05-13 11:37:37	INFO	Imager::setvp() 	Using user defined voltage patterns in Table simulation0/PE_1.0_arcsec.-vp.tab
+2019-05-13 11:37:37	INFO	imager::makeimage() 	Calculating image (without full skyequation)
+2019-05-13 11:37:37	INFO	imager::makeimage() 	Making dirty image from model data 
+2019-05-13 11:37:37	INFO	imager::makeimage() 	Image is : simulation0/PE_1.0_arcsec.map
+2019-05-13 11:37:37	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-13 11:37:37	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-13 11:37:37	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-13 11:37:37	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-13 11:37:37	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-13 11:37:37	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-13 11:37:37	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-13 11:37:37	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-13 11:37:37	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-13 11:37:37	INFO	imager::createFTMachine() 	Performing interferometric gridding...
+2019-05-13 11:37:40	INFO	exportfits::::	
+2019-05-13 11:37:40	INFO	exportfits::::+	##########################################
+2019-05-13 11:37:40	INFO	exportfits::::+	##### Begin Task: exportfits         #####
+2019-05-13 11:37:40	INFO	exportfits::::	exportfits(imagename="simulation0/PE_1.0_arcsec.map",fitsimage="simulation0/PE_1.0_arcsec.map.fits",velocity=False,optical=False,bitpix=-32,
+2019-05-13 11:37:40	INFO	exportfits::::+	        minpix=0,maxpix=-1,overwrite=False,dropstokes=False,stokeslast=True,
+2019-05-13 11:37:40	INFO	exportfits::::+	        history=True,dropdeg=False)
+2019-05-13 11:37:40	INFO	exportfits::::	##### End Task: exportfits           #####
+2019-05-13 11:37:40	INFO	exportfits::::+	##########################################
+2019-05-13 11:37:41	INFO	Imager::open() 	Opening MeasurementSet /data/simulations/Meq_tutorials/for_meqtrees/MID_pointing_sims/skagit/sim-mid-pointing/meqtrees_simulation/simulation0/residual.ms
+2019-05-13 11:37:42	INFO	imager::defineimage()	Defining image properties:nx=512 ny=512 cellx='0.0961arcsec' celly='0.0961arcsec' stokes=I' mode=MFS nchan=-1 start=0 step=0 spwids=[0] fieldid=-1 facets=1 frame=1 distance='0'
+2019-05-13 11:37:42	INFO	imager::defineimage()	 phaseCenter='08:00:00.03,  319.25.17.92, ' mStart='Radialvelocity: 0' qStep='0 '' mFreqStart='Frequency: 0
+2019-05-13 11:37:42	INFO	imager::setoptions() 	Setting processing options
+2019-05-13 11:37:42	INFO	imager::data selection	Performing selection on MeasurementSet : /data/simulations/Meq_tutorials/for_meqtrees/MID_pointing_sims/skagit/sim-mid-pointing/meqtrees_simulation/simulation0/residual.ms
+2019-05-13 11:37:42	INFO	imager::data selection	Selecting on spectral windows expression : 0
+2019-05-13 11:37:43	INFO	imager::data selection	Selected all 1254890 rows
+2019-05-13 11:37:43	INFO	imager::data selection	Selected: [1 chans in spw 0]
+2019-05-13 11:37:43	INFO	imager::weight()	Weighting MS: Imaging weights will be changed
+2019-05-13 11:37:43	INFO	imager::weight()	Uniform weighting: sidelobes will be suppressed over full image
+2019-05-13 11:37:44	INFO	Imager::setvp() 	Setting voltage pattern parameters
+2019-05-13 11:37:44	INFO	Imager::setvp() 	Sky position tolerance is 180 degrees
+2019-05-13 11:37:44	INFO	Imager::setvp() 	Using user defined voltage patterns in Table simulation0/residual.-vp.tab
+2019-05-13 11:37:44	INFO	imager::makeimage() 	Calculating image (without full skyequation)
+2019-05-13 11:37:44	INFO	imager::makeimage() 	Making dirty image from model data 
+2019-05-13 11:37:44	INFO	imager::makeimage() 	Image is : simulation0/residual.map
+2019-05-13 11:37:44	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-13 11:37:44	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-13 11:37:44	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-13 11:37:44	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-13 11:37:44	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-13 11:37:44	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-13 11:37:44	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-13 11:37:44	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-13 11:37:44	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-13 11:37:45	INFO	imager::createFTMachine() 	Performing interferometric gridding...
+2019-05-13 11:37:48	INFO	exportfits::::	
+2019-05-13 11:37:48	INFO	exportfits::::+	##########################################
+2019-05-13 11:37:48	INFO	exportfits::::+	##### Begin Task: exportfits         #####
+2019-05-13 11:37:48	INFO	exportfits::::	exportfits(imagename="simulation0/residual.map",fitsimage="simulation0/residual.map.fits",velocity=False,optical=False,bitpix=-32,
+2019-05-13 11:37:48	INFO	exportfits::::+	        minpix=0,maxpix=-1,overwrite=False,dropstokes=False,stokeslast=True,
+2019-05-13 11:37:48	INFO	exportfits::::+	        history=True,dropdeg=False)
+2019-05-13 11:37:48	INFO	exportfits::::	##### End Task: exportfits           #####
+2019-05-13 11:37:48	INFO	exportfits::::+	##########################################
+2019-05-13 11:37:48	INFO	Imager::open() 	Opening MeasurementSet /data/simulations/Meq_tutorials/for_meqtrees/MID_pointing_sims/skagit/sim-mid-pointing/meqtrees_simulation/simulation0/PE_2.0_arcsec.ms
+2019-05-13 11:37:49	INFO	imager::defineimage()	Defining image properties:nx=512 ny=512 cellx='0.0961arcsec' celly='0.0961arcsec' stokes=I' mode=MFS nchan=-1 start=0 step=0 spwids=[0] fieldid=-1 facets=1 frame=1 distance='0'
+2019-05-13 11:37:49	INFO	imager::defineimage()	 phaseCenter='08:00:00.03,  319.25.17.92, ' mStart='Radialvelocity: 0' qStep='0 '' mFreqStart='Frequency: 0
+2019-05-13 11:37:49	INFO	imager::setoptions() 	Setting processing options
+2019-05-13 11:37:49	INFO	imager::data selection	Performing selection on MeasurementSet : /data/simulations/Meq_tutorials/for_meqtrees/MID_pointing_sims/skagit/sim-mid-pointing/meqtrees_simulation/simulation0/PE_2.0_arcsec.ms
+2019-05-13 11:37:49	INFO	imager::data selection	Selecting on spectral windows expression : 0
+2019-05-13 11:37:50	INFO	imager::data selection	Selected all 1254890 rows
+2019-05-13 11:37:50	INFO	imager::data selection	Selected: [1 chans in spw 0]
+2019-05-13 11:37:50	INFO	imager::weight()	Weighting MS: Imaging weights will be changed
+2019-05-13 11:37:50	INFO	imager::weight()	Uniform weighting: sidelobes will be suppressed over full image
+2019-05-13 11:37:51	INFO	Imager::setvp() 	Setting voltage pattern parameters
+2019-05-13 11:37:51	INFO	Imager::setvp() 	Sky position tolerance is 180 degrees
+2019-05-13 11:37:51	INFO	Imager::setvp() 	Using user defined voltage patterns in Table simulation0/PE_2.0_arcsec.-vp.tab
+2019-05-13 11:37:51	INFO	imager::makeimage() 	Calculating image (without full skyequation)
+2019-05-13 11:37:51	INFO	imager::makeimage() 	Making dirty image from model data 
+2019-05-13 11:37:51	INFO	imager::makeimage() 	Image is : simulation0/PE_2.0_arcsec.map
+2019-05-13 11:37:51	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-13 11:37:51	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-13 11:37:51	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-13 11:37:51	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-13 11:37:51	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-13 11:37:51	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-13 11:37:51	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-13 11:37:51	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-13 11:37:51	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-13 11:37:52	INFO	imager::createFTMachine() 	Performing interferometric gridding...
+2019-05-13 11:37:55	INFO	exportfits::::	
+2019-05-13 11:37:55	INFO	exportfits::::+	##########################################
+2019-05-13 11:37:55	INFO	exportfits::::+	##### Begin Task: exportfits         #####
+2019-05-13 11:37:55	INFO	exportfits::::	exportfits(imagename="simulation0/PE_2.0_arcsec.map",fitsimage="simulation0/PE_2.0_arcsec.map.fits",velocity=False,optical=False,bitpix=-32,
+2019-05-13 11:37:55	INFO	exportfits::::+	        minpix=0,maxpix=-1,overwrite=False,dropstokes=False,stokeslast=True,
+2019-05-13 11:37:55	INFO	exportfits::::+	        history=True,dropdeg=False)
+2019-05-13 11:37:55	INFO	exportfits::::	##### End Task: exportfits           #####
+2019-05-13 11:37:55	INFO	exportfits::::+	##########################################
+2019-05-13 11:37:55	INFO	Imager::open() 	Opening MeasurementSet /data/simulations/Meq_tutorials/for_meqtrees/MID_pointing_sims/skagit/sim-mid-pointing/meqtrees_simulation/simulation0/residual.ms
+2019-05-13 11:37:56	INFO	imager::defineimage()	Defining image properties:nx=512 ny=512 cellx='0.0961arcsec' celly='0.0961arcsec' stokes=I' mode=MFS nchan=-1 start=0 step=0 spwids=[0] fieldid=-1 facets=1 frame=1 distance='0'
+2019-05-13 11:37:56	INFO	imager::defineimage()	 phaseCenter='08:00:00.03,  319.25.17.92, ' mStart='Radialvelocity: 0' qStep='0 '' mFreqStart='Frequency: 0
+2019-05-13 11:37:56	INFO	imager::setoptions() 	Setting processing options
+2019-05-13 11:37:56	INFO	imager::data selection	Performing selection on MeasurementSet : /data/simulations/Meq_tutorials/for_meqtrees/MID_pointing_sims/skagit/sim-mid-pointing/meqtrees_simulation/simulation0/residual.ms
+2019-05-13 11:37:56	INFO	imager::data selection	Selecting on spectral windows expression : 0
+2019-05-13 11:37:57	INFO	imager::data selection	Selected all 1254890 rows
+2019-05-13 11:37:57	INFO	imager::data selection	Selected: [1 chans in spw 0]
+2019-05-13 11:37:57	INFO	imager::weight()	Weighting MS: Imaging weights will be changed
+2019-05-13 11:37:57	INFO	imager::weight()	Uniform weighting: sidelobes will be suppressed over full image
+2019-05-13 11:37:58	INFO	Imager::setvp() 	Setting voltage pattern parameters
+2019-05-13 11:37:58	INFO	Imager::setvp() 	Sky position tolerance is 180 degrees
+2019-05-13 11:37:58	INFO	Imager::setvp() 	Using user defined voltage patterns in Table simulation0/residual.-vp.tab
+2019-05-13 11:37:58	INFO	imager::makeimage() 	Calculating image (without full skyequation)
+2019-05-13 11:37:58	INFO	imager::makeimage() 	Making dirty image from model data 
+2019-05-13 11:37:58	INFO	imager::makeimage() 	Image is : simulation0/residual.map
+2019-05-13 11:37:58	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-13 11:37:58	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-13 11:37:58	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-13 11:37:58	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-13 11:37:58	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-13 11:37:58	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-13 11:37:58	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Did not get the position of SKA1-MID from data repository
+2019-05-13 11:37:58	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Please contact CASA to add it to the repository.
+2019-05-13 11:37:58	WARN	Imager::imagecoordinates() (file ../../synthesis/MeasurementEquations/Imager2.cc, line 247)	Frequency conversion will not work 
+2019-05-13 11:37:59	INFO	imager::createFTMachine() 	Performing interferometric gridding...
+2019-05-13 11:38:02	INFO	exportfits::::	
+2019-05-13 11:38:02	INFO	exportfits::::+	##########################################
+2019-05-13 11:38:02	INFO	exportfits::::+	##### Begin Task: exportfits         #####
+2019-05-13 11:38:02	INFO	exportfits::::	exportfits(imagename="simulation0/residual.map",fitsimage="simulation0/residual.map.fits",velocity=False,optical=False,bitpix=-32,
+2019-05-13 11:38:02	INFO	exportfits::::+	        minpix=0,maxpix=-1,overwrite=False,dropstokes=False,stokeslast=True,
+2019-05-13 11:38:02	INFO	exportfits::::+	        history=True,dropdeg=False)
+2019-05-13 11:38:02	INFO	exportfits::::	##### End Task: exportfits           #####
+2019-05-13 11:38:02	INFO	exportfits::::+	##########################################
