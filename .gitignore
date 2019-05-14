@@ -1,0 +1,16 @@
+
+/.idea
+
+/docs/build
+.ipynb_checkpoints
+
+.cache
+
+dask-worker-space
+*.log
+*.lock
+*.hdf5
+*.pyc
+*.so
+*.egg
+*.ms
