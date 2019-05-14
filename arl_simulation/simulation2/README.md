@@ -1,0 +1,1 @@
+Same as simulation{0,1} except that the random number seed is  9386421

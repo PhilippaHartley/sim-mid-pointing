@@ -9,7 +9,6 @@
 dask-worker-space
 *.log
 *.lock
-*.hdf5
 *.pyc
 *.so
 *.egg
