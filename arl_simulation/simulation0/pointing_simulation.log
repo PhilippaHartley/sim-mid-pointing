@@ -1,0 +1,279 @@
+Using 8 workers
+Using 1 threads per worker
+Creating LocalCluster and Dask Client
+Diagnostic pages available on port http://127.0.0.1:8787
+BlockVisibility:
+	Number of visibilities: 65
+	Number of integrations: 65
+	Visibility shape: (65, 197, 197, 1, 1)
+	Number of channels: 1
+	Frequency: [1.4e+09]
+	Number of polarisations: 1
+	Polarisation Frame: stokesI
+	Phasecentre: <SkyCoord (ICRS): (ra, dec) in deg
+    (15., -45.)>
+	Configuration: 
+
+create_blockvisibility: 65 rows, 0.132 GB
+create_blockvisibility: flagged 0/65 rows below elevation limit 0.100000 (rad)
+BlockVisibility:
+	Number of visibilities: 65
+	Number of integrations: 65
+	Visibility shape: (65, 197, 197, 1, 1)
+	Number of channels: 1
+	Frequency: [1400000000.0]
+	Number of polarisations: 1
+	Polarisation Frame: stokesI
+	Phasecentre: <SkyCoord (ICRS): (ra, dec) in deg
+    (15., -45.)>
+	Configuration: 
+
+1283601.7775825337
+0.0
+0
+0
+advise_wide_field: Maximum wavelength 0.214 (meters)
+advise_wide_field: Minimum wavelength 0.214 (meters)
+advise_wide_field: Maximum baseline 734945.4 (wavelengths)
+advise_wide_field: Station/antenna diameter 13.5 (meters)
+advise_wide_field: Primary beam 0.0159 (rad) 0.909 (deg)
+advise_wide_field: Image field of view 0.0159 (rad) 0.909 (deg)
+advise_wide_field: Synthesized beam 1.36e-06 (rad) 7.8e-05 (deg)
+advise_wide_field: Cellsize 4.54e-07 (rad) 2.6e-05 (deg)
+advice_wide_field: Npixels per side = 34973
+advice_wide_field: Npixels (power of 2) per side = 65536
+advice_wide_field: Npixels (power of 2, 3) per side = 49152
+advice_wide_field: W sampling for full image = 253.0 (wavelengths)
+advice_wide_field: W sampling for primary beam = 253.0 (wavelengths)
+advice_wide_field: Time sampling for full image = 9.5 (s)
+advice_wide_field: Time sampling for primary beam = 9.5 (s)
+advice_wide_field: Frequency sampling for full image = 153421.2 (Hz)
+advice_wide_field: Frequency sampling for primary beam = 153421.2 (Hz)
+advice_wide_field: Number of planes in w stack 5809 (primary beam)
+advice_wide_field: Number of planes in w projection 5809 (primary beam)
+advice_wide_field: W support = 1108 (pixels) (primary beam)
+HWHM beam = 0.843066 deg
+Image:
+	Shape: (1, 1, 512, 512)
+	WCS: WCS Keywords
+
+Number of WCS axes: 4
+CTYPE : 'RA---SIN'  'DEC--SIN'  'STOKES'  'FREQ'  
+CRVAL : 15.0  -45.0  1.0  1400000000.0  
+CRPIX : 257.0  257.0  1.0  1.0  
+PC1_1 PC1_2 PC1_3 PC1_4  : 1.0  0.0  0.0  0.0  
+PC2_1 PC2_2 PC2_3 PC2_4  : 0.0  1.0  0.0  0.0  
+PC3_1 PC3_2 PC3_3 PC3_4  : 0.0  0.0  1.0  0.0  
+PC4_1 PC4_2 PC4_3 PC4_4  : 0.0  0.0  0.0  1.0  
+CDELT : -2.5986411786318028e-05  2.5986411786318028e-05  1.0  9999999.9999  
+NAXIS : 0  0
+	Polarisation frame: stokesI
+
+Inverting to get on-source PSF
+/Users/timcornwell/anaconda/envs/arlenv/lib/python3.6/site-packages/distributed/worker.py:3078: UserWarning: Large object of size 2.10 MB detected in task graph: 
+  ('getitem-740e80da3b3f19185c2f7a1404a9c517', <data ... -1042a51a352d')
+Consider scattering large objects ahead of time
+with client.scatter to reduce scheduler burden and 
+keep data on workers
+
+    future = client.submit(func, big_data)    # bad
+
+    big_future = client.scatter(big_data)     # good
+    future = client.submit(func, big_future)  # good
+  % (format_bytes(len(b)), s)
+Constructing single component
+create_vp: Using no taper analytic model for MID primary beam
+Constructing voltage pattern
+create_vp: Using no taper analytic model for MID primary beam
+Predicting error-free visibilities in chunks of 128 skymodels
+Saving results to ./pointingsimulation_Tim-MBP_4.csv
+Pointing errors: global (0.0, 0.0) arcsec, static 0.0 arcsec, dynamic 1.0 arcsec
+Predicting corrupted visibilities in chunks of 128 skymodels
+Inverting to get on-source dirty image
+Pointing errors: global (0.0, 0.0) arcsec, static 0.0 arcsec, dynamic 2.0 arcsec
+Predicting corrupted visibilities in chunks of 128 skymodels
+Inverting to get on-source dirty image
+Pointing errors: global (0.0, 0.0) arcsec, static 0.0 arcsec, dynamic 4.0 arcsec
+Predicting corrupted visibilities in chunks of 128 skymodels
+Inverting to get on-source dirty image
+Pointing errors: global (0.0, 0.0) arcsec, static 0.0 arcsec, dynamic 8.0 arcsec
+Predicting corrupted visibilities in chunks of 128 skymodels
+Inverting to get on-source dirty image
+Pointing errors: global (0.0, 0.0) arcsec, static 0.0 arcsec, dynamic 16.0 arcsec
+Predicting corrupted visibilities in chunks of 128 skymodels
+Inverting to get on-source dirty image
+Pointing errors: global (0.0, 0.0) arcsec, static 0.0 arcsec, dynamic 32.0 arcsec
+Predicting corrupted visibilities in chunks of 128 skymodels
+Inverting to get on-source dirty image
+Pointing errors: global (0.0, 0.0) arcsec, static 0.0 arcsec, dynamic 64.0 arcsec
+Predicting corrupted visibilities in chunks of 128 skymodels
+Inverting to get on-source dirty image
+Pointing errors: global (0.0, 0.0) arcsec, static 0.0 arcsec, dynamic 128.0 arcsec
+Predicting corrupted visibilities in chunks of 128 skymodels
+Inverting to get on-source dirty image
+Pointing errors: global (0.0, 0.0) arcsec, static 0.0 arcsec, dynamic 256.0 arcsec
+Predicting corrupted visibilities in chunks of 128 skymodels
+Inverting to get on-source dirty image
+[{'context': 'singlesource',
+  'dynamic_pe': 1.0,
+  'dynamic_pointing_error': 1.0,
+  'epoch': '2019-05-14 11:10:41',
+  'flux_limit': 1.0,
+  'global_pe': array([0., 0.]),
+  'global_pointing_error': array([0., 0.]),
+  'hostname': 'Tim-MBP',
+  'nb_name': '/Users/timcornwell/Code/sim-mid-pointing/arl_simulation/pointing_simulation.py',
+  'npixel': 512,
+  'onsource_abscentral': 4.9543527524024475e-06,
+  'onsource_maxabs': 8.467267571965853e-06,
+  'onsource_medianabs': 6.037495387538922e-07,
+  'onsource_rms': 9.61413083641677e-07,
+  'pb_npixel': 4096,
+  'plotfile': './pointingsimulation_Tim-MBP_4.jpg',
+  'static_pe': 0.0,
+  'static_pointing_error': 0.0},
+ {'context': 'singlesource',
+  'dynamic_pe': 1.0,
+  'dynamic_pointing_error': 2.0,
+  'epoch': '2019-05-14 11:10:41',
+  'flux_limit': 1.0,
+  'global_pe': array([0., 0.]),
+  'global_pointing_error': array([0., 0.]),
+  'hostname': 'Tim-MBP',
+  'nb_name': '/Users/timcornwell/Code/sim-mid-pointing/arl_simulation/pointing_simulation.py',
+  'npixel': 512,
+  'onsource_abscentral': 1.0309834638380394e-05,
+  'onsource_maxabs': 1.6922609383502113e-05,
+  'onsource_medianabs': 1.2076730557664713e-06,
+  'onsource_rms': 1.922784818294377e-06,
+  'pb_npixel': 4096,
+  'plotfile': './pointingsimulation_Tim-MBP_4.jpg',
+  'static_pe': 0.0,
+  'static_pointing_error': 0.0},
+ {'context': 'singlesource',
+  'dynamic_pe': 1.0,
+  'dynamic_pointing_error': 4.0,
+  'epoch': '2019-05-14 11:10:41',
+  'flux_limit': 1.0,
+  'global_pe': array([0., 0.]),
+  'global_pointing_error': array([0., 0.]),
+  'hostname': 'Tim-MBP',
+  'nb_name': '/Users/timcornwell/Code/sim-mid-pointing/arl_simulation/pointing_simulation.py',
+  'npixel': 512,
+  'onsource_abscentral': 2.22241456947916e-05,
+  'onsource_maxabs': 3.37974403293305e-05,
+  'onsource_medianabs': 2.4157999204315857e-06,
+  'onsource_rms': 3.8454371565384006e-06,
+  'pb_npixel': 4096,
+  'plotfile': './pointingsimulation_Tim-MBP_4.jpg',
+  'static_pe': 0.0,
+  'static_pointing_error': 0.0},
+ {'context': 'singlesource',
+  'dynamic_pe': 1.0,
+  'dynamic_pointing_error': 8.0,
+  'epoch': '2019-05-14 11:10:41',
+  'flux_limit': 1.0,
+  'global_pe': array([0., 0.]),
+  'global_pointing_error': array([0., 0.]),
+  'hostname': 'Tim-MBP',
+  'nb_name': '/Users/timcornwell/Code/sim-mid-pointing/arl_simulation/pointing_simulation.py',
+  'npixel': 512,
+  'onsource_abscentral': 5.086580915469555e-05,
+  'onsource_maxabs': 6.740316653983266e-05,
+  'onsource_medianabs': 4.830521319167188e-06,
+  'onsource_rms': 7.690607785976825e-06,
+  'pb_npixel': 4096,
+  'plotfile': './pointingsimulation_Tim-MBP_4.jpg',
+  'static_pe': 0.0,
+  'static_pointing_error': 0.0},
+ {'context': 'singlesource',
+  'dynamic_pe': 1.0,
+  'dynamic_pointing_error': 16.0,
+  'epoch': '2019-05-14 11:10:41',
+  'flux_limit': 1.0,
+  'global_pe': array([0., 0.]),
+  'global_pointing_error': array([0., 0.]),
+  'hostname': 'Tim-MBP',
+  'nb_name': '/Users/timcornwell/Code/sim-mid-pointing/arl_simulation/pointing_simulation.py',
+  'npixel': 512,
+  'onsource_abscentral': 0.00012739751528769577,
+  'onsource_maxabs': 0.00013403471861455726,
+  'onsource_medianabs': 9.665383669891154e-06,
+  'onsource_rms': 1.5382257092554317e-05,
+  'pb_npixel': 4096,
+  'plotfile': './pointingsimulation_Tim-MBP_4.jpg',
+  'static_pe': 0.0,
+  'static_pointing_error': 0.0},
+ {'context': 'singlesource',
+  'dynamic_pe': 1.0,
+  'dynamic_pointing_error': 32.0,
+  'epoch': '2019-05-14 11:10:41',
+  'flux_limit': 1.0,
+  'global_pe': array([0., 0.]),
+  'global_pointing_error': array([0., 0.]),
+  'hostname': 'Tim-MBP',
+  'nb_name': '/Users/timcornwell/Code/sim-mid-pointing/arl_simulation/pointing_simulation.py',
+  'npixel': 512,
+  'onsource_abscentral': 0.00035740810037584135,
+  'onsource_maxabs': 0.00035740810037584135,
+  'onsource_medianabs': 1.933135705511217e-05,
+  'onsource_rms': 3.078553080050484e-05,
+  'pb_npixel': 4096,
+  'plotfile': './pointingsimulation_Tim-MBP_4.jpg',
+  'static_pe': 0.0,
+  'static_pointing_error': 0.0},
+ {'context': 'singlesource',
+  'dynamic_pe': 1.0,
+  'dynamic_pointing_error': 64.0,
+  'epoch': '2019-05-14 11:10:41',
+  'flux_limit': 1.0,
+  'global_pe': array([0., 0.]),
+  'global_pointing_error': array([0., 0.]),
+  'hostname': 'Tim-MBP',
+  'nb_name': '/Users/timcornwell/Code/sim-mid-pointing/arl_simulation/pointing_simulation.py',
+  'npixel': 512,
+  'onsource_abscentral': 0.0011245907458972448,
+  'onsource_maxabs': 0.0011245907458972448,
+  'onsource_medianabs': 3.872694342584329e-05,
+  'onsource_rms': 6.178918398491316e-05,
+  'pb_npixel': 4096,
+  'plotfile': './pointingsimulation_Tim-MBP_4.jpg',
+  'static_pe': 0.0,
+  'static_pointing_error': 0.0},
+ {'context': 'singlesource',
+  'dynamic_pe': 1.0,
+  'dynamic_pointing_error': 128.0,
+  'epoch': '2019-05-14 11:10:41',
+  'flux_limit': 1.0,
+  'global_pe': array([0., 0.]),
+  'global_pointing_error': array([0., 0.]),
+  'hostname': 'Tim-MBP',
+  'nb_name': '/Users/timcornwell/Code/sim-mid-pointing/arl_simulation/pointing_simulation.py',
+  'npixel': 512,
+  'onsource_abscentral': 0.0038785057975625386,
+  'onsource_maxabs': 0.0038785057975625386,
+  'onsource_medianabs': 7.78116541951414e-05,
+  'onsource_rms': 0.00012549342882665326,
+  'pb_npixel': 4096,
+  'plotfile': './pointingsimulation_Tim-MBP_4.jpg',
+  'static_pe': 0.0,
+  'static_pointing_error': 0.0},
+ {'context': 'singlesource',
+  'dynamic_pe': 1.0,
+  'dynamic_pointing_error': 256.0,
+  'epoch': '2019-05-14 11:10:41',
+  'flux_limit': 1.0,
+  'global_pe': array([0., 0.]),
+  'global_pointing_error': array([0., 0.]),
+  'hostname': 'Tim-MBP',
+  'nb_name': '/Users/timcornwell/Code/sim-mid-pointing/arl_simulation/pointing_simulation.py',
+  'npixel': 512,
+  'onsource_abscentral': 0.014128056346981109,
+  'onsource_maxabs': 0.014128056346981109,
+  'onsource_medianabs': 0.00015800145069371212,
+  'onsource_rms': 0.0002660250219296465,
+  'pb_npixel': 4096,
+  'plotfile': './pointingsimulation_Tim-MBP_4.jpg',
+  'static_pe': 0.0,
+  'static_pointing_error': 0.0}]
+Saving plot to ./pointingsimulation_Tim-MBP_4.jpg
