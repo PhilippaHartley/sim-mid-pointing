@@ -120,13 +120,6 @@ if __name__ == '__main__':
     location = EarthLocation(lon="21.443803", lat="-30.712925", height=0.0)
     mid = create_configuration_from_MIDfile('../../shared/ska1mid.cfg', rmax=rmax, location=location)
 
-    # ARL calculates uvw incorrectly so we use those from CASA
-    from processing_components.visibility.base import create_blockvisibility_from_ms
-    meqbvis = create_blockvisibility_from_ms('../../shared/PE_0.0_arcsec.ms')[0]
-    meqbvis.phasecentre = phasecentre
-    meqvis = convert_blockvisibility_to_visibility(meqbvis)
-    print(meqbvis)
-
     block_vis = create_blockvisibility(mid, times, frequency=frequency,
                                            channel_bandwidth=channel_bandwidth, weight=1.0,
                                            phasecentre=phasecentre,
@@ -134,25 +127,16 @@ if __name__ == '__main__':
     print(block_vis)
     vis = convert_blockvisibility_to_visibility(block_vis)
     
-    print(numpy.max(numpy.abs(vis.data['uvw'] - meqvis.uvw)))
-    vis.data['uvw'] = meqvis.uvw
-    print(numpy.max(numpy.abs(vis.data['uvw'] - meqvis.uvw)))
-
-    print(numpy.max(numpy.abs(vis.data['antenna1']-meqvis.antenna1)))
-    print(numpy.max(numpy.abs(vis.data['antenna2']-meqvis.antenna2)))
-
-    vis.data['antenna1'] = meqvis.antenna1
-    vis.data['antenna2'] = meqvis.antenna2
     vis.data['uvw'][...,2] = 0.0
-    
-    advice = advise_wide_field(vis, guard_band_image=1.0, delA=0.02)
     
     # We need the HWHM of the primary beam. Got this by trial and error
     HWHM_deg = 1.03 * 180.0 * 3e8 / (numpy.pi * diameter * frequency[0])
     
     print('HWHM beam = %g deg' % HWHM_deg)
     HWHM = HWHM_deg * numpy.pi / 180.0
-    
+
+    advice = advise_wide_field(vis, guard_band_image=1.0, delA=0.02)
+
     cellsize = advice['cellsize']
     if context == 's3sky':
         pb_npixel = 4096
@@ -169,7 +153,7 @@ if __name__ == '__main__':
         plt.plot(vis.u, vis.v, '.', color='b', markersize=0.2)
         plt.savefig('uvcoverage.png')
         plt.show(block=False)
-    
+
     # Uniform weighting
     model = create_image_from_visibility(vis, npixel=npixel, frequency=frequency,
                                          nchan=nfreqwin, cellsize=cellsize, phasecentre=phasecentre,
