@@ -118,7 +118,7 @@ if __name__ == '__main__':
     phasecentre = SkyCoord(ra=+15.0 * u.deg, dec=-45.0 * u.deg, frame='icrs', equinox='J2000')
     outlier_phasecentre = SkyCoord(ra=+15.0 * u.deg, dec=-35.0 * u.deg, frame='icrs', equinox='J2000')
     location = EarthLocation(lon="21.443803", lat="-30.712925", height=0.0)
-    mid = create_configuration_from_MIDfile('../../shared/ska1mid.cfg', rmax=rmax, location=location)
+    mid = create_configuration_from_MIDfile('../../shared/ska1mid_local.cfg', rmax=rmax, location=location)
 
     block_vis = create_blockvisibility(mid, times, frequency=frequency,
                                            channel_bandwidth=channel_bandwidth, weight=1.0,
