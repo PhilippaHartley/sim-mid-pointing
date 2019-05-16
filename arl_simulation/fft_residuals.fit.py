@@ -23,7 +23,7 @@ log.addHandler(logging.StreamHandler(sys.stdout))
 mpl_logger = logging.getLogger("matplotlib")
 mpl_logger.setLevel(logging.WARNING)
 
-for sim in [4]:
+for sim in [5]:
 
     pes = [1.0, 2.0, 4.0, 8.0, 16.0, 32.0, 64.0, 128.0, 256.0]
 
