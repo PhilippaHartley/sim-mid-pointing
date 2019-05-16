@@ -50,7 +50,7 @@ def source_list(nsources,gap, centre, s, dirname, layout = 'grid'):
     if layout == 'single': # ! bug in simobserve that won't make image with only 1 comp - have fixed but need to thread a switch through
 
         ra = centre['m0']['value']
-        dec = centre['m1']['value']+HPBW
+        dec = centre['m1']['value']-HPBW
         radec = au.rad2radec(ra, dec, hmsdms = True)    
         f.write('{} {} {} {} {} {} {} {}\n'.format(count,radec.split(', ')[0].split('h')[0],\
                            radec.split(', ')[0].split('h')[1].split('m')[0], \
@@ -266,6 +266,7 @@ def corrupt(projectname, config_file_prefix,offset, dirname,PEs = False,  plot_a
             me.doframe(a) # set time in frame   
             antpos=me.position('ITRF',qa.quantity(pos[0,antenna[scan]],'m'),qa.quantity(pos[1,antenna[scan]],'m')\
                 ,qa.quantity(pos[2,antenna[scan]],'m'))#check ITRF
+            print antpos
             me.doframe(antpos)
             b =  me.direction('j2000', str(dataRA[scan])+'rad', str(dataDec[scan])+'rad' )
             az_el =  me.measure(b, 'azel') 
@@ -557,7 +558,7 @@ if sys.argv[3] == 'get_residuals':
     fieldDir = me.direction( ms_direction.split()[0], ms_direction.split()[1], ms_direction.split()[2])# prepare to     convert to degrees f
     config_file_prefix = '.'
    # dirname = './'
-    errs = [0.0,1.0, 2.0, 4.0, 8.0, 16.0, 32.0, 128.0, 256.0]
+    errs = [0,1, 2,4,8,16,32,64,128,256]#, 4.0, 8.0, 16.0, 32.0, 128.0, 256.0]
     rmsarr = np.array([])
     maxabsarr = ([]) 
     medianabsarr = np.array([])
@@ -565,10 +566,11 @@ if sys.argv[3] == 'get_residuals':
     for i in errs:
         os.system('rm -rf '+dirname+'residual.ms' )
         projectname = 'PE_%s_arcsec'%str(i)
+        print projectname
         simulator_analyse(projectname, config_file_prefix, primary_beam_size, incell_size ,NUM_SPW, fieldDir, dirname, layout)
         os.system('cp -r '+dirname+'PE_%s_arcsec.ms '%i+dirname+'residual.ms')
 #get residuals and image
-        vis_ideal = dirname+'PE_0.0_arcsec.ms'
+        vis_ideal = dirname+'PE_0_arcsec.ms'
         tb.open(vis_ideal, nomodify = True)
         ideal_corrected = tb.getcol('MODEL_DATA')
         tb.close()
