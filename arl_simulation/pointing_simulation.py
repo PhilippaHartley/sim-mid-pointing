@@ -76,11 +76,15 @@ if __name__ == '__main__':
     parser.add_argument('--ngroup', type=int, default=8, help='Process in groups this large')
     parser.add_argument('--outlier', type=str, default='False', help='Do the outlier field as well?')
     parser.add_argument('--seed', type=int, default=18051955, help='Random number seed')
-    parser.add_argument('--snapshot', type=str, default=False, help='Do snapshot only')
+    parser.add_argument('--snapshot', type=str, default=False, help='Do snapshot only?')
+    parser.add_argument('--opposite', type=str, default=False, help='Move source to opposite side of pointing centre')
+    parser.add_argument('--pbtype', type=str, default='MID', help='Primary beam model: MID or MID_GAUSS')
 
     args = parser.parse_args()
     
     snapshot = args.snapshot == 'True'
+    opposite = args.opposite
+    pbtype = args.pbtype
     
     seed = args.seed
     
@@ -190,6 +194,9 @@ if __name__ == '__main__':
                                             polarisation_frame=PolarisationFrame('stokesI'))]
         
         offset = [180.0 * pb_cellsize * pb_npixel / (2.0 * numpy.pi), 0.0]
+        if opposite:
+            offset = [-1*offset[0], -1.0 * offset[1]]
+            
         HWHM = HWHM_deg * numpy.pi / 180.0
         # The primary beam is offset to approximately the halfpower point
         pb_direction = SkyCoord(ra=(+15.0 + offset[0] / numpy.cos(-45.0 * numpy.pi / 180.0)) * u.deg,
@@ -214,7 +221,7 @@ if __name__ == '__main__':
                                       nchan=nfreqwin, cellsize=pb_cellsize, phasecentre=phasecentre,
                                       override_cellsize=False)
     
-    pb = create_pb(vp, 'MID', pointingcentre=pb_direction)
+    pb = create_pb(vp, pbtype, pointingcentre=pb_direction)
     
     if show:
         show_image(pb, title='%s: primary beam' % context)
@@ -222,7 +229,7 @@ if __name__ == '__main__':
         plt.show(block=False)
     
     print("Constructing voltage pattern")
-    vp = create_vp(vp, 'MID', pointingcentre=pb_direction)
+    vp = create_vp(vp, pbtype, pointingcentre=pb_direction)
     pt = create_pointingtable_from_blockvisibility(block_vis, vp)
     
     no_error_pt = simulate_pointingtable(pt, 0.0, 0.0, seed=seed)
@@ -276,6 +283,9 @@ if __name__ == '__main__':
         result['global_pe'] = global_pe
         result['static_pe'] = static_pe
         result['dynamic_pe'] = dynamic_pe
+        result['snapshot'] = snapshot
+        result['opposite'] = opposite
+
         
         a2r = numpy.pi / (3600.0 * 180.0)
         global_pointing_error = global_pe
@@ -375,8 +385,8 @@ if __name__ == '__main__':
     if outlier:
         for ifield, field in enumerate(['outlier_maxabs', 'outlier_rms', 'outlier_medianabs', 'offsource_abscentral']):
             plt.loglog(pes, [result[field] for result in results], '--', label=field, color=colors[ifield])
-        plt.xlabel('Pointing error (arcsec)')
-        plt.ylabel('Error (Jy)')
+    plt.xlabel('Pointing error (arcsec)')
+    plt.ylabel('Error (Jy)')
     
     title = '%s, %.3f GHz, %d times: dynamic %g, static %g \n%s %s' % \
             (context, frequency[0] * 1e-9, ntimes, dynamic_pe, static_pe, socket.gethostname(), epoch)
@@ -385,5 +395,4 @@ if __name__ == '__main__':
     print('Saving plot to %s' % plotfile)
     
     plt.savefig(plotfile)
-    plt.show()
     plt.show()
