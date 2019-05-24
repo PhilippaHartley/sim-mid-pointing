@@ -13,3 +13,5 @@ dask-worker-space
 *.so
 *.egg
 *.ms
+
+.vagrant
