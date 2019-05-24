@@ -44,6 +44,8 @@ from workflows.serial.imaging.imaging_serial import weight_list_serial_workflow
 from wrappers.arlexecute.execution_support.arlexecute import arlexecute
 from wrappers.arlexecute.execution_support.dask_init import get_dask_Client
 
+from processing_components.simulation.testing_support import addnoise_visibility
+
 import logging
 
 log = logging.getLogger()
@@ -126,7 +128,7 @@ if __name__ == '__main__':
     phasecentre = SkyCoord(ra=+15.0 * u.deg, dec=-45.0 * u.deg, frame='icrs', equinox='J2000')
     outlier_phasecentre = SkyCoord(ra=+15.0 * u.deg, dec=-35.0 * u.deg, frame='icrs', equinox='J2000')
     location = EarthLocation(lon="21.443803", lat="-30.712925", height=0.0)
-    mid = create_configuration_from_MIDfile('../../shared/ska1mid_local.cfg', rmax=rmax, location=location)
+    mid = create_configuration_from_MIDfile('../shared/ska1mid_local.cfg', rmax=rmax, location=location)
 
     block_vis = create_blockvisibility(mid, times, frequency=frequency,
                                            channel_bandwidth=channel_bandwidth, weight=1.0,
@@ -226,7 +228,7 @@ if __name__ == '__main__':
     pt = create_pointingtable_from_blockvisibility(block_vis, vp)
     
     no_error_pt = simulate_pointingtable(pt, 0.0, 0.0, seed=seed)
-    export_pointingtable_to_hdf5(no_error_pt, 'pointingsim_%s_noerror_pointingtable.hdf5' % context)
+   # export_pointingtable_to_hdf5(no_error_pt, 'pointingsim_%s_noerror_pointingtable.hdf5' % context)
     no_error_gt = create_gaintable_from_pointingtable(block_vis, original_components, no_error_pt, vp)
     
     no_error_sm = [SkyModel(components=[original_components[i]], gaintable=no_error_gt[i])
@@ -246,7 +248,42 @@ if __name__ == '__main__':
         assert numpy.max(numpy.abs(no_error_blockvis.data['vis'])) > 0.0
     
     no_error_vis = convert_blockvisibility_to_visibility(no_error_blockvis)
-    
+
+
+    dirty = invert_list_arlexecute_workflow([no_error_vis], [model], '2d')
+    dirty, sumwt = arlexecute.compute(dirty, sync=True)[0]
+
+    export_image_to_fits(dirty, 'no_PE_no_noise.fits')
+
+
+
+    int_time = 1.# check thi
+    channel_bandwidth = 1e7
+    print ('vis', no_error_vis.data["vis"])
+    no_error_vis_noise = copy_visibility(no_error_vis)
+    no_error_vis_noise = addnoise_visibility(no_error_vis_noise, channel_bandwidth, int_time)
+    print ('vis', no_error_vis_noise.data["vis"])
+    print (no_error_vis.data["vis"])
+    dirty = invert_list_arlexecute_workflow([no_error_vis_noise], [model], '2d')
+    dirty, sumwt = arlexecute.compute(dirty, sync=True)[0]
+
+    export_image_to_fits(dirty, 'no_PE_with_noise.fits')
+
+    print (no_error_vis_noise.data['vis']) 
+    print (no_error_vis.data["vis"])
+    no_error_vis_noise.data['vis'] -= no_error_vis.data['vis']
+
+    print (no_error_vis_noise.data['vis'] )
+
+    dirty = invert_list_arlexecute_workflow([no_error_vis_noise], [model], '2d')
+    dirty, sumwt = arlexecute.compute(dirty, sync=True)[0]
+
+    export_image_to_fits(dirty, 'residuals_no_PE_with_noise.fits')
+
+
+
+
+
     pes = [1.0, 2.0, 4.0, 8.0, 16.0, 32.0, 64.0, 128.0, 256.0]
     results = []
     
