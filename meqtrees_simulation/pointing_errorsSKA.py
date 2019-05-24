@@ -7,9 +7,11 @@
 
 from matplotlib import pyplot as plt
 import sys
-sys.path.append("/home/p.hartley/casa-release-5.4.1-32.el7/analysis_scripts")# move this
 import analysisUtils as au
-from astropy.io import fits
+try:
+    from astropy.io import fits
+except ImportError:
+    import pyfits as fits
 import numpy as np
 
 
