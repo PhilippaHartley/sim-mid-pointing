@@ -66,7 +66,7 @@ def source_list(nsources,gap, centre, s, dirname, layout = 'grid'):
     f.close()
     print 'converting component table to meqtrees format'
     os.system('rm -rf '+dirname+'source_list.lsm.html')
-    os.system('tigger-convert '+dirname+'source_list.txt '+dirname+'source_list.lsm.html')
+    #os.system('tigger-convert '+dirname+'source_list.txt '+dirname+'source_list.lsm.html')
             
 
 def do_plot_azel(azs, els):
