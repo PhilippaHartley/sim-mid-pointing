@@ -1,0 +1,9 @@
+Vagrant.configure("2") do |config|
+  config.vm.box = "ubuntu/bionic64"
+  config.vm.provider "virtualbox" do |v|
+    v.memory = 8192
+  end
+  config.vm.provision "shell", path: "install1.sh"
+  config.vm.provision "shell", privileged: false, path: "install2.sh"
+  config.vm.provision "file", source: "setup.sh", destination: "~/setup.sh"
+end
