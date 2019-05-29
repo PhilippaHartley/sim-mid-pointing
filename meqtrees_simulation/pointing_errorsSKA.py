@@ -7,9 +7,11 @@
 
 from matplotlib import pyplot as plt
 import sys
-sys.path.append("/home/p.hartley/casa-release-5.4.1-32.el7/analysis_scripts")# move this
 import analysisUtils as au
-from astropy.io import fits
+try:
+    from astropy.io import fits
+except ImportError:
+    import pyfits as fits
 import numpy as np
 
 
@@ -64,7 +66,7 @@ def source_list(nsources,gap, centre, s, dirname, layout = 'grid'):
     f.close()
     print 'converting component table to meqtrees format'
     os.system('rm -rf '+dirname+'source_list.lsm.html')
-    os.system('tigger-convert '+dirname+'source_list.txt '+dirname+'source_list.lsm.html')
+    #os.system('tigger-convert '+dirname+'source_list.txt '+dirname+'source_list.lsm.html')
             
 
 def do_plot_azel(azs, els):

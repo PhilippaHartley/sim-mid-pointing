@@ -16,3 +16,4 @@ dask-worker-space
 *.hdf5
 *.fits
 *.dirlock
+.vagrant
