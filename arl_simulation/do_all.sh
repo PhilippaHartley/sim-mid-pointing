@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+(cd simulation0;sh do_sim.sh)
+(cd simulation1;sh do_sim.sh)
+(cd simulation2;sh do_sim.sh)
+(cd simulation3;sh do_sim.sh)
+(cd simulation4;sh do_sim.sh)
+(cd simulation5;sh do_sim.sh)
+(cd simulation6;sh do_sim.sh)
+(cd simulation7;sh do_sim.sh)
+(cd simulation8;sh do_sim.sh)
+(cd simulation9;sh do_sim.sh)
+(cd simulation10;sh do_sim.sh)
+(cd simulation11;sh do_sim.sh)
+(cd simulation12;sh do_sim.sh)
+(cd simulation13;sh do_sim.sh)

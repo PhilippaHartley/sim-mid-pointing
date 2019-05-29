@@ -1,5 +1,6 @@
 """Simulation of the effect of pointing errors on MID observations
 """
+import os
 import csv
 import socket
 import sys
@@ -15,11 +16,6 @@ import numpy
 
 from astropy.coordinates import SkyCoord, EarthLocation
 from astropy import units as u
-
-import matplotlib as mpl
-mpl.use('Agg')
-
-from matplotlib import pyplot as plt
 
 from data_models.polarisation import PolarisationFrame
 from data_models.memory_data_models import Skycomponent, SkyModel
@@ -76,14 +72,22 @@ if __name__ == '__main__':
     parser.add_argument('--ngroup', type=int, default=8, help='Process in groups this large')
     parser.add_argument('--outlier', type=str, default='False', help='Do the outlier field as well?')
     parser.add_argument('--seed', type=int, default=18051955, help='Random number seed')
-    parser.add_argument('--snapshot', type=str, default=False, help='Do snapshot only?')
-    parser.add_argument('--opposite', type=str, default=False, help='Move source to opposite side of pointing centre')
+    parser.add_argument('--snapshot', type=str, default='False', help='Do snapshot only?')
+    parser.add_argument('--opposite', type=str, default='False', help='Move source to opposite side of pointing centre')
     parser.add_argument('--pbtype', type=str, default='MID', help='Primary beam model: MID or MID_GAUSS')
+    parser.add_argument('--use_agg', type=str, default="True", help='Use Agg matplotlib backend?')
 
     args = parser.parse_args()
+    use_agg = args.use_agg == "True"
     
+    if use_agg:
+        import matplotlib as mpl
+        mpl.use('Agg')
+    
+    from matplotlib import pyplot as plt
+
     snapshot = args.snapshot == 'True'
-    opposite = args.opposite
+    opposite = args.opposite == 'True'
     pbtype = args.pbtype
     
     seed = args.seed
@@ -102,10 +106,7 @@ if __name__ == '__main__':
     
     ngroup = args.ngroup
     
-    print("Using %s workers" % nworkers)
-    print("Using %s threads per worker" % threads_per_worker)
-    
-    # Set up DASK
+    print("Using %s Dask workers" % nworkers)
     client = get_dask_Client(threads_per_worker=threads_per_worker,
                              processes=threads_per_worker == 1,
                              memory_limit=memory * 1024 * 1024 * 1024,
@@ -131,76 +132,65 @@ if __name__ == '__main__':
     outlier_phasecentre = SkyCoord(ra=+15.0 * u.deg, dec=-35.0 * u.deg, frame='icrs', equinox='J2000')
     location = EarthLocation(lon="21.443803", lat="-30.712925", height=0.0)
     mid = create_configuration_from_MIDfile('../../shared/ska1mid_local.cfg', rmax=rmax, location=location)
-
+    
     block_vis = create_blockvisibility(mid, times, frequency=frequency,
-                                           channel_bandwidth=channel_bandwidth, weight=1.0,
-                                           phasecentre=phasecentre,
-                                           polarisation_frame=PolarisationFrame("stokesI"), zerow=False)
+                                       channel_bandwidth=channel_bandwidth, weight=1.0,
+                                       phasecentre=phasecentre,
+                                       polarisation_frame=PolarisationFrame("stokesI"), zerow=False)
     print(block_vis)
     vis = convert_blockvisibility_to_visibility(block_vis)
     
-    vis.data['uvw'][...,2] = 0.0
+    vis.data['uvw'][..., 2] = 0.0
     
     # We need the HWHM of the primary beam. Got this by trial and error
-    HWHM_deg = 1.03 * 180.0 * 3e8 / (numpy.pi * diameter * frequency[0])
-    
-    print('HWHM beam = %g deg' % HWHM_deg)
-    HWHM = HWHM_deg * numpy.pi / 180.0
-
-    advice = advise_wide_field(vis, guard_band_image=1.0, delA=0.02)
-
-    cellsize = advice['cellsize']
-    if context == 's3sky':
-        pb_npixel = 4096
-        pb_cellsize = 4.0 * HWHM / pb_npixel
-        npixel = pb_npixel
+    if pbtype == 'MID':
+        HWHM_deg = 0.6 * 1.4e9 / frequency[0]
+    elif pbtype == 'MID_GRASP':
+        HWHM_deg = 0.75 * 1.4e9 / frequency[0]
+    elif pbtype == 'MID_GAUSS':
+        HWHM_deg = 0.6 * 1.4e9 / frequency[0]
     else:
-        npixel = 512
-        pb_npixel = 4096
-        pb_cellsize = HWHM / pb_npixel
+        HWHM_deg = 0.6 * 1.4e9 / frequency[0]
+
+    FOV_deg = 20.0 * HWHM_deg
+    
+    print('%s: HWHM beam = %g deg' % (pbtype, HWHM_deg))
+    
+    advice = advise_wide_field(vis, guard_band_image=1.0, delA=0.02)
+    
+    pb_npixel = 4096
+    d2r = numpy.pi / 180.0
+    pb_cellsize = d2r * FOV_deg / pb_npixel
+    
+    cellsize = advice['cellsize']
+    npixel = 512
     
     if show:
         plt.clf()
         plt.plot(-vis.u, -vis.v, '.', color='b', markersize=0.2)
         plt.plot(vis.u, vis.v, '.', color='b', markersize=0.2)
+        plt.xlabel('U (wavelengths)')
+        plt.ylabel('V (wavelengths)')
+        plt.title('UV coverage')
         plt.savefig('uvcoverage.png')
         plt.show(block=False)
-
-    # Uniform weighting
-    model = create_image_from_visibility(vis, npixel=npixel, frequency=frequency,
-                                         nchan=nfreqwin, cellsize=cellsize, phasecentre=phasecentre,
-                                         polarisation_frame=PolarisationFrame("stokesI"))
-    print(model)
-    vis = weight_list_serial_workflow([vis], [model])[0]
-    block_vis = convert_visibility_to_blockvisibility(vis)
-
-    print("Inverting to get on-source PSF")
-    psf = invert_list_arlexecute_workflow([vis], [model], '2d', dopsf=True)
-    psf, sumwt = arlexecute.compute(psf, sync=True)[0]
-
-    export_image_to_fits(psf, 'PSF_arl.fits')
-
-    if show:
-        show_image(psf, cm='gray_r', title='PSF', vmin=-0.01, vmax=0.1)
-        plt.savefig('PSF_arl.png')
-        plt.show(block=False)
-        
+    
     # Construct the skycomponents
     if context == 'singlesource':
         print("Constructing single component")
-        # Put a single point source at the phasecentre
-        original_components = [Skycomponent(flux=[[1.0]], direction=phasecentre,
-                                            frequency=frequency,
-                                            polarisation_frame=PolarisationFrame('stokesI'))]
-        
-        offset = [180.0 * pb_cellsize * pb_npixel / (2.0 * numpy.pi), 0.0]
+        offset = [HWHM_deg, 0.0]
         if opposite:
-            offset = [-1*offset[0], -1.0 * offset[1]]
-            
-        HWHM = HWHM_deg * numpy.pi / 180.0
-        # The primary beam is offset to approximately the halfpower point
-        pb_direction = SkyCoord(ra=(+15.0 + offset[0] / numpy.cos(-45.0 * numpy.pi / 180.0)) * u.deg,
-                                dec=(-45.0 + offset[1]) * u.deg, frame='icrs', equinox='J2000')
+            offset = [-1.0 * offset[0], -1.0 * offset[1]]
+        print("Offset from pointing centre = %.3f, %.3f deg" % (offset[0], offset[1]))
+
+        # The point source is offset to approximately the halfpower point
+        offset_direction = SkyCoord(ra=(+15.0 + offset[0]) * u.deg,
+                                    dec=(-45.0 + offset[1]) * u.deg,
+                                    frame='icrs', equinox='J2000')
+
+        original_components = [Skycomponent(flux=[[1.0]], direction=offset_direction, frequency=frequency,
+                                            polarisation_frame=PolarisationFrame('stokesI'))]
+        print(original_components[0])
     
     else:
         # Make a skymodel from S3
@@ -211,26 +201,47 @@ if __name__ == '__main__':
                                                                 phasecentre=phasecentre,
                                                                 polarisation_frame=PolarisationFrame("stokesI"),
                                                                 frequency=numpy.array(frequency),
-                                                                radius=pb_cellsize * pb_npixel)
-        HWHM = HWHM_deg * numpy.pi / 180.0
+                                                                radius=pb_cellsize * pb_npixel/2.0)
         # Primary beam points to the phasecentre
-        pb_direction = SkyCoord(ra=+15.0 * u.deg, dec=-45.0 * u.deg, frame='icrs', equinox='J2000')
+        offset_direction = SkyCoord(ra=+15.0 * u.deg, dec=-45.0 * u.deg, frame='icrs', equinox='J2000')
     
+    # Uniform weighting
+    psf = create_image_from_visibility(vis, npixel=npixel, frequency=frequency,
+                                         nchan=nfreqwin, cellsize=cellsize, phasecentre=phasecentre,
+                                         polarisation_frame=PolarisationFrame("stokesI"))
+    vis = weight_list_serial_workflow([vis], [psf])[0]
+    block_vis = convert_visibility_to_blockvisibility(vis)
+    
+    print("Inverting to get on-source PSF")
+    psf_list = invert_list_arlexecute_workflow([vis], [psf], '2d', dopsf=True)
+    psf, sumwt = arlexecute.compute(psf_list, sync=True)[0]
+    export_image_to_fits(psf, 'PSF_arl.fits')
+    if show:
+        show_image(psf, cm='gray_r', title='PSF', vmin=-0.01, vmax=0.1)
+        plt.savefig('PSF_arl.png')
+        plt.show(block=False)
+    
+    model = create_image_from_visibility(vis, npixel=npixel, frequency=frequency,
+                                         nchan=nfreqwin, cellsize=cellsize, phasecentre=offset_direction,
+                                         polarisation_frame=PolarisationFrame("stokesI"))
+
     # ### Calculate the voltage patterns with and without pointing errors
     vp = create_image_from_visibility(block_vis, npixel=pb_npixel, frequency=frequency,
                                       nchan=nfreqwin, cellsize=pb_cellsize, phasecentre=phasecentre,
                                       override_cellsize=False)
     
-    pb = create_pb(vp, pbtype, pointingcentre=pb_direction)
-    
     if show:
+        pb = create_pb(vp, pbtype, pointingcentre=phasecentre, use_local=True)
+        print("Primary beam:", pb)
         show_image(pb, title='%s: primary beam' % context)
         plt.savefig('PB_arl.png')
+        export_image_to_fits(pb, 'PB_arl.fits')
         plt.show(block=False)
     
     print("Constructing voltage pattern")
-    vp = create_vp(vp, pbtype, pointingcentre=pb_direction)
-    pt = create_pointingtable_from_blockvisibility(block_vis, vp)
+    vp = create_vp(vp, pbtype, pointingcentre=phasecentre, use_local=True)
+    print("Voltage pattern:", vp)
+    pt = create_pointingtable_from_blockvisibility(block_vis)
     
     no_error_pt = simulate_pointingtable(pt, 0.0, 0.0, seed=seed)
     export_pointingtable_to_hdf5(no_error_pt, 'pointingsim_%s_noerror_pointingtable.hdf5' % context)
@@ -253,6 +264,15 @@ if __name__ == '__main__':
         assert numpy.max(numpy.abs(no_error_blockvis.data['vis'])) > 0.0
     
     no_error_vis = convert_blockvisibility_to_visibility(no_error_blockvis)
+    print("Inverting to get dirty image")
+    dirty_list = invert_list_arlexecute_workflow([no_error_vis], [model], '2d')
+    dirty, sumwt = arlexecute.compute(dirty_list, sync=True)[0]
+    print(qa_image(dirty))
+    export_image_to_fits(dirty, 'dirty_arl.fits')
+    if show:
+        show_image(dirty, cm='gray_r', title='Dirty image')#, vmin=-0.01, vmax=0.1)
+        plt.savefig('dirty_arl.png')
+        plt.show(block=False)
     
     pes = [1.0, 2.0, 4.0, 8.0, 16.0, 32.0, 64.0, 128.0, 256.0]
     results = []
@@ -285,7 +305,6 @@ if __name__ == '__main__':
         result['dynamic_pe'] = dynamic_pe
         result['snapshot'] = snapshot
         result['opposite'] = opposite
-
         
         a2r = numpy.pi / (3600.0 * 180.0)
         global_pointing_error = global_pe
@@ -323,16 +342,13 @@ if __name__ == '__main__':
             for w in work_vis:
                 error_blockvis.data['vis'] += w.data['vis']
             assert numpy.max(numpy.abs(error_blockvis.data['vis'])) > 0.0
-        
         error_blockvis.data['vis'] -= no_error_blockvis.data['vis']
         
         print("Inverting to get on-source dirty image")
         error_vis = convert_blockvisibility_to_visibility(error_blockvis)
-        dirty = invert_list_arlexecute_workflow([error_vis], [model], '2d')
-        dirty, sumwt = arlexecute.compute(dirty, sync=True)[0]
-        
+        dirty_list = invert_list_arlexecute_workflow([error_vis], [model], '2d')
+        dirty, sumwt = arlexecute.compute(dirty_list, sync=True)[0]
         export_image_to_fits(dirty, 'PE_%.1f_arcsec_arl.fits' % pe)
-        
         if show:
             show_image(dirty, cm='gray_r', title='Pointing error %.1f arcsec ARL' % pe)
             plt.savefig('PE_%.1f_arcsec_arl.png' % pe)
@@ -379,17 +395,18 @@ if __name__ == '__main__':
     
     plt.clf()
     colors = ['b', 'r', 'g', 'y']
-    for ifield, field in enumerate(['onsource_maxabs', 'onsource_rms', 'onsource_medianabs', 'onsource_abscentral']):
+    for ifield, field in enumerate(['onsource_maxabs', 'onsource_rms', 'onsource_medianabs']):
         plt.loglog(pes, [result[field] for result in results], '-', label=field, color=colors[ifield])
     
     if outlier:
-        for ifield, field in enumerate(['outlier_maxabs', 'outlier_rms', 'outlier_medianabs', 'offsource_abscentral']):
+        for ifield, field in enumerate(['outlier_maxabs', 'outlier_rms', 'outlier_medianabs']):
             plt.loglog(pes, [result[field] for result in results], '--', label=field, color=colors[ifield])
     plt.xlabel('Pointing error (arcsec)')
     plt.ylabel('Error (Jy)')
     
-    title = '%s, %.3f GHz, %d times: dynamic %g, static %g \n%s %s' % \
-            (context, frequency[0] * 1e-9, ntimes, dynamic_pe, static_pe, socket.gethostname(), epoch)
+    title = '%s, %.3f GHz, %d times: dynamic %g, static %g \n%s %s %s' % \
+            (context, frequency[0] * 1e-9, ntimes, dynamic_pe, static_pe, socket.gethostname(), epoch,
+             os.path.basename(os.getcwd()))
     plt.title(title)
     plt.legend(fontsize='x-small')
     print('Saving plot to %s' % plotfile)

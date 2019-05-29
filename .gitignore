@@ -13,3 +13,6 @@ dask-worker-space
 *.so
 *.egg
 *.ms
+*.hdf5
+*.fits
+*.dirlock
