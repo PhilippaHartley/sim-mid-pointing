@@ -25,6 +25,7 @@ from wrappers.serial.visibility.base import create_blockvisibility
 from wrappers.serial.image.operations import show_image, qa_image, export_image_to_fits
 from wrappers.serial.simulation.configurations import create_configuration_from_MIDfile
 from wrappers.serial.simulation.testing_support import simulate_pointingtable
+from wrappers.serial.simulation.noise import addnoise_visibility
 from wrappers.serial.imaging.primary_beams import create_vp, create_pb
 from wrappers.serial.imaging.base import create_image_from_visibility, advise_wide_field
 from wrappers.serial.calibration.pointing import create_pointingtable_from_blockvisibility
@@ -76,8 +77,14 @@ if __name__ == '__main__':
     parser.add_argument('--opposite', type=str, default='False', help='Move source to opposite side of pointing centre')
     parser.add_argument('--pbtype', type=str, default='MID', help='Primary beam model: MID or MID_GAUSS')
     parser.add_argument('--use_agg', type=str, default="True", help='Use Agg matplotlib backend?')
+    parser.add_argument('--tsys', type=float, default=0.0, help='System temperature: standard 20K')
+    parser.add_argument('--scaledec', type=str, default='False', help='Scale errors in az by cos(dec)')
 
     args = parser.parse_args()
+    
+    scaledec = args.scaledec == 'True'
+    tsys = args.tsys
+    
     use_agg = args.use_agg == "True"
     
     if use_agg:
@@ -305,6 +312,7 @@ if __name__ == '__main__':
         result['dynamic_pe'] = dynamic_pe
         result['snapshot'] = snapshot
         result['opposite'] = opposite
+        result['tsys'] = tsys
         
         a2r = numpy.pi / (3600.0 * 180.0)
         global_pointing_error = global_pe
@@ -325,6 +333,9 @@ if __name__ == '__main__':
                                           seed=seed)
         export_pointingtable_to_hdf5(error_pt,
                                      'pointingsim_%s_error_%.0farcsec_pointingtable.hdf5' % (context, pe))
+        if scaledec:
+            print("Scaling pointing errors in RA by cos(dec)")
+            error_pt.pointing[...,0] *= numpy.cos(phasecentre.dec.rad)
         
         error_gt = create_gaintable_from_pointingtable(block_vis, original_components, error_pt, vp)
         
@@ -343,6 +354,8 @@ if __name__ == '__main__':
                 error_blockvis.data['vis'] += w.data['vis']
             assert numpy.max(numpy.abs(error_blockvis.data['vis'])) > 0.0
         error_blockvis.data['vis'] -= no_error_blockvis.data['vis']
+        
+        error_blockvis = addnoise_visibility(error_blockvis, tsys)
         
         print("Inverting to get on-source dirty image")
         error_vis = convert_blockvisibility_to_visibility(error_blockvis)

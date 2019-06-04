@@ -32,3 +32,7 @@ sim 10: s3sky down to 0.03Jy with MID_GAUSS beam and static errors
 sim 11: repeat of sim 0 with calculations in AZELGEO
 sim 12: repeat of sim 5 with calculations in AZELGEO
 sim 13: repeat of sim 0 with GRASP beam and calculations in AZELGEO
+sim 14: repeat of 0 with az offset multiplied by cos(dec) - to mimic MeqTrees
+sim 15: repeat of 0 with az offsets set to zero
+sim 16: repeat of 0 with el offsets set to zero
+sim 17: repeat of 0 in RADEC frame (use_radec=True)
