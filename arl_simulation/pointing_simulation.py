@@ -79,7 +79,7 @@ if __name__ == '__main__':
     parser.add_argument('--pbtype', type=str, default='MID', help='Primary beam model: MID or MID_GAUSS')
     parser.add_argument('--use_agg', type=str, default="True", help='Use Agg matplotlib backend?')
     parser.add_argument('--tsys', type=float, default=0.0, help='System temperature: standard 20K')
-    parser.add_argument('--scale', type=float, nargs=2, default=[0.0, 0.0], help='Scale errors by this amount')
+    parser.add_argument('--scale', type=float, nargs=2, default=[1.0, 1.0], help='Scale errors by this amount')
     parser.add_argument('--use_radec', type=str, default="False", help='Calculate in RADEC (false)?')
     
     args = parser.parse_args()
