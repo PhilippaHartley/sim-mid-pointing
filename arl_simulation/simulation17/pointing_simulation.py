@@ -333,6 +333,7 @@ if __name__ == '__main__':
         result['opposite'] = opposite
         result['tsys'] = tsys
         result['scale'] = scale
+        result['use_radec'] = use_radec
         
         a2r = numpy.pi / (3600.0 * 180.0)
         global_pointing_error = global_pe

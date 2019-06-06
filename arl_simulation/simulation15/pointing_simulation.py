@@ -1,7 +1,7 @@
 """Simulation of the effect of pointing errors on MID observations
 """
-import os
 import csv
+import os
 import socket
 import sys
 import time
@@ -79,21 +79,24 @@ if __name__ == '__main__':
     parser.add_argument('--pbtype', type=str, default='MID', help='Primary beam model: MID or MID_GAUSS')
     parser.add_argument('--use_agg', type=str, default="True", help='Use Agg matplotlib backend?')
     parser.add_argument('--tsys', type=float, default=0.0, help='System temperature: standard 20K')
-    parser.add_argument('--scale', type=float, nargs=2, default=[0.0, 0.0], help='Scale errors by this amount')
-
+    parser.add_argument('--scale', type=float, nargs=2, default=[1.0, 1.0], help='Scale errors by this amount')
+    parser.add_argument('--use_radec', type=str, default="False", help='Calculate in RADEC (false)?')
+    
     args = parser.parse_args()
     
     scale = numpy.array(args.scale)
     tsys = args.tsys
     
     use_agg = args.use_agg == "True"
+    use_radec = args.use_radec == "True"
     
     if use_agg:
         import matplotlib as mpl
+        
         mpl.use('Agg')
     
     from matplotlib import pyplot as plt
-
+    
     snapshot = args.snapshot == 'True'
     opposite = args.opposite == 'True'
     pbtype = args.pbtype
@@ -159,7 +162,7 @@ if __name__ == '__main__':
         HWHM_deg = 0.6 * 1.4e9 / frequency[0]
     else:
         HWHM_deg = 0.6 * 1.4e9 / frequency[0]
-
+    
     FOV_deg = 20.0 * HWHM_deg
     
     print('%s: HWHM beam = %g deg' % (pbtype, HWHM_deg))
@@ -182,7 +185,7 @@ if __name__ == '__main__':
         plt.title('UV coverage')
         plt.savefig('uvcoverage.png')
         plt.show(block=False)
-
+        
         ha = numpy.pi * block_vis.time / 43200.0
         dec = phasecentre.dec.rad
         latitude = block_vis.configuration.location.lat.rad
@@ -194,7 +197,7 @@ if __name__ == '__main__':
         plt.legend()
         plt.savefig('azel.png')
         plt.show(block=False)
-
+    
     # Construct the skycomponents
     if context == 'singlesource':
         print("Constructing single component")
@@ -202,12 +205,12 @@ if __name__ == '__main__':
         if opposite:
             offset = [-1.0 * offset[0], -1.0 * offset[1]]
         print("Offset from pointing centre = %.3f, %.3f deg" % (offset[0], offset[1]))
-
+        
         # The point source is offset to approximately the halfpower point
         offset_direction = SkyCoord(ra=(+15.0 + offset[0]) * u.deg,
                                     dec=(-45.0 + offset[1]) * u.deg,
                                     frame='icrs', equinox='J2000')
-
+        
         original_components = [Skycomponent(flux=[[1.0]], direction=offset_direction, frequency=frequency,
                                             polarisation_frame=PolarisationFrame('stokesI'))]
         print(original_components[0])
@@ -221,17 +224,16 @@ if __name__ == '__main__':
                                                                 phasecentre=phasecentre,
                                                                 polarisation_frame=PolarisationFrame("stokesI"),
                                                                 frequency=numpy.array(frequency),
-                                                                radius=pb_cellsize * pb_npixel/2.0)
+                                                                radius=pb_cellsize * pb_npixel / 2.0)
         # Primary beam points to the phasecentre
         offset_direction = SkyCoord(ra=+15.0 * u.deg, dec=-45.0 * u.deg, frame='icrs', equinox='J2000')
     
     # Uniform weighting
     psf = create_image_from_visibility(vis, npixel=npixel, frequency=frequency,
-                                         nchan=nfreqwin, cellsize=cellsize, phasecentre=phasecentre,
-                                         polarisation_frame=PolarisationFrame("stokesI"))
+                                       nchan=nfreqwin, cellsize=cellsize, phasecentre=phasecentre,
+                                       polarisation_frame=PolarisationFrame("stokesI"))
     vis = weight_list_serial_workflow([vis], [psf])[0]
     block_vis = convert_visibility_to_blockvisibility(vis)
-    
     
     print("Inverting to get on-source PSF")
     psf_list = invert_list_arlexecute_workflow([vis], [psf], '2d', dopsf=True)
@@ -245,14 +247,14 @@ if __name__ == '__main__':
     model = create_image_from_visibility(vis, npixel=npixel, frequency=frequency,
                                          nchan=nfreqwin, cellsize=cellsize, phasecentre=offset_direction,
                                          polarisation_frame=PolarisationFrame("stokesI"))
-
+    
     # ### Calculate the voltage patterns with and without pointing errors
     vp = create_image_from_visibility(block_vis, npixel=pb_npixel, frequency=frequency,
                                       nchan=nfreqwin, cellsize=pb_cellsize, phasecentre=phasecentre,
                                       override_cellsize=False)
     
     if show:
-        pb = create_pb(vp, pbtype, pointingcentre=phasecentre, use_local=True)
+        pb = create_pb(vp, pbtype, pointingcentre=phasecentre, use_local=not use_radec)
         print("Primary beam:", pb)
         show_image(pb, title='%s: primary beam' % context)
         plt.savefig('PB_arl.png')
@@ -260,13 +262,14 @@ if __name__ == '__main__':
         plt.show(block=False)
     
     print("Constructing voltage pattern")
-    vp = create_vp(vp, pbtype, pointingcentre=phasecentre, use_local=True)
+    vp = create_vp(vp, pbtype, pointingcentre=phasecentre, use_local=not use_radec)
     print("Voltage pattern:", vp)
     pt = create_pointingtable_from_blockvisibility(block_vis)
     
     no_error_pt = simulate_pointingtable(pt, 0.0, 0.0, seed=seed)
     export_pointingtable_to_hdf5(no_error_pt, 'pointingsim_%s_noerror_pointingtable.hdf5' % context)
-    no_error_gt = create_gaintable_from_pointingtable(block_vis, original_components, no_error_pt, vp)
+    no_error_gt = create_gaintable_from_pointingtable(block_vis, original_components, no_error_pt, vp,
+                                                      use_radec=use_radec)
     
     no_error_sm = [SkyModel(components=[original_components[i]], gaintable=no_error_gt[i])
                    for i, _ in enumerate(original_components)]
@@ -291,7 +294,7 @@ if __name__ == '__main__':
     print(qa_image(dirty))
     export_image_to_fits(dirty, 'dirty_arl.fits')
     if show:
-        show_image(dirty, cm='gray_r', title='Dirty image')#, vmin=-0.01, vmax=0.1)
+        show_image(dirty, cm='gray_r', title='Dirty image')  # , vmin=-0.01, vmax=0.1)
         plt.savefig('dirty_arl.png')
         plt.show(block=False)
     
@@ -319,7 +322,7 @@ if __name__ == '__main__':
         result['epoch'] = epoch
         basename = os.path.basename(os.getcwd())
         result['basename'] = basename
-
+        
         result['npixel'] = npixel
         result['pb_npixel'] = pb_npixel
         result['flux_limit'] = flux_limit
@@ -330,6 +333,7 @@ if __name__ == '__main__':
         result['opposite'] = opposite
         result['tsys'] = tsys
         result['scale'] = scale
+        result['use_radec'] = use_radec
         
         a2r = numpy.pi / (3600.0 * 180.0)
         global_pointing_error = global_pe
@@ -350,12 +354,13 @@ if __name__ == '__main__':
                                           seed=seed)
         export_pointingtable_to_hdf5(error_pt,
                                      'pointingsim_%s_error_%.0farcsec_pointingtable.hdf5' % (context, pe))
-
+        
         print("Scaling pointing errors in %.3f, %.3f" % (scale[0], scale[1]))
-        error_pt.pointing[...,0] *= scale[0]
-        error_pt.pointing[...,1] *= scale[1]
-
-        error_gt = create_gaintable_from_pointingtable(block_vis, original_components, error_pt, vp)
+        error_pt.pointing[..., 0] *= scale[0]
+        error_pt.pointing[..., 1] *= scale[1]
+        
+        error_gt = create_gaintable_from_pointingtable(block_vis, original_components, error_pt, vp,
+                                                       use_radec=use_radec)
         
         error_sm = [SkyModel(components=[original_components[i]], gaintable=error_gt[i])
                     for i, _ in enumerate(original_components)]
