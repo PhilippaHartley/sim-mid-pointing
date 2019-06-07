@@ -14,3 +14,7 @@
 (cd simulation11;sh do_sim.sh)
 (cd simulation12;sh do_sim.sh)
 (cd simulation13;sh do_sim.sh)
+(cd simulation14;sh do_sim.sh)
+(cd simulation15;sh do_sim.sh)
+(cd simulation16;sh do_sim.sh)
+(cd simulation17;sh do_sim.sh)
