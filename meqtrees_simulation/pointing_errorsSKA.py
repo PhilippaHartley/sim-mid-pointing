@@ -11,6 +11,7 @@ sys.path.append("/home/p.hartley/casa-release-5.4.1-32.el7/analysis_scripts")# m
 import analysisUtils as au
 from astropy.io import fits
 import numpy as np
+import csv
 
 
 
@@ -49,8 +50,8 @@ def source_list(nsources,gap, centre, s, dirname, layout = 'grid'):
                 count+=1
     if layout == 'single': # ! bug in simobserve that won't make image with only 1 comp - have fixed but need to thread a switch through
 
-        ra = centre['m0']['value']
-        dec = centre['m1']['value']-HPBW
+        ra = centre['m0']['value']+HPBW/np.cos(centre['m1']['value'])
+        dec = centre['m1']['value']#-HPBW
         radec = au.rad2radec(ra, dec, hmsdms = True)    
         f.write('{} {} {} {} {} {} {} {}\n'.format(count,radec.split(', ')[0].split('h')[0],\
                            radec.split(', ')[0].split('h')[1].split('m')[0], \
@@ -84,20 +85,18 @@ def observe_simulator(projectname, config_file, NUM_SPW, fieldDir, dirname, layo
             make_modsize = True
         centre = fieldDir
         source_list(5, 1*60, centre, 1.0, dirname , layout = layout)
-    DUMP_TIME = 1.                 # integration time in seconds
+    DUMP_TIME = 600.                 # integration time in seconds
     SCAN_TIME = (DUMP_TIME*1.)/3600.    # make each scan last a few integrations, units of hours
     NUM_SCANS =  65#             # accumulate this many scans (use odd number)
-    HA_RANGE = 8.0                      # total range of HA coverage in hours (use > 0.0)
+    HA_RANGE = 12.0                      # total range of HA coverage in hours (use > 0.0)
     FREQ = 1.4                          # centre frequency in GHz
     FREQ_FBW = 0.01                     # frequency fractional bandwidth per channel
     NUM_CHAN = 1                      # number of spectral channels
                        # number of spectral windows (use odd number)
-    FREQ_SPW = 0.014 
-
+    FREQ_SPW = 0.01 
     REF_TIME = me.epoch('UTC','50000.0d')
     xfreq = str(FREQ) + 'GHz'
     FREQ_RES = str(FREQ*FREQ_FBW*1000.) +'MHz' 
-          
     tel_name = 'SKA1-MID'
     output_ms = projectname+'.ms'
     print 'output_ms: ', output_ms
@@ -161,36 +160,63 @@ def observe_simulator(projectname, config_file, NUM_SPW, fieldDir, dirname, layo
     print 'predicting from source model: ', dirname+'points_grid.cl'
     sm.predict( complist = dirname+'points_grid.cl', incremental = False)
     print 'predicted'
+   # sm.setnoise(simplenoise='100Jy')
     sm.corrupt()
     print 'corrupted'
 
     sm.close()
+
+
+    tb.open(output_ms+'/ANTENNA')
+    pos=tb.getcol('POSITION')
+    ant=tb.getcol('NAME')
+    pad=tb.getcol('STATION')
+    tb.close()
+
+
+    tb.open(output_ms+'/POINTING')
+    data = tb.getcol('DIRECTION')
+    antenna = tb.getcol('ANTENNA_ID')
+    time = tb.getcol('TIME')
+    dataRA = data[0,0,:]
+    dataDec = data[1,0,:]
+    azimuths  = np.array([])
+    elevations = np.array([])
+    for scan in xrange(len(dataRA)):# note len(dataRA) not equal to n visibilities if dump<scan time and it is not actually visibilities
+        a = me.epoch('UTC',str(time[scan])+'s')      # a time  
+        me.measure(a, 'tai') # convert to IAT    
+        me.doframe(a) # set time in frame   
+        antpos=me.position('ITRF',qa.quantity(pos[0,antenna[scan]],'m'),qa.quantity(pos[1,antenna[scan]],'m')\
+                ,qa.quantity(pos[2,antenna[scan]],'m'))#check ITRF
+        me.doframe(antpos)
+        b =  me.direction('j2000', str(dataRA[scan])+'rad', str(dataDec[scan])+'rad' )
+        az_el =  me.measure(b, 'azel') 
+        azimuths = np.append(azimuths, az_el['m0']['value'])
+        elevations = np.append(elevations, az_el['m1']['value'])
+    plt.scatter(azimuths, elevations)
+    plt.savefig('azels.png')
    
              
              
                        
                       
                         
+
 def corrupt(projectname, config_file_prefix,offset, dirname,PEs = False,  plot_azel=False):   
+    # this bit is redundant but has some useful azel conversions
+    print 'projectname', projectname
     if PEs:
         offset_name = np.copy(offset)
-        print 'in PEs'
-        #### sm.setpointingerror() 
-        # no documentation for how to contruct a PE E Jones table and apply it:
-        # instead using the pointings from the POINTINGS table and modifying them manually
-    
-        
-        # overwrite the idealised visibilities with corrupted data
-        # pointing and antenna corruptions are applied before the visibilities are obtained
-        # other corruptions are applied to the visibilities themselves                     
-        tb.open(projectname+config_file_prefix+'ms/ANTENNA')
+        print 'opening: ', projectname+config_file_prefix+'ms/ANTENNA'
+        tb.open(dirname+projectname+config_file_prefix+'ms/ANTENNA')
         pos=tb.getcol('POSITION')
         ant=tb.getcol('NAME')
         pad=tb.getcol('STATION')
         tb.close()
+
+        print 'opening: ', projectname+config_file_prefix+'ms/POINTING'
         
-        # open pointings file to modify    
-        tb.open(projectname+config_file_prefix+'ms/POINTING', nomodify = False)
+        tb.open(dirname+projectname+config_file_prefix+'ms/POINTING', nomodify = False)
         data = tb.getcol('DIRECTION')
         antenna = tb.getcol('ANTENNA_ID')
         time = tb.getcol('TIME')
@@ -203,23 +229,25 @@ def corrupt(projectname, config_file_prefix,offset, dirname,PEs = False,  plot_a
         # example error: rms 30 arcsec = 0.5arcmin not 0.5deg!
    #     ant_offsets = np.zeros(len(ant))+0.5/60.# offsets in degrees here for plotting\
         np.random.seed(0)
-        ant_offsets =np.random.normal(0, 0.5, len(ant)) # offsets in degrees here for plotting
+        ant_offsets =np.zeros(len(ant))#np.random.normal(0, float(offset)/3600., len(ant)) # offsets in degrees here for plotting
         print 'len dataRA = ', len(dataRA)
-       # time_offsets = np.zeros(len(dataRA))#np.random.normal(0,60/3600., len(dataRA))
-
-       # radec_offsets = np.random.normal(0,1, len(dataRA))
+        np.random.seed(1)
+        time_offsets = np.random.normal(0,float(offset)/3600., len(dataRA))
+        np.random.seed(4)
+        radec_offsets = np.random.normal(0,1, len(dataRA))
        # print 'offset rands: ', radec_offsets
-      #  radec_offsets*= (offset/3600.)
+        radec_offsets*= (float(offset)/3600.)
         
-        #ant_thetas = ((2*np.pi)/len(ant))*(np.arange(len(ant))+1)##np.random.rand(len(ant))*2*np.pi#2*np.pi)/(np.arange(len(ant))+1)#  
-        np.random_seed(1)
-        ant_thetas = np.random.rand(len(ant))*2*np.pi
-       # time_thetas = np.zeros(len(dataRA))#)p.random.rand(len(dataRA))*2*np.pi
+        np.random.seed(2)
+        ant_thetas = np.zeros(len(ant))#np.random.rand(len(ant))*2*np.pi
+        np.random.seed(3)
+        time_thetas = np.random.rand(len(dataRA))*2*np.pi
+         
  #np    .zeros(len(ant))#
-       # np.random.seed(2)
-       # radec_thetas = np.random.rand(len(dataRA))
+        np.random.seed(5)
+        radec_thetas = np.random.rand(len(dataRA))
        # print 'theta rands: ', radec_thetas
-       # radec_thetas*= 2*np.pi
+        radec_thetas*= 2*np.pi
        # offset/=3600.
        # np.random.seed(5)
        # ra_offsets = ((np.random.normal(0,1,len(dataRA)))*offset)
@@ -231,91 +259,91 @@ def corrupt(projectname, config_file_prefix,offset, dirname,PEs = False,  plot_a
         if 1:
             ant_az_offsets = np.cos(ant_thetas)*ant_offsets 
             ant_el_offsets = np.sin(ant_thetas)*ant_offsets
-          #  time_az_offsets = np.cos(time_thetas)*time_offsets 
-          #  time_el_offsets = np.sin(time_thetas)*time_offsets
-          #  ra_offsets = (np.cos(radec_thetas))*radec_offsets
-          #  dec_offsets = (np.sin(radec_thetas))*radec_offsets
+            time_az_offsets = np.cos(time_thetas)*time_offsets 
+            time_el_offsets = np.sin(time_thetas)*time_offsets
+            ra_offsets = (np.cos(radec_thetas))*radec_offsets
+            dec_offsets = (np.sin(radec_thetas))*radec_offsets
       #  print ra_offsets
       #  print dec_offsets
       #  print 'ra dec ave', np.mean(ra_offsets), np.mean(dec_offsets)   
       #  print 'ra dec median', np.median(ra_offsets), np.median(dec_offsets)    
 
-     #   plt.clf()
-     #   print ant_az_offsets.shape
-     #   print ant_el_offsets.shape
-     #   plt.scatter(ant_az_offsets, ant_el_offsets, color = '#ac0c4b', linewidth = 0.0)
-     #   plt.axhline(0, color = 'black')
-     #   plt.axvline(0, color = 'black')
-     #   plt.scatter(np.mean(ant_az_offsets),np.mean(ant_el_offsets) )   
-     #   plt.ylabel('elevation /degrees')
-     #   plt.xlabel('azimuth /degrees')
-     #   plt.savefig(dirname+'pointing_offsets.png') 
+        ant_az_offsets = np.tile(ant_az_offsets, 65)
+        ant_el_offsets = np.tile(ant_el_offsets, 65)
 
+        plt.clf()
+
+        print ant_az_offsets.shape
+        print ant_el_offsets.shape
+        plt.scatter(ant_az_offsets+time_az_offsets, ant_el_offsets+time_az_offsets, color = '#ac0c4b', linewidth = 0.0)
+        plt.axhline(0, color = 'black')
+        plt.axvline(0, color = 'black')
+        plt.scatter(np.mean(ant_az_offsets),np.mean(ant_el_offsets) )   
+        plt.ylabel('elevation /degrees')
+        plt.xlabel('azimuth /degrees')
+        plt.savefig(dirname+'pointing_offsets.png') 
         
-        az_tot = 0
-        el_tot = 0
-        RA_tot = 0
-        Dec_tot = 0
+        
         RA_offsets = np.array([])
         Dec_offsets = np.array([])
+        az_offsets = np.array([])
+        el_offsets = np.array([])
         # use measures to convert ra dec to az el
         print 'number of visibilities: ', len(dataRA)
-        for scan in xrange(len(dataRA)):# note len(dataRA) not equal to n visibilities if dump<scan time
+        for scan in xrange(len(dataRA)):# note len(dataRA) not equal to n visibilities if dump<scan time and it is not actually visibilities
             a = me.epoch('UTC',str(time[scan])+'s')      # a time  
             me.measure(a, 'tai') # convert to IAT    
             me.doframe(a) # set time in frame   
             antpos=me.position('ITRF',qa.quantity(pos[0,antenna[scan]],'m'),qa.quantity(pos[1,antenna[scan]],'m')\
                 ,qa.quantity(pos[2,antenna[scan]],'m'))#check ITRF
-            print antpos
             me.doframe(antpos)
             b =  me.direction('j2000', str(dataRA[scan])+'rad', str(dataDec[scan])+'rad' )
             az_el =  me.measure(b, 'azel') 
            # qa.angle(me.getvalue(me.measure(b,'azel'))['m0'])     # show as angles   
            # print qa.angle(me.getvalue(me.measure(b,'azel'))['m1'])  
-            
+            az_offsets = np.append(az_offsets, ((ant_az_offsets[antenna[scan]]/360.)*2*np.pi + (time_az_offsets[scan]/360.)*2*np.pi))
+            el_offsets = np.append(el_offsets, ((ant_el_offsets[antenna[scan]]/360.)*2*np.pi + (time_el_offsets[scan]/360.)*2*np.pi))
             az_el['m0']['value'] = (az_el['m0']['value'])+(ant_az_offsets[antenna[scan]]/360.)*2*np.pi + \
                  (time_az_offsets[scan]/360.)*2*np.pi
                     
             az_el['m1']['value'] = (az_el['m1']['value'])+(ant_el_offsets[antenna[scan]]/360.)*2*np.pi + \
                  (time_el_offsets[scan]/360.)*2*np.pi
-            #dataRA[scadataRA[scan]n]
             b2 = me.measure(az_el, 'J2000')
+          #  print (ant_az_offsets[antenna[scan]]/360.)*2*np.pi +     (time_az_offsets[scan]/360.)*2*np.pi
+          #  print dataRA[scan]
+           # print b2['m0']['value']
             RA_offset=dataRA[scan]-b2['m0']['value']
+           # print RA_offset
             Dec_offset = dataDec[scan] - b2['m1']['value']
             dataRA[scan] +=  b2['m0']['value']
             dataDec[scan] +=b2['m1']['value']
-           # az_tot+=(ant_az_offsets[antenna[scan]]/360.)*2*np.pi
-           # el_tot+=(ant_el_offsets[antenna[scan]]/360.)*2*np.pi
-           # RA_tot += RA_offset
-           # Dec_tot += Dec_offset
             RA_offsets = np.append(RA_offsets,RA_offset)
             Dec_offsets = np.append(Dec_offsets, Dec_offset)
-        print ra_offsets.shape    
+        print ant_az_offsets, ant_el_offsets, time_az_offsets, time_el_offsets
+        print RA_offsets,Dec_offsets
         plt.clf()
-        plt.scatter(ra_offsets, dec_offsets, color = '#ac0c4b', linewidth = 0.0)
+        plt.scatter((RA_offsets/(2*np.pi))*360., (Dec_offsets/(2*np.pi))*360, color = '#ac0c4b', linewidth = 0.0)
         plt.axhline(0, color = 'black')
         plt.axvline(0, color = 'black')
-        plt.scatter(np.mean(ra_offsets),np.mean(dec_offsets) )   
-        plt.ylabel('RA /degrees')
-        plt.xlabel('Dec /degrees')
+        plt.scatter(np.mean(RA_offsets),np.mean(Dec_offsets) )   
+        plt.ylabel('Delta RA /degrees')
+        plt.xlabel('Delta Dec /degrees')
         plt.savefig(dirname+'RA_Dec_offsets.png') 
         
-        nbins = 20
-        plt.clf()
-        plt.hist(ra_offsets, nbins)
-        plt.savefig(dirname+'ra_offsets.png')
-        plt.clf()
-        plt.hist(dec_offsets, nbins)
-        plt.savefig(dirname+'dec_offsets.png')
+        np.save(dirname+'RA_offsets%s'%offset, 2*np.pi*(ra_offsets/360.))
+        np.save(dirname+'Dec_offsets%s'%offset, 2*np.pi*(dec_offsets/360.))
+        
+        print RA_offsets.shape
+
+
+
+        
             
         if plot_azel:
             do_plot_azel(azimuths, elevations)
         # arrange back into correct array shape    
         data2 = np.dstack((np.array([dataRA]), np.array([dataDec])))
         data2 = np.transpose(data2, (2,0,1))
-        print '*** data'
-        print data
-        print data2
        # tb.putcol('DIRECTION', data2)
        # tb.flush()
         tb.close()
@@ -336,6 +364,7 @@ def corrupt(projectname, config_file_prefix,offset, dirname,PEs = False,  plot_a
     # sm.setgain(interval='100s', amplitude=0.01)
    # sm.corrupt()
    # sm.close()
+    sys.exit()
     
     
 def simulator_analyse(projectname, config_file_prefix, primary_beam_size, incell_size, NUM_SPW, fieldDir, dirname, layout):
@@ -388,8 +417,8 @@ def simulator_analyse(projectname, config_file_prefix, primary_beam_size, incell
     #### if needed, might be able to input with following or similar:
     ####note, in  location
     ###For some unusual types of image, one needs to know the location to be used in calculating phase rotations. For example, one can specify images to be constructed in azel, in which case, an antenna position must be chosen. 
-
-  #  im.makeimage( type = 'psf', image=output_im + 'psf' )
+    if projectname == 'PE_0.0_arcsec':
+        im.makeimage( type = 'psf', image=output_im + 'psf' )
    # params = im.fitpsf( output_im + 'psf' )
    # print 'beam fit params: ', params
     #im.makeimage( type = 'pb', image=output_im + 'pb' )
@@ -403,117 +432,27 @@ def simulator_analyse(projectname, config_file_prefix, primary_beam_size, incell
     print output_im + 'map'
      
     exportfits(imagename = output_im + 'map', fitsimage=output_im + 'map.fits')
-   # exportfits(imagename = output_im + 'psf', fitsimage=output_im + 'psf.fits')    
+    if projectname == 'PE_0.0_arcsec':
+        exportfits(imagename = output_im + 'psf', fitsimage=output_im + 'psf.fits')   
+
+
+        imview(raster={'file':  output_im + 'psf', 'colormap': 'Greyscale 2', 'colorwedge': True},out=output_im+'psf.png')
         
-        
     
     
-def do_res(offset_value, NUM_SPW, fieldDir, primary_beam_size, incell_size, dirname, layout):    
-    print 'offset: ', offset_value
-
-
-
-
-    delete = 1
-    
-    observes = 1
-    make_source_list = 1
-
-    corrupts = 1
-    PEs = 1
-    static = 30
-    time_var = 5
-    plot_azel = 0
-    remove_mean=0
-    
-    analyses = 1
-    
-
-
-    projectname1 = dirname+'ideal'
-    projectname2 = dirname+'corrupted'
-    
-    
-   #### don't need yet corrupt(projectname1, config_file_prefix, offset_value, PEs = False)
-    #analyse(projectname1,projectname1,  config_file_prefix,primary_beam_size,incell_size)
-    ##simulator_analyse(projectname1, config_file_prefix, primary_beam_size, incell_size ,NUM_SPW, fieldDir)
-    #### don't need again observe_simulator(projectname2,config_file,NUM_SPW, fieldDir)  
-    os.system('cp -r '+dirname+'vis_setup'+config_file_prefix+'ms '+projectname2+config_file_prefix+'ms')    
-    corrupt(projectname2, config_file_prefix, offset_value,dirname, PEs = True,  plot_azel = False)
-    tb.open(projectname2+config_file_prefix+'ms/POINTING', nomodify = False)# just in case
-    #direct = tb.getcol('DIRECTION')
-    #data2 = tb.getcol('TARGET')
-    #tb.putcol('DIRECTION', data2)
-    #tb.flush()
-    #tb.close()
-   # analyse(projectname2, projectname2,config_file_prefix,primary_beam_size,incell_size)
-    simulator_analyse(projectname2, config_file_prefix, primary_beam_size, incell_size ,NUM_SPW, fieldDir, dirname, layout)
-    #get diff image
-    idealfits = fits.getdata(dirname+'vis_setup'+config_file_prefix+'map.fits')
-    corruptedfits = fits.getdata(projectname2+config_file_prefix+'map.fits')
-    
-    diff_image = idealfits - corruptedfits
-    os.system('rm -f '+dirname+'diff_image.fits')
-    fits.writeto(dirname+'diff_image.fits', diff_image)
-    
-    #get residuals and image
-    vis_ideal = dirname+'vis_setup'+config_file_prefix+'ms'
-    tb.open(vis_ideal, nomodify = True)
-    ideal_corrected = tb.getcol('CORRECTED_DATA')
-    tb.close()
-    
-    vis_corrupted =projectname2+config_file_prefix+'ms'
-    tb.open(vis_corrupted, nomodify = False)
-    corrupt_corrected = tb.getcol('CORRECTED_DATA')
-    
-
-    new_ideal_corrected = ideal_corrected-corrupt_corrected
-    print '****'
-    print ideal_corrected
-    print corrupt_corrected
-    print new_ideal_corrected
-    
-    tb.putcol('CORRECTED_DATA', new_ideal_corrected)
-    tb.flush()
-    tb.close()
-    os.system('cp '+projectname2+config_file_prefix+'map.fits '+dirname+'corruptsave'+config_file_prefix+'map.fits')
-    os.system('rm -f '+projectname2+config_file_prefix+'map.fits')
-    
-    #uvsub(vis_ideal_dir+'/'+projectname1+config_file_prefix+'ms') doesn't work for this but does work on       downloaded    example data 
-    # maybe doesn't like single channel?
-    #do manually
-    
-    #analyse(projectname1, projectname1,config_file_prefix,primary_beam_size,incell_size)
-    simulator_analyse(projectname2, config_file_prefix, primary_beam_size, incell_size ,NUM_SPW, fieldDir, dirname, layout)
-    #tclean(vis=projectname1+'/'+projectname1+config_file_prefix+'ms',
-     #      imagename='vis_residuals',
-     #      gridder='standard',
-     #      imsize=[2000,2000],
-     #      cell=incell_size,
-     #      weighting='natural',
-     #      threshold='0mJy',
-     #      niter=0,
-     #      interactive=False)
-    #os.system('rm -f residuals.fits')       
-    #exportfits(imagename = 'vis_residuals.image', fitsimage='residuals.fits')
-    
-    res = fits.getdata(projectname2+config_file_prefix+'map.fits')[0][0]
-    rms = np.std(res)
-    medianabs = np.median(np.abs(res))
-    maxabs = np.max(np.abs(res))
-    maxx = (np.max(res))
-    minn = np.min(res)
-    print 'rms,maxabs: ', rms, maxabs, minn, maxx
-    plt.clf()
-    plt.imshow(res,cmap = 'gray_r')
-    plt.colorbar()
-    plt.savefig(dirname+'residuals_'+str(offset_value)+'_arcsec_normal.png')
-    
-    
-   # os.system('ds9 ideal/idealanalysed_image.fits corrupted/corruptedanalysed_image.fits diff_image.fits' )
-    return rms,maxabs, medianabs
 
 dirname= sys.argv[4]
+
+if sys.argv[3] == 'get_offsets':
+    offset_value= sys.argv[5]
+    if offset_value == str(0.0):
+        pass
+    else:
+
+        ms_name = 'setupvis'
+        config_file_prefix = '.'
+
+        corrupt(ms_name, config_file_prefix, offset_value,dirname, PEs = True,  plot_azel = False)
 
 
 if sys.argv[3] == 'make_ms':# __name__ == "__main__":
@@ -533,7 +472,7 @@ if sys.argv[3] == 'make_ms':# __name__ == "__main__":
     incell_size =0.0961 #  change to 0.09 again and change npix to 0.2*
     NUM_SPW = 1  
     layout = 'single'
-    ms_direction = 'J2000 8h00m00.031s -40d59m59.6s'
+    ms_direction = 'J2000 15h00m00.00s -45d00m00.0s'
     fieldDir = me.direction( ms_direction.split()[0], ms_direction.split()[1], ms_direction.split()[2])# prepare to     convert to degrees f
     projectname = dirname+'setupvis' 
     # make a measurementset for overwriting - might not need predict, just observe
@@ -550,15 +489,15 @@ if sys.argv[3] == 'get_residuals':
     # 1.22 for circular
     primary_beam_size*=rad2arcsec
     print 'PB, deg: ', primary_beam_size/3600.
-    incell_size =0.0961 #  change to 0.09 again and change npix to 0.2*
+    incell_size =0.0961#(2.60721e-5)*3600#  change to 0.09 again and change npix to 0.2*
     NUM_SPW = 1  
     NPIX = 512
     layout = 'single'
-    ms_direction = 'J2000 8h00m00.031s -40d59m59.6s'
+    ms_direction = 'J2000 15h00m00.00s -45d00m00.0s'
     fieldDir = me.direction( ms_direction.split()[0], ms_direction.split()[1], ms_direction.split()[2])# prepare to     convert to degrees f
     config_file_prefix = '.'
    # dirname = './'
-    errs = [0,1, 2,4,8,16,32,64,128,256]#, 4.0, 8.0, 16.0, 32.0, 128.0, 256.0]
+    errs = [0.0,1.0,2.0,  4.0, 8.0, 16.0, 32.0, 64.0 ,128.0, 256.0]
     rmsarr = np.array([])
     maxabsarr = ([]) 
     medianabsarr = np.array([])
@@ -566,11 +505,10 @@ if sys.argv[3] == 'get_residuals':
     for i in errs:
         os.system('rm -rf '+dirname+'residual.ms' )
         projectname = 'PE_%s_arcsec'%str(i)
-        print projectname
         simulator_analyse(projectname, config_file_prefix, primary_beam_size, incell_size ,NUM_SPW, fieldDir, dirname, layout)
         os.system('cp -r '+dirname+'PE_%s_arcsec.ms '%i+dirname+'residual.ms')
 #get residuals and image
-        vis_ideal = dirname+'PE_0_arcsec.ms'
+        vis_ideal = dirname+'PE_0.0_arcsec.ms'
         tb.open(vis_ideal, nomodify = True)
         ideal_corrected = tb.getcol('MODEL_DATA')
         tb.close()
@@ -596,13 +534,14 @@ if sys.argv[3] == 'get_residuals':
         maxabs = np.max(np.abs(res))
         maxx = (np.max(res))
         minn = np.min(res)
+        imview(raster={'file':dirname+'residual.map', 'colormap': 'Greyscale 2','colorwedge': True},out=dirname+'residuals_%s_arcsec.png'%i)
    
         peak_point = res[int(NPIX/2.), int(NPIX/2.)]
         print 'rms,maxabs, medianabs: ', rms, maxabs, medianabs, peak_point
-        plt.clf()
-        plt.imshow(res,cmap = 'gray_r')
-        plt.colorbar()
-        plt.savefig(dirname+'residuals_'+str(i)+'_arcsec_normal.png')
+      #  plt.clf()
+      #  plt.imshow(res,cmap = 'gray_r')
+      #  plt.colorbar()
+      #  plt.savefig(dirname+'residuals_'str(i)+'_arcsec_normal.png')
         rmsarr = np.append(rmsarr,rms)
         maxabsarr = np.append(maxabsarr, maxabs)
         medianabsarr = np.append(medianabsarr, medianabs)
@@ -610,18 +549,27 @@ if sys.argv[3] == 'get_residuals':
         print 'peak_pointarr: ', peak_pointarr
         fits.writeto(dirname+'residuals_%i_arcsec_normal.fits'%i, res)
 
+
     plt.clf()
     plt.loglog(errs ,maxabsarr, label = 'maxabs')
     plt.loglog(errs, medianabsarr, label = 'medianabs')
     plt.loglog(errs, rmsarr, label = 'rms')
-    print peak_pointarr
-    plt.loglog(errs, np.abs(peak_pointarr), label = 'abs central point')
+  
+   # plt.loglog(errs, np.abs(peak_pointarr), label = 'abs central point')
    
     plt.xlim(1, 256)
     plt.legend(loc= 'upper left')
     plt.xlabel('sigma offset (arcsec)')
     plt.ylabel('error (Jy)')
     plt.savefig(dirname+'final_plot.png')    
+
+    csvData = np.vstack((maxabsarr,rmsarr,medianabsarr)).T
+
+    with open(dirname+'errors.csv', 'w') as csvFile:
+        writer = csv.writer(csvFile)
+        writer.writerows(csvData)
+
+        csvFile.close()
 
 
     

@@ -1,2 +1,0 @@
-#format: name ra_h ra_m ra_s dec_d dec_m dec_s i
-0 08 00 00.031000 -41 25 17.11939 1.0

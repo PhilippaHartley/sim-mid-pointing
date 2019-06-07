@@ -1,6 +1,6 @@
 taskname           = "exportfits"
-imagename          =  "simulation55/residual.map"
-fitsimage          =  "simulation55/residual.map.fits"
+imagename          =  "simulation0/residual.map"
+fitsimage          =  "simulation0/residual.map.fits"
 velocity           =  False
 optical            =  False
 bitpix             =  -32
@@ -11,4 +11,4 @@ dropstokes         =  False
 stokeslast         =  True
 history            =  True
 dropdeg            =  False
-#exportfits(imagename="simulation55/residual.map",fitsimage="simulation55/residual.map.fits",velocity=False,optical=False,bitpix=-32,minpix=0,maxpix=-1,overwrite=False,dropstokes=False,stokeslast=True,history=True,dropdeg=False)
+#exportfits(imagename="simulation0/residual.map",fitsimage="simulation0/residual.map.fits",velocity=False,optical=False,bitpix=-32,minpix=0,maxpix=-1,overwrite=False,dropstokes=False,stokeslast=True,history=True,dropdeg=False)

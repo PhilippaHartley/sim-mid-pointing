@@ -4,25 +4,15 @@ This repository contains three different sets of software for running SKA pointi
 
 ## ARL
 
-...to be added 
+Requires the installation of the Algorithm Reference Library: https://github.com/SKA-ScienceDataProcessor/algorithm-reference-library. A step-through of the installation process is available at https://confluence.skatelescope.org/display/SE/Installing+and+Running+ARL.
+
 
 ## Meqtrees
-
-Notes: The current output of the meqtrees script produces very similar results to the ARL output, except that the residuals look different. This could be an image weighting issue but needs checking.
 
 Requires the installation of meqtrees: http://meqtrees.net/. Some libraries required for the installation are out of date; up-to-date libraries are included in the instructions for building from source on Ubuntu 18: https://confluence.skatelescope.org/display/SE/Installing+and+running+meqtrees
 
 Requires the installation of CASA: https://casa.nrao.edu/casadocs-devel/stable/introduction/obtaining-and-installing.
 
-
-
-Requires Python (2 or 3)
-
-#### Usage
-```
-cd meqtrees_simulation
-python run_meqtrees.py
-```
 
 ## CASA
 
@@ -30,13 +20,10 @@ Notes: CASA simulator tool contains a function for simulating pointing errors --
 
 Install CASA from https://casa.nrao.edu/casadocs-devel/stable/introduction/obtaining-and-installing. 
 
-Requires Python (2 or 3)
 
-#### Usage
-```
-cd casa_simulation
-casa -c pointing_errorsSKA.py
-```
+
+
+
 
 
 

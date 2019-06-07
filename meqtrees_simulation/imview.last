@@ -1,0 +1,7 @@
+taskname           = "imview"
+raster             =  {'colormap': 'Greyscale 2', 'file': 'simulation0/residual.map', 'colorwedge': True}
+contour            =  {}
+zoom               =  1
+axes               =  {}
+out                =  "simulation0/residuals_256.0_arcsec.png"
+#imview(raster={'colormap': 'Greyscale 2', 'file': 'simulation0/residual.map', 'colorwedge': True},contour={},zoom=1,axes={},out="simulation0/residuals_256.0_arcsec.png")

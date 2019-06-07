@@ -10,7 +10,6 @@ from Timba.TDL import TDLOptions
 import os
 import numpy as np
 import h5py
-from matplotlib import pyplot as plt
 
 import h5py
 
@@ -24,12 +23,12 @@ def runit(pe, dirname):
     # Since we want to perform this cleanup regardless of whether the script ran to completion
     # or was interrupted by an exception midway through, we use a try...finally block.
     try:
-        print pe
-        if pe==str(0):
+
+        if pe==0.0:
             print 'im 0.0'
             lerrs = np.array([0.0])
             merrs = np.array([0.0])
-            ms_name = dirname+'PE_0_arcsec.ms'
+            ms_name = dirname+'PE_0.0_arcsec.ms'
             os.system('rm -rf '+dirname+ms_name)
             os.system('cp -r '+dirname+'setupvis.ms '+ms_name)
 
@@ -38,6 +37,12 @@ def runit(pe, dirname):
             os.system('rm -rf '+ms_name)
             os.system('cp -r '+dirname+'setupvis.ms '+ms_name)
             lerrs, merrs = hdf2npy(pe)
+          #  lerrs = np.load(dirname+'RA_offsets%s.npy'%pe)
+          #  merrs = np.load(dirname+'Dec_offsets%s.npy'%pe)
+          #  lerrs*=206265
+          #  merrs*=206265
+           # print lerrs, merrs
+        #np.save('/usr/local/lib/python2.7/dist-packages/Cattery/save_sigma', float(pe))
         source_list_name = dirname+'source_list.lsm.html'
         print 'making ', ms_name
         print '========== Making config file';
@@ -48,6 +53,10 @@ def runit(pe, dirname):
         mod,ns,msg = Compile.compile_file(mqs,script, config = "turbo-sim");
         print "========== Running batch job 1";
         mod._simulate_MS(mqs,None,wait=True);
+    except: 
+        print 'Corrupted MS not made properly'
+        
+       
   ### Cleanup time
     finally:
         print "Stopping meqserver";
@@ -59,12 +68,9 @@ def runit(pe, dirname):
 
 def hdf2npy(pe):
     if 1:
-        file_name = 'pointkeep/pointingsim_singlesource_error_%sarcsec_pointingtable.hdf5'%str(pe)
-                   #  ../arl_simulation/simulation3/pointingsim_singlesource_error_2arcsec_pointingtable.hdf5 
-
+        file_name = 'pointingsim_error_arcsec%s_pointingtable.hdf5'%str(pe)
         print 'loading PEs from ', file_name
         f = h5py.File(file_name)
-        print f
         group = f['PointingTable0']
         d = group['data'].value
         d2 = np.array(d)
@@ -73,23 +79,20 @@ def hdf2npy(pe):
                 dnpy = np.dstack((dnpy,d[j][0][:,0,0,:]))
             except:
                 dnpy = d[j][0][:,0,0,:]
+
+       
+
         for i in range(65):
             try:
                 allerrs = np.vstack((allerrs,dnpy[:,:,i]))
             except:
                 allerrs = dnpy[:,:,i]
+        print allerrs.shape
         lerrs = allerrs[:,0].astype(np.float)                    ##### ARL PEs, in radians
         merrs= allerrs[:,1].astype(np.float)
         lerrs*=206265
         merrs*=206265
-        if 1:#pe==str(1):
-            plt.clf()
-            plt.hist(lerrs, bins = 50, alpha = 0.5)
-            plt.hist(merrs,bins = 50,alpha = 0.5)
-            plt.hist(lerrs-merrs, bins = 50, alpha = 0.5)
-            plt.savefig(dirname+'merrlerr.png')
-            plt.clf()
-            print 'mean, median: ', np.mean(merrs), np.mean(lerrs), np.median(merrs), np.median(lerrs)
+        print lerrs.shape, merrs.shape
         f.close()
         return lerrs, merrs
 
@@ -104,6 +107,7 @@ def make_config_file(lerrs, merrs,ms_name, source_list_name):
     else:
         lerrs =     ' '.join(map(str,lerrs))
         merrs =     ' '.join(map(str,merrs))
+    print 'l and m ', lerrs, merrs
     os.system('rm -rf PEs.tdl.conf')
     f = open("PEs.tdl.conf","w")
     f.write('[turbo-sim]\n')
@@ -137,6 +141,7 @@ def make_config_file(lerrs, merrs,ms_name, source_list_name):
     f.write('model_type = use_circular_aperture\n')
     f.write('analytic_beams.circular_aperture_beam.bf = 1.0\n')
     f.write('analytic_beams.circular_aperture_beam.dish_sizes = 15\n')
+
     f.write('me.epe_enable = 1\n')
     f.write('oms_pointing_errors.station_subset = all\n')
     f.write('oms_pointing_errors.pe_l.error_model = ListOfValues\n')
@@ -175,7 +180,7 @@ def make_config_file(lerrs, merrs,ms_name, source_list_name):
     f.write('ms_sel.ms_taql_str = None\n')
     f.write('ms_sel.output_column = MODEL_DATA\n')
     f.write('ms_sel.select_channels = 0\n')
-    f.write('ms_sel.tile_size = 8\n')
+    f.write('ms_sel.tile_size = 65\n')
     f.close()
 
 
@@ -194,7 +199,7 @@ if __name__ == '__main__':
      
     #errs = [1.0, 2.0, 4.0, 8.0, 16.0, 32.0,64.0, 128.0, 256.0]
     #for i in errs:
-    i = sys.argv[1]
+    i = np.float(sys.argv[1])
     print i
     dirname= sys.argv[2]
     runit(i, dirname)
