@@ -1,0 +1,227 @@
+2019-06-07 15:53:17	INFO	::casa	
+2019-06-07 15:53:17	INFO	::casa	Checking telemetry submission interval
+2019-06-07 15:53:17	INFO	::casa	Telemetry submit interval not reached. Not submitting data.
+2019-06-07 15:53:17	INFO	::casa	Next telemetry data submission in: 4 days, 17:10:34.801276
+2019-06-07 15:53:17	INFO	::casa	CASA Version 5.4.1-32  
+2019-06-07 15:53:19	WARN	componentlist::close	componentlist closed
+2019-06-07 15:53:20	INFO	NewMSSimulator::initAnt() 	Using global coordinates for the antennas
+2019-06-07 15:53:20	INFO	NewMSSimulator::initAnt() 	Added rows to ANTENNA table
+2019-06-07 15:53:20	INFO	MSsimulator::initSpWindows() 	Creating new spectral window IF0, ID 1
+2019-06-07 15:53:20	INFO	MSsimulator::initFeeds() 	Added rows to FEED table
+2019-06-07 15:53:20	INFO	simulator::settimes()	Times 
+2019-06-07 15:53:20	INFO	simulator::settimes()+	     Integration time 600s
+2019-06-07 15:53:20	INFO	simulator::settimes()	     Times will be interpreted as hour angles for first source
+2019-06-07 15:53:20	INFO	NewMSSimulator::observe()	First source: ptcentre @ 15:00:00.00   -45.00.00.00       J2000
+2019-06-07 15:53:20	INFO	NewMSSimulator::observe()+	Full time range: 09-Oct-1995/06:16:53.8 -- 09-Oct-1995/06:26:53.8 TAI with int = 600
+2019-06-07 15:53:20	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-06-07 15:53:21	INFO	NewMSSimulator::observe()	First source: ptcentre @ 15:00:00.00   -45.00.00.00       J2000
+2019-06-07 15:53:21	INFO	NewMSSimulator::observe()+	Full time range: 09-Oct-1995/06:28:08.8 -- 09-Oct-1995/06:38:08.8 TAI with int = 600
+2019-06-07 15:53:21	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-06-07 15:53:21	INFO	NewMSSimulator::observe()	First source: ptcentre @ 15:00:00.00   -45.00.00.00       J2000
+2019-06-07 15:53:21	INFO	NewMSSimulator::observe()+	Full time range: 09-Oct-1995/06:39:23.8 -- 09-Oct-1995/06:49:23.8 TAI with int = 600
+2019-06-07 15:53:21	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-06-07 15:53:21	INFO	NewMSSimulator::observe()	First source: ptcentre @ 15:00:00.00   -45.00.00.00       J2000
+2019-06-07 15:53:21	INFO	NewMSSimulator::observe()+	Full time range: 09-Oct-1995/06:50:38.8 -- 09-Oct-1995/07:00:38.8 TAI with int = 600
+2019-06-07 15:53:21	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-06-07 15:53:21	INFO	NewMSSimulator::observe()	First source: ptcentre @ 15:00:00.00   -45.00.00.00       J2000
+2019-06-07 15:53:21	INFO	NewMSSimulator::observe()+	Full time range: 09-Oct-1995/07:01:53.8 -- 09-Oct-1995/07:11:53.8 TAI with int = 600
+2019-06-07 15:53:21	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-06-07 15:53:21	INFO	NewMSSimulator::observe()	First source: ptcentre @ 15:00:00.00   -45.00.00.00       J2000
+2019-06-07 15:53:21	INFO	NewMSSimulator::observe()+	Full time range: 09-Oct-1995/07:13:08.8 -- 09-Oct-1995/07:23:08.8 TAI with int = 600
+2019-06-07 15:53:21	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-06-07 15:53:21	INFO	NewMSSimulator::observe()	First source: ptcentre @ 15:00:00.00   -45.00.00.00       J2000
+2019-06-07 15:53:21	INFO	NewMSSimulator::observe()+	Full time range: 09-Oct-1995/07:24:23.8 -- 09-Oct-1995/07:34:23.8 TAI with int = 600
+2019-06-07 15:53:21	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-06-07 15:53:22	INFO	NewMSSimulator::observe()	First source: ptcentre @ 15:00:00.00   -45.00.00.00       J2000
+2019-06-07 15:53:22	INFO	NewMSSimulator::observe()+	Full time range: 09-Oct-1995/07:35:38.8 -- 09-Oct-1995/07:45:38.8 TAI with int = 600
+2019-06-07 15:53:22	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-06-07 15:53:22	INFO	NewMSSimulator::observe()	First source: ptcentre @ 15:00:00.00   -45.00.00.00       J2000
+2019-06-07 15:53:22	INFO	NewMSSimulator::observe()+	Full time range: 09-Oct-1995/07:46:53.8 -- 09-Oct-1995/07:56:53.8 TAI with int = 600
+2019-06-07 15:53:22	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-06-07 15:53:22	INFO	NewMSSimulator::observe()	First source: ptcentre @ 15:00:00.00   -45.00.00.00       J2000
+2019-06-07 15:53:22	INFO	NewMSSimulator::observe()+	Full time range: 09-Oct-1995/07:58:08.8 -- 09-Oct-1995/08:08:08.8 TAI with int = 600
+2019-06-07 15:53:22	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-06-07 15:53:22	INFO	NewMSSimulator::observe()	First source: ptcentre @ 15:00:00.00   -45.00.00.00       J2000
+2019-06-07 15:53:22	INFO	NewMSSimulator::observe()+	Full time range: 09-Oct-1995/08:09:23.8 -- 09-Oct-1995/08:19:23.8 TAI with int = 600
+2019-06-07 15:53:22	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-06-07 15:53:22	INFO	NewMSSimulator::observe()	First source: ptcentre @ 15:00:00.00   -45.00.00.00       J2000
+2019-06-07 15:53:22	INFO	NewMSSimulator::observe()+	Full time range: 09-Oct-1995/08:20:38.8 -- 09-Oct-1995/08:30:38.8 TAI with int = 600
+2019-06-07 15:53:22	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-06-07 15:53:22	INFO	NewMSSimulator::observe()	First source: ptcentre @ 15:00:00.00   -45.00.00.00       J2000
+2019-06-07 15:53:22	INFO	NewMSSimulator::observe()+	Full time range: 09-Oct-1995/08:31:53.8 -- 09-Oct-1995/08:41:53.8 TAI with int = 600
+2019-06-07 15:53:22	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-06-07 15:53:23	INFO	NewMSSimulator::observe()	First source: ptcentre @ 15:00:00.00   -45.00.00.00       J2000
+2019-06-07 15:53:23	INFO	NewMSSimulator::observe()+	Full time range: 09-Oct-1995/08:43:08.8 -- 09-Oct-1995/08:53:08.8 TAI with int = 600
+2019-06-07 15:53:23	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-06-07 15:53:23	INFO	NewMSSimulator::observe()	First source: ptcentre @ 15:00:00.00   -45.00.00.00       J2000
+2019-06-07 15:53:23	INFO	NewMSSimulator::observe()+	Full time range: 09-Oct-1995/08:54:23.8 -- 09-Oct-1995/09:04:23.8 TAI with int = 600
+2019-06-07 15:53:23	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-06-07 15:53:23	INFO	NewMSSimulator::observe()	First source: ptcentre @ 15:00:00.00   -45.00.00.00       J2000
+2019-06-07 15:53:23	INFO	NewMSSimulator::observe()+	Full time range: 09-Oct-1995/09:05:38.8 -- 09-Oct-1995/09:15:38.8 TAI with int = 600
+2019-06-07 15:53:23	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-06-07 15:53:23	INFO	NewMSSimulator::observe()	First source: ptcentre @ 15:00:00.00   -45.00.00.00       J2000
+2019-06-07 15:53:23	INFO	NewMSSimulator::observe()+	Full time range: 09-Oct-1995/09:16:53.8 -- 09-Oct-1995/09:26:53.8 TAI with int = 600
+2019-06-07 15:53:23	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-06-07 15:53:23	INFO	NewMSSimulator::observe()	First source: ptcentre @ 15:00:00.00   -45.00.00.00       J2000
+2019-06-07 15:53:23	INFO	NewMSSimulator::observe()+	Full time range: 09-Oct-1995/09:28:08.8 -- 09-Oct-1995/09:38:08.8 TAI with int = 600
+2019-06-07 15:53:23	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-06-07 15:53:23	INFO	NewMSSimulator::observe()	First source: ptcentre @ 15:00:00.00   -45.00.00.00       J2000
+2019-06-07 15:53:23	INFO	NewMSSimulator::observe()+	Full time range: 09-Oct-1995/09:39:23.8 -- 09-Oct-1995/09:49:23.8 TAI with int = 600
+2019-06-07 15:53:23	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-06-07 15:53:24	INFO	NewMSSimulator::observe()	First source: ptcentre @ 15:00:00.00   -45.00.00.00       J2000
+2019-06-07 15:53:24	INFO	NewMSSimulator::observe()+	Full time range: 09-Oct-1995/09:50:38.8 -- 09-Oct-1995/10:00:38.8 TAI with int = 600
+2019-06-07 15:53:24	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-06-07 15:53:24	INFO	NewMSSimulator::observe()	First source: ptcentre @ 15:00:00.00   -45.00.00.00       J2000
+2019-06-07 15:53:24	INFO	NewMSSimulator::observe()+	Full time range: 09-Oct-1995/10:01:53.8 -- 09-Oct-1995/10:11:53.8 TAI with int = 600
+2019-06-07 15:53:24	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-06-07 15:53:24	INFO	NewMSSimulator::observe()	First source: ptcentre @ 15:00:00.00   -45.00.00.00       J2000
+2019-06-07 15:53:24	INFO	NewMSSimulator::observe()+	Full time range: 09-Oct-1995/10:13:08.8 -- 09-Oct-1995/10:23:08.8 TAI with int = 600
+2019-06-07 15:53:24	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-06-07 15:53:24	INFO	NewMSSimulator::observe()	First source: ptcentre @ 15:00:00.00   -45.00.00.00       J2000
+2019-06-07 15:53:24	INFO	NewMSSimulator::observe()+	Full time range: 09-Oct-1995/10:24:23.8 -- 09-Oct-1995/10:34:23.8 TAI with int = 600
+2019-06-07 15:53:24	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-06-07 15:53:24	INFO	NewMSSimulator::observe()	First source: ptcentre @ 15:00:00.00   -45.00.00.00       J2000
+2019-06-07 15:53:24	INFO	NewMSSimulator::observe()+	Full time range: 09-Oct-1995/10:35:38.8 -- 09-Oct-1995/10:45:38.8 TAI with int = 600
+2019-06-07 15:53:24	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-06-07 15:53:24	INFO	NewMSSimulator::observe()	First source: ptcentre @ 15:00:00.00   -45.00.00.00       J2000
+2019-06-07 15:53:24	INFO	NewMSSimulator::observe()+	Full time range: 09-Oct-1995/10:46:53.8 -- 09-Oct-1995/10:56:53.8 TAI with int = 600
+2019-06-07 15:53:24	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-06-07 15:53:25	INFO	NewMSSimulator::observe()	First source: ptcentre @ 15:00:00.00   -45.00.00.00       J2000
+2019-06-07 15:53:25	INFO	NewMSSimulator::observe()+	Full time range: 09-Oct-1995/10:58:08.8 -- 09-Oct-1995/11:08:08.8 TAI with int = 600
+2019-06-07 15:53:25	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-06-07 15:53:25	INFO	NewMSSimulator::observe()	First source: ptcentre @ 15:00:00.00   -45.00.00.00       J2000
+2019-06-07 15:53:25	INFO	NewMSSimulator::observe()+	Full time range: 09-Oct-1995/11:09:23.8 -- 09-Oct-1995/11:19:23.8 TAI with int = 600
+2019-06-07 15:53:25	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-06-07 15:53:25	INFO	NewMSSimulator::observe()	First source: ptcentre @ 15:00:00.00   -45.00.00.00       J2000
+2019-06-07 15:53:25	INFO	NewMSSimulator::observe()+	Full time range: 09-Oct-1995/11:20:38.8 -- 09-Oct-1995/11:30:38.8 TAI with int = 600
+2019-06-07 15:53:25	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-06-07 15:53:25	INFO	NewMSSimulator::observe()	First source: ptcentre @ 15:00:00.00   -45.00.00.00       J2000
+2019-06-07 15:53:25	INFO	NewMSSimulator::observe()+	Full time range: 09-Oct-1995/11:31:53.8 -- 09-Oct-1995/11:41:53.8 TAI with int = 600
+2019-06-07 15:53:25	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-06-07 15:53:25	INFO	NewMSSimulator::observe()	First source: ptcentre @ 15:00:00.00   -45.00.00.00       J2000
+2019-06-07 15:53:25	INFO	NewMSSimulator::observe()+	Full time range: 09-Oct-1995/11:43:08.8 -- 09-Oct-1995/11:53:08.8 TAI with int = 600
+2019-06-07 15:53:25	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-06-07 15:53:25	INFO	NewMSSimulator::observe()	First source: ptcentre @ 15:00:00.00   -45.00.00.00       J2000
+2019-06-07 15:53:25	INFO	NewMSSimulator::observe()+	Full time range: 09-Oct-1995/11:54:23.8 -- 09-Oct-1995/12:04:23.8 TAI with int = 600
+2019-06-07 15:53:25	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-06-07 15:53:26	INFO	NewMSSimulator::observe()	First source: ptcentre @ 15:00:00.00   -45.00.00.00       J2000
+2019-06-07 15:53:26	INFO	NewMSSimulator::observe()+	Full time range: 09-Oct-1995/12:05:38.8 -- 09-Oct-1995/12:15:38.8 TAI with int = 600
+2019-06-07 15:53:26	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-06-07 15:53:26	INFO	NewMSSimulator::observe()	First source: ptcentre @ 15:00:00.00   -45.00.00.00       J2000
+2019-06-07 15:53:26	INFO	NewMSSimulator::observe()+	Full time range: 09-Oct-1995/12:16:53.8 -- 09-Oct-1995/12:26:53.8 TAI with int = 600
+2019-06-07 15:53:26	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-06-07 15:53:26	INFO	NewMSSimulator::observe()	First source: ptcentre @ 15:00:00.00   -45.00.00.00       J2000
+2019-06-07 15:53:26	INFO	NewMSSimulator::observe()+	Full time range: 09-Oct-1995/12:28:08.8 -- 09-Oct-1995/12:38:08.8 TAI with int = 600
+2019-06-07 15:53:26	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-06-07 15:53:26	INFO	NewMSSimulator::observe()	First source: ptcentre @ 15:00:00.00   -45.00.00.00       J2000
+2019-06-07 15:53:26	INFO	NewMSSimulator::observe()+	Full time range: 09-Oct-1995/12:39:23.8 -- 09-Oct-1995/12:49:23.8 TAI with int = 600
+2019-06-07 15:53:26	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-06-07 15:53:26	INFO	NewMSSimulator::observe()	First source: ptcentre @ 15:00:00.00   -45.00.00.00       J2000
+2019-06-07 15:53:26	INFO	NewMSSimulator::observe()+	Full time range: 09-Oct-1995/12:50:38.8 -- 09-Oct-1995/13:00:38.8 TAI with int = 600
+2019-06-07 15:53:26	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-06-07 15:53:26	INFO	NewMSSimulator::observe()	First source: ptcentre @ 15:00:00.00   -45.00.00.00       J2000
+2019-06-07 15:53:26	INFO	NewMSSimulator::observe()+	Full time range: 09-Oct-1995/13:01:53.8 -- 09-Oct-1995/13:11:53.8 TAI with int = 600
+2019-06-07 15:53:26	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-06-07 15:53:27	INFO	NewMSSimulator::observe()	First source: ptcentre @ 15:00:00.00   -45.00.00.00       J2000
+2019-06-07 15:53:27	INFO	NewMSSimulator::observe()+	Full time range: 09-Oct-1995/13:13:08.8 -- 09-Oct-1995/13:23:08.8 TAI with int = 600
+2019-06-07 15:53:27	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-06-07 15:53:27	INFO	NewMSSimulator::observe()	First source: ptcentre @ 15:00:00.00   -45.00.00.00       J2000
+2019-06-07 15:53:27	INFO	NewMSSimulator::observe()+	Full time range: 09-Oct-1995/13:24:23.8 -- 09-Oct-1995/13:34:23.8 TAI with int = 600
+2019-06-07 15:53:27	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-06-07 15:53:27	INFO	NewMSSimulator::observe()	First source: ptcentre @ 15:00:00.00   -45.00.00.00       J2000
+2019-06-07 15:53:27	INFO	NewMSSimulator::observe()+	Full time range: 09-Oct-1995/13:35:38.8 -- 09-Oct-1995/13:45:38.8 TAI with int = 600
+2019-06-07 15:53:27	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-06-07 15:53:27	INFO	NewMSSimulator::observe()	First source: ptcentre @ 15:00:00.00   -45.00.00.00       J2000
+2019-06-07 15:53:27	INFO	NewMSSimulator::observe()+	Full time range: 09-Oct-1995/13:46:53.8 -- 09-Oct-1995/13:56:53.8 TAI with int = 600
+2019-06-07 15:53:27	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-06-07 15:53:27	INFO	NewMSSimulator::observe()	First source: ptcentre @ 15:00:00.00   -45.00.00.00       J2000
+2019-06-07 15:53:27	INFO	NewMSSimulator::observe()+	Full time range: 09-Oct-1995/13:58:08.8 -- 09-Oct-1995/14:08:08.8 TAI with int = 600
+2019-06-07 15:53:27	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-06-07 15:53:27	INFO	NewMSSimulator::observe()	First source: ptcentre @ 15:00:00.00   -45.00.00.00       J2000
+2019-06-07 15:53:27	INFO	NewMSSimulator::observe()+	Full time range: 09-Oct-1995/14:09:23.8 -- 09-Oct-1995/14:19:23.8 TAI with int = 600
+2019-06-07 15:53:27	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-06-07 15:53:28	INFO	NewMSSimulator::observe()	First source: ptcentre @ 15:00:00.00   -45.00.00.00       J2000
+2019-06-07 15:53:28	INFO	NewMSSimulator::observe()+	Full time range: 09-Oct-1995/14:20:38.8 -- 09-Oct-1995/14:30:38.8 TAI with int = 600
+2019-06-07 15:53:28	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-06-07 15:53:28	INFO	NewMSSimulator::observe()	First source: ptcentre @ 15:00:00.00   -45.00.00.00       J2000
+2019-06-07 15:53:28	INFO	NewMSSimulator::observe()+	Full time range: 09-Oct-1995/14:31:53.8 -- 09-Oct-1995/14:41:53.8 TAI with int = 600
+2019-06-07 15:53:28	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-06-07 15:53:28	INFO	NewMSSimulator::observe()	First source: ptcentre @ 15:00:00.00   -45.00.00.00       J2000
+2019-06-07 15:53:28	INFO	NewMSSimulator::observe()+	Full time range: 09-Oct-1995/14:43:08.8 -- 09-Oct-1995/14:53:08.8 TAI with int = 600
+2019-06-07 15:53:28	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-06-07 15:53:28	INFO	NewMSSimulator::observe()	First source: ptcentre @ 15:00:00.00   -45.00.00.00       J2000
+2019-06-07 15:53:28	INFO	NewMSSimulator::observe()+	Full time range: 09-Oct-1995/14:54:23.8 -- 09-Oct-1995/15:04:23.8 TAI with int = 600
+2019-06-07 15:53:28	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-06-07 15:53:28	INFO	NewMSSimulator::observe()	First source: ptcentre @ 15:00:00.00   -45.00.00.00       J2000
+2019-06-07 15:53:28	INFO	NewMSSimulator::observe()+	Full time range: 09-Oct-1995/15:05:38.8 -- 09-Oct-1995/15:15:38.8 TAI with int = 600
+2019-06-07 15:53:28	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-06-07 15:53:28	INFO	NewMSSimulator::observe()	First source: ptcentre @ 15:00:00.00   -45.00.00.00       J2000
+2019-06-07 15:53:28	INFO	NewMSSimulator::observe()+	Full time range: 09-Oct-1995/15:16:53.8 -- 09-Oct-1995/15:26:53.8 TAI with int = 600
+2019-06-07 15:53:28	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-06-07 15:53:29	INFO	NewMSSimulator::observe()	First source: ptcentre @ 15:00:00.00   -45.00.00.00       J2000
+2019-06-07 15:53:29	INFO	NewMSSimulator::observe()+	Full time range: 09-Oct-1995/15:28:08.8 -- 09-Oct-1995/15:38:08.8 TAI with int = 600
+2019-06-07 15:53:29	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-06-07 15:53:29	INFO	NewMSSimulator::observe()	First source: ptcentre @ 15:00:00.00   -45.00.00.00       J2000
+2019-06-07 15:53:29	INFO	NewMSSimulator::observe()+	Full time range: 09-Oct-1995/15:39:23.8 -- 09-Oct-1995/15:49:23.8 TAI with int = 600
+2019-06-07 15:53:29	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-06-07 15:53:29	INFO	NewMSSimulator::observe()	First source: ptcentre @ 15:00:00.00   -45.00.00.00       J2000
+2019-06-07 15:53:29	INFO	NewMSSimulator::observe()+	Full time range: 09-Oct-1995/15:50:38.8 -- 09-Oct-1995/16:00:38.8 TAI with int = 600
+2019-06-07 15:53:29	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-06-07 15:53:29	INFO	NewMSSimulator::observe()	First source: ptcentre @ 15:00:00.00   -45.00.00.00       J2000
+2019-06-07 15:53:29	INFO	NewMSSimulator::observe()+	Full time range: 09-Oct-1995/16:01:53.8 -- 09-Oct-1995/16:11:53.8 TAI with int = 600
+2019-06-07 15:53:29	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-06-07 15:53:29	INFO	NewMSSimulator::observe()	First source: ptcentre @ 15:00:00.00   -45.00.00.00       J2000
+2019-06-07 15:53:29	INFO	NewMSSimulator::observe()+	Full time range: 09-Oct-1995/16:13:08.8 -- 09-Oct-1995/16:23:08.8 TAI with int = 600
+2019-06-07 15:53:29	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-06-07 15:53:29	INFO	NewMSSimulator::observe()	First source: ptcentre @ 15:00:00.00   -45.00.00.00       J2000
+2019-06-07 15:53:29	INFO	NewMSSimulator::observe()+	Full time range: 09-Oct-1995/16:24:23.8 -- 09-Oct-1995/16:34:23.8 TAI with int = 600
+2019-06-07 15:53:29	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-06-07 15:53:30	INFO	NewMSSimulator::observe()	First source: ptcentre @ 15:00:00.00   -45.00.00.00       J2000
+2019-06-07 15:53:30	INFO	NewMSSimulator::observe()+	Full time range: 09-Oct-1995/16:35:38.8 -- 09-Oct-1995/16:45:38.8 TAI with int = 600
+2019-06-07 15:53:30	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-06-07 15:53:30	INFO	NewMSSimulator::observe()	First source: ptcentre @ 15:00:00.00   -45.00.00.00       J2000
+2019-06-07 15:53:30	INFO	NewMSSimulator::observe()+	Full time range: 09-Oct-1995/16:46:53.8 -- 09-Oct-1995/16:56:53.8 TAI with int = 600
+2019-06-07 15:53:30	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-06-07 15:53:30	INFO	NewMSSimulator::observe()	First source: ptcentre @ 15:00:00.00   -45.00.00.00       J2000
+2019-06-07 15:53:30	INFO	NewMSSimulator::observe()+	Full time range: 09-Oct-1995/16:58:08.8 -- 09-Oct-1995/17:08:08.8 TAI with int = 600
+2019-06-07 15:53:30	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-06-07 15:53:30	INFO	NewMSSimulator::observe()	First source: ptcentre @ 15:00:00.00   -45.00.00.00       J2000
+2019-06-07 15:53:30	INFO	NewMSSimulator::observe()+	Full time range: 09-Oct-1995/17:09:23.8 -- 09-Oct-1995/17:19:23.8 TAI with int = 600
+2019-06-07 15:53:30	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-06-07 15:53:30	INFO	NewMSSimulator::observe()	First source: ptcentre @ 15:00:00.00   -45.00.00.00       J2000
+2019-06-07 15:53:30	INFO	NewMSSimulator::observe()+	Full time range: 09-Oct-1995/17:20:38.8 -- 09-Oct-1995/17:30:38.8 TAI with int = 600
+2019-06-07 15:53:30	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-06-07 15:53:30	INFO	NewMSSimulator::observe()	First source: ptcentre @ 15:00:00.00   -45.00.00.00       J2000
+2019-06-07 15:53:30	INFO	NewMSSimulator::observe()+	Full time range: 09-Oct-1995/17:31:53.8 -- 09-Oct-1995/17:41:53.8 TAI with int = 600
+2019-06-07 15:53:30	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-06-07 15:53:31	INFO	NewMSSimulator::observe()	First source: ptcentre @ 15:00:00.00   -45.00.00.00       J2000
+2019-06-07 15:53:31	INFO	NewMSSimulator::observe()+	Full time range: 09-Oct-1995/17:43:08.8 -- 09-Oct-1995/17:53:08.8 TAI with int = 600
+2019-06-07 15:53:31	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-06-07 15:53:31	INFO	NewMSSimulator::observe()	First source: ptcentre @ 15:00:00.00   -45.00.00.00       J2000
+2019-06-07 15:53:31	INFO	NewMSSimulator::observe()+	Full time range: 09-Oct-1995/17:54:23.8 -- 09-Oct-1995/18:04:23.8 TAI with int = 600
+2019-06-07 15:53:31	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-06-07 15:53:31	INFO	NewMSSimulator::observe()	First source: ptcentre @ 15:00:00.00   -45.00.00.00       J2000
+2019-06-07 15:53:31	INFO	NewMSSimulator::observe()+	Full time range: 09-Oct-1995/18:05:38.8 -- 09-Oct-1995/18:15:38.8 TAI with int = 600
+2019-06-07 15:53:31	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-06-07 15:53:31	INFO	NewMSSimulator::observe()	First source: ptcentre @ 15:00:00.00   -45.00.00.00       J2000
+2019-06-07 15:53:31	INFO	NewMSSimulator::observe()+	Full time range: 09-Oct-1995/18:16:53.8 -- 09-Oct-1995/18:26:53.8 TAI with int = 600
+2019-06-07 15:53:31	INFO	NewMSSimulator::observe()	Calculating a total of 1 integrations
+2019-06-07 15:53:32	INFO	Simulator::setvp()	Setting voltage pattern parameters
+2019-06-07 15:53:32	INFO	Simulator::setvp()	Using user defined voltage patterns in Table simulation0/setupvis.ska1mid.-vp.tab
+2019-06-07 15:53:32	INFO	Simulator::predict() 	Predicting visibilities using model: [] and componentList: simulation0/points_grid.cl
+2019-06-07 15:53:32	INFO	Simulator::predict() 	The data column will be replaced
+2019-06-07 15:53:33	INFO	Simulator::getVPRecord 	Loading Voltage Pattern information from simulation0/setupvis.ska1mid.-vp.tab
+2019-06-07 15:53:33	INFO	vpmanager::loadfromtable	Loaded 1 VP definitions and 42 VP default settings from table simulation0/setupvis.ska1mid.-vp.tab
+2019-06-07 15:53:33	INFO	Simulator::getVPRecord 	Temporary alert : The state of the vpmanager tool has been modified by loading these primary beam models. If any of your scripts rely on the vpmanager state being preserved throughout your CASA session, please use vp.saveastable() and vp.loadfromtable() as needed. 
+2019-06-07 15:53:33	INFO	Simulator::createSkyEquation() 	Synthesis gridding 
+2019-06-07 15:53:33	INFO	Simulator::createSkyEquation() 	Fourier transforms will use image centers as tangent points
+2019-06-07 15:53:33	INFO	BeamSkyJones::summary	Beam Summary: 
+2019-06-07 15:53:33	INFO	BeamSkyJones::summary	Model 1 for SKA1-MID ant=-1 feed=-1 uses PB: AIRY
+2019-06-07 15:53:33	INFO	PBMath1D::summary	Using AIRY PB Class 
+2019-06-07 15:53:33	INFO	PBMathInterface::summary	These parameters are for Voltage Pattern
+2019-06-07 15:53:33	INFO	PBMathInterface::summary	No Beam Squint
+2019-06-07 15:53:33	INFO	PBMath1D::summary	Max Radius at 1 GHz: 300 arcmin 
+2019-06-07 15:53:33	INFO	PBMath1DAiry::summary	   Dish Diameter: 15 m 
+2019-06-07 15:53:33	INFO	PBMath1DAiry::summary	Blocked Diameter: 2.5 m 
+2019-06-07 15:53:37	INFO	Simulator::reset() 	Resetting all visibility corruption components
+2019-06-07 15:53:37	INFO	Simulator::reset() 	Reset all image-plane corruption components
