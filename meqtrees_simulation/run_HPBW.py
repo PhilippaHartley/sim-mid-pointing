@@ -37,6 +37,12 @@ def runit(pe, dirname):
             os.system('rm -rf '+ms_name)
             os.system('cp -r '+dirname+'setupvis.ms '+ms_name)
             lerrs, merrs = hdf2npy(pe)
+          #  lerrs = np.load(dirname+'RA_offsets%s.npy'%pe)
+          #  merrs = np.load(dirname+'Dec_offsets%s.npy'%pe)
+          #  lerrs*=206265
+          #  merrs*=206265
+           # print lerrs, merrs
+        #np.save('/usr/local/lib/python2.7/dist-packages/Cattery/save_sigma', float(pe))
         source_list_name = dirname+'source_list.lsm.html'
         print 'making ', ms_name
         print '========== Making config file';
@@ -47,6 +53,8 @@ def runit(pe, dirname):
         mod,ns,msg = Compile.compile_file(mqs,script, config = "turbo-sim");
         print "========== Running batch job 1";
         mod._simulate_MS(mqs,None,wait=True);
+    except: 
+        print 'Corrupted MS not made properly'
         
        
   ### Cleanup time
@@ -79,10 +87,12 @@ def hdf2npy(pe):
                 allerrs = np.vstack((allerrs,dnpy[:,:,i]))
             except:
                 allerrs = dnpy[:,:,i]
+        print allerrs.shape
         lerrs = allerrs[:,0].astype(np.float)                    ##### ARL PEs, in radians
         merrs= allerrs[:,1].astype(np.float)
         lerrs*=206265
         merrs*=206265
+        print lerrs.shape, merrs.shape
         f.close()
         return lerrs, merrs
 
@@ -97,6 +107,7 @@ def make_config_file(lerrs, merrs,ms_name, source_list_name):
     else:
         lerrs =     ' '.join(map(str,lerrs))
         merrs =     ' '.join(map(str,merrs))
+    print 'l and m ', lerrs, merrs
     os.system('rm -rf PEs.tdl.conf')
     f = open("PEs.tdl.conf","w")
     f.write('[turbo-sim]\n')
@@ -130,6 +141,7 @@ def make_config_file(lerrs, merrs,ms_name, source_list_name):
     f.write('model_type = use_circular_aperture\n')
     f.write('analytic_beams.circular_aperture_beam.bf = 1.0\n')
     f.write('analytic_beams.circular_aperture_beam.dish_sizes = 15\n')
+
     f.write('me.epe_enable = 1\n')
     f.write('oms_pointing_errors.station_subset = all\n')
     f.write('oms_pointing_errors.pe_l.error_model = ListOfValues\n')
@@ -168,7 +180,7 @@ def make_config_file(lerrs, merrs,ms_name, source_list_name):
     f.write('ms_sel.ms_taql_str = None\n')
     f.write('ms_sel.output_column = MODEL_DATA\n')
     f.write('ms_sel.select_channels = 0\n')
-    f.write('ms_sel.tile_size = 8\n')
+    f.write('ms_sel.tile_size = 65\n')
     f.close()
 
 

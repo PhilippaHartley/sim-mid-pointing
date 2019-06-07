@@ -132,8 +132,6 @@ meqmaker.add_uv_jones('G','gains/phases',oms_gain_models);
 # P - Parallactic angle
 meqmaker.add_uv_jones('iP','feed angle correction',Rotation('iP'));
 
-
-
 # very important -- insert meqmaker's options properly
 TDLCompileOptions(*meqmaker.compile_options());
 
@@ -162,7 +160,7 @@ def _recompute_noise (dum):
 for opt in _sefd_options + [_sefd_menu]:
   opt.when_changed(_recompute_noise);
   
-TDLCompileOption("random_seed","Random generator seed",["time",0],more=int,
+TDLCompileOption("random_seed","Random generator seed",[1],more=int,
   doc="""<P>To get a reproducible distribution for noise (and other "random" errors), supply a fixed seed value 
   here. The default setting of "time" uses the current time to seed the generator, so the distribution
   is different upon every run.</P>""");
@@ -236,6 +234,7 @@ def _simulate_MS (mqs,parent,wait=False):
   mqs.clearcache('VisDataMux');
   mqs.execute('VisDataMux',mssel.create_io_request(),wait=wait);
   meqmaker.close();
+  #importPlugin('result_plotter');won't work here
   
 _tdl_job_1_simulate_MS = _simulate_MS
 
