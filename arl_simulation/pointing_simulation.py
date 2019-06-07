@@ -81,7 +81,8 @@ if __name__ == '__main__':
     parser.add_argument('--tsys', type=float, default=0.0, help='System temperature: standard 20K')
     parser.add_argument('--scale', type=float, nargs=2, default=[1.0, 1.0], help='Scale errors by this amount')
     parser.add_argument('--use_radec', type=str, default="False", help='Calculate in RADEC (false)?')
-    
+    parser.add_argument('--use_natural', type=str, default="False", help='Use natural weighting?')
+
     args = parser.parse_args()
     
     scale = numpy.array(args.scale)
@@ -89,7 +90,8 @@ if __name__ == '__main__':
     
     use_agg = args.use_agg == "True"
     use_radec = args.use_radec == "True"
-    
+    use_natural = args.use_natural == "True"
+
     if use_agg:
         import matplotlib as mpl
         
@@ -232,8 +234,12 @@ if __name__ == '__main__':
     psf = create_image_from_visibility(vis, npixel=npixel, frequency=frequency,
                                        nchan=nfreqwin, cellsize=cellsize, phasecentre=phasecentre,
                                        polarisation_frame=PolarisationFrame("stokesI"))
-    vis = weight_list_serial_workflow([vis], [psf])[0]
-    block_vis = convert_visibility_to_blockvisibility(vis)
+    if use_natural:
+        print("Using natural weighting")
+    else:
+        print("Using uniform weighting")
+        vis = weight_list_serial_workflow([vis], [psf])[0]
+        block_vis = convert_visibility_to_blockvisibility(vis)
     
     print("Inverting to get on-source PSF")
     psf_list = invert_list_arlexecute_workflow([vis], [psf], '2d', dopsf=True)
@@ -334,7 +340,8 @@ if __name__ == '__main__':
         result['tsys'] = tsys
         result['scale'] = scale
         result['use_radec'] = use_radec
-        
+        result['use_natural'] = use_natural
+
         a2r = numpy.pi / (3600.0 * 180.0)
         global_pointing_error = global_pe
         static_pointing_error = static_pe * pe

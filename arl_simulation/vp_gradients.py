@@ -1,4 +1,4 @@
-"""Unit tests for testing support
+"""Calculate gradients of voltage patterns. Also calculate expected noise level for standard sim.
 
 
 """
@@ -7,6 +7,7 @@ import logging
 from data_models.parameters import arl_path
 from processing_components.image.gradients import image_gradients
 from processing_components.image.operations import export_image_to_fits, show_image, import_image_from_fits
+import numpy
 
 log = logging.getLogger(__name__)
 
@@ -55,10 +56,8 @@ axs[2,1].axis('off')
 
 plt.show()
 
-exit()
-
 plt.clf()
-show_image(gradx, fig=fig, ax=axs[0,0], title='gradx')
+show_image(gradx, fig=fig, title='gradx')
 plt.show()
 plt.clf()
 show_image(grady, title='grady')
@@ -83,3 +82,22 @@ export_image_to_fits(gradxx, "MID_GRASP_gradients_gradxx.fits" )
 export_image_to_fits(gradxy, "MID_GRASP_gradients_gradxy.fits" )
 export_image_to_fits(gradyx, "MID_GRASP_gradients_gradyx.fits" )
 export_image_to_fits(gradyy, "MID_GRASP_gradients_gradyy.fits" )
+
+cellsize = abs(real_vp.wcs.wcs.cdelt[0]) * numpy.pi / 180.0
+print(cellsize)
+
+nant= 197
+nt = 65
+s2r = numpy.pi / (3600.0 * 180)
+pes = numpy.array([1.0, 2.0, 4.0, 8.0, 16.0, 32.0, 64.0, 128.0, 256.0])
+
+error = numpy.sqrt(2.0) * numpy.max(numpy.abs(gradx.data)) * pes * s2r / (cellsize * (nant - 1) * numpy.sqrt(nt))
+print(error)
+
+plt.clf()
+plt.loglog(pes, error, '-', color='r')
+plt.xlabel('Pointing error (arcsec)')
+plt.ylabel('Error (Jy)')
+plt.title('Predicted error due to pointing')
+plt.savefig("prediction.png")
+plt.show()
