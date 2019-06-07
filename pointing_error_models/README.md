@@ -1,1 +1,1 @@
-A script to generate a time series of pointing errors from a given power spectrum.
+A script to generate a time series of pointing errors from a given power spectrum. The power spectra are derived from wind conditions measured from the worst case elevation and azimuth of 45 deg and 135 deg, respectively. 
