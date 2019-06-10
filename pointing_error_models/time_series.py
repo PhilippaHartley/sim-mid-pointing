@@ -12,19 +12,19 @@ if not os.path.isdir(plotdir):
 
 # inspect psds
 plt.subplot(221)
-plt.semilogx(psd[:,0], psd[:,1],label = 'S_az(f)')
+plt.loglog(psd[:,0], psd[:,1],label = 'S_az(f)')
 plt.ylabel('as^2/Hz')
 plt.legend()
 plt.subplot(222)
-plt.semilogx(psd[:,0], psd[:,2],label = 'S_el(f)')
+plt.loglog(psd[:,0], psd[:,2],label = 'S_el(f)')
 plt.legend()
 plt.subplot(223)
-plt.semilogx(psd[:,0], psd[:,3], label = 'S_pxel(f)')
+plt.loglog(psd[:,0], psd[:,3], label = 'S_pxel(f)')
 plt.ylabel('as^2/Hz')
 plt.xlabel('f, Hz')
 plt.legend()
 plt.subplot(224)
-plt.semilogx(psd[:,0], psd[:,4],label = 'S_pel(f)')
+plt.loglog(psd[:,0], psd[:,4],label = 'S_pel(f)')
 plt.legend()
 plt.xlabel('f, Hz')
 plt.savefig(plotdir+'power_spectra.png')
@@ -142,18 +142,18 @@ for axis in axes:
 
     # plot results
     plt.clf()
-    plt.plot( times, np.real(ts))
+    plt.plot( times, np.real(ts), label = '%s axis'%axis)
     plt.xlabel('time, s')
     plt.ylabel('pointing error, as')
+    plt.legend()
     plt.savefig(plotdir+'time_series_%s.png'%axis)
     
     # check fft returns original PSD (amplitudes plotted again)
     ts.real/=np.float(N)
     fft =  np.fft.fft(ts)
     plt.clf()
-    plt.scatter(np.arange(len(fft)), np.absolute(fft)) 
+    plt.scatter(np.arange(len(fft)), np.absolute(fft), label = '%s axis'%axis) 
     plt.xlabel('mode')
     plt.ylabel('amplitude, as/SQRT(Hz)')
-
-
+    plt.legend()
     plt.savefig(plotdir+'check_FFT_%s.png'%axis)
