@@ -81,15 +81,23 @@ if __name__ == '__main__':
     parser.add_argument('--tsys', type=float, default=0.0, help='System temperature: standard 20K')
     parser.add_argument('--scale', type=float, nargs=2, default=[1.0, 1.0], help='Scale errors by this amount')
     parser.add_argument('--use_radec', type=str, default="False", help='Calculate in RADEC (false)?')
-    
+    parser.add_argument('--use_natural', type=str, default="False", help='Use natural weighting?')
+    parser.add_argument('--integration_time', type=float, default=43200.0/65.0, help="Integration time (s)")
+    parser.add_argument('--time_range', type=float, nargs=2, default=[-6.0, 6.0], help="Hourangle range (hours")
+    parser.add_argument('--time_series', type=str, default=None, help='File containing time series')
+
     args = parser.parse_args()
     
     scale = numpy.array(args.scale)
     tsys = args.tsys
+    integration_time = args.integration_time
+    time_range = args.time_range
     
     use_agg = args.use_agg == "True"
     use_radec = args.use_radec == "True"
-    
+    use_natural = args.use_natural == "True"
+    time_series = args.time_series
+
     if use_agg:
         import matplotlib as mpl
         
@@ -135,9 +143,12 @@ if __name__ == '__main__':
         ntimes = 1
         times = [0.0]
     else:
-        
+        ntimes = 3600.0 * (time_range[1] - time_range[0]) /integration_time+ 1
         h2r = numpy.pi / 12.0
-        times = numpy.linspace(-6 * h2r, +6 * h2r, ntimes)
+        times = numpy.linspace(time_range[0], time_range[1], ntimes)
+        
+    print("Observations at ", times)
+    times *= h2r
     
     phasecentre = SkyCoord(ra=+15.0 * u.deg, dec=-45.0 * u.deg, frame='icrs', equinox='J2000')
     outlier_phasecentre = SkyCoord(ra=+15.0 * u.deg, dec=-35.0 * u.deg, frame='icrs', equinox='J2000')
@@ -163,13 +174,13 @@ if __name__ == '__main__':
     else:
         HWHM_deg = 0.6 * 1.4e9 / frequency[0]
     
-    FOV_deg = 20.0 * HWHM_deg
+    FOV_deg = 10.0 * HWHM_deg
     
     print('%s: HWHM beam = %g deg' % (pbtype, HWHM_deg))
     
     advice = advise_wide_field(vis, guard_band_image=1.0, delA=0.02)
     
-    pb_npixel = 4096
+    pb_npixel = 2048
     d2r = numpy.pi / 180.0
     pb_cellsize = d2r * FOV_deg / pb_npixel
     
@@ -232,8 +243,19 @@ if __name__ == '__main__':
     psf = create_image_from_visibility(vis, npixel=npixel, frequency=frequency,
                                        nchan=nfreqwin, cellsize=cellsize, phasecentre=phasecentre,
                                        polarisation_frame=PolarisationFrame("stokesI"))
-    vis = weight_list_serial_workflow([vis], [psf])[0]
-    block_vis = convert_visibility_to_blockvisibility(vis)
+    print("Using %s Dask workers" % nworkers)
+    client = get_dask_Client(threads_per_worker=threads_per_worker,
+                             processes=threads_per_worker == 1,
+                             memory_limit=memory * 1024 * 1024 * 1024,
+                             n_workers=nworkers)
+    arlexecute.set_client(client=client)
+
+    if use_natural:
+        print("Using natural weighting")
+    else:
+        print("Using uniform weighting")
+        vis = weight_list_serial_workflow([vis], [psf])[0]
+        block_vis = convert_visibility_to_blockvisibility(vis)
     
     print("Inverting to get on-source PSF")
     psf_list = invert_list_arlexecute_workflow([vis], [psf], '2d', dopsf=True)
@@ -266,7 +288,7 @@ if __name__ == '__main__':
     print("Voltage pattern:", vp)
     pt = create_pointingtable_from_blockvisibility(block_vis)
     
-    no_error_pt = simulate_pointingtable(pt, 0.0, 0.0, seed=seed)
+    no_error_pt = simulate_pointingtable(pt, 0.0, 0.0, seed=seed, time_series=time_series)
     export_pointingtable_to_hdf5(no_error_pt, 'pointingsim_%s_noerror_pointingtable.hdf5' % context)
     no_error_gt = create_gaintable_from_pointingtable(block_vis, original_components, no_error_pt, vp,
                                                       use_radec=use_radec)
@@ -299,6 +321,9 @@ if __name__ == '__main__':
         plt.show(block=False)
     
     pes = [1.0, 2.0, 4.0, 8.0, 16.0, 32.0, 64.0, 128.0, 256.0]
+    if time_series is not None:
+        print('Reading pointing time series from file %s' % time_series)
+        pes = 1.0
     results = []
     
     filename = seqfile.findNextFile(prefix='pointingsimulation_%s_' % socket.gethostname(), suffix='.csv')
@@ -334,7 +359,8 @@ if __name__ == '__main__':
         result['tsys'] = tsys
         result['scale'] = scale
         result['use_radec'] = use_radec
-        
+        result['use_natural'] = use_natural
+
         a2r = numpy.pi / (3600.0 * 180.0)
         global_pointing_error = global_pe
         static_pointing_error = static_pe * pe
@@ -351,6 +377,7 @@ if __name__ == '__main__':
         error_pt = simulate_pointingtable(pt, pointing_error=pointing_error * a2r,
                                           static_pointing_error=static_pointing_error * a2r,
                                           global_pointing_error=global_pointing_error * a2r,
+                                          time_series=time_series,
                                           seed=seed)
         export_pointingtable_to_hdf5(error_pt,
                                      'pointingsim_%s_error_%.0farcsec_pointingtable.hdf5' % (context, pe))

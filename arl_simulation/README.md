@@ -37,5 +37,13 @@ sim 15: repeat of 0 with az offsets set to zero
 sim 16: repeat of 0 with el offsets set to zero
 sim 17: repeat of 0 in RADEC frame (use_radec=True)
 sim 18: repeat of 0 with natural weighting
+sim 19: repeat of sim5 with narrow time range
+sim 20: repeat of sim5 with narrow time range and MID_GAUSS
+sim 21: sim20 but with 'wind' timeseries
+sim 22: sim20 but with 'tracking' timeseries
+sim 23: repeat of sim5 with +/- 6 hours and MID_GAUSS
+sim 24: sim23 but with 'wind' timeseries with +/- 6 hours and MID_GAUSS
+sim 25: sim23 but with 'tracking' timeseries with +/- 6 hours and MID_GAUSS
+
 
 sim 13 is the current standard.
