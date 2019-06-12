@@ -142,18 +142,18 @@ for axis in axes:
 
     # plot results
     plt.clf()
-    plt.plot( times, np.real(ts))
+    plt.plot( times, np.real(ts), label = '%s axis'%axis)
     plt.xlabel('time, s')
     plt.ylabel('pointing error, as')
+    plt.legend()
     plt.savefig(plotdir+'time_series_%s.png'%axis)
     
     # check fft returns original PSD (amplitudes plotted again)
     ts.real/=np.float(N)
     fft =  np.fft.fft(ts)
     plt.clf()
-    plt.scatter(np.arange(len(fft)), np.absolute(fft)) 
+    plt.scatter(np.arange(len(fft)), np.absolute(fft), label = '%s axis'%axis) 
     plt.xlabel('mode')
     plt.ylabel('amplitude, as/SQRT(Hz)')
-
-
+    plt.legend()
     plt.savefig(plotdir+'check_FFT_%s.png'%axis)
