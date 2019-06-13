@@ -148,7 +148,6 @@ for axis in axes:
     M=len(z_az)
     print ('Number of frequencies: ', M) # N=M+1
 
-    z_az*=np.sqrt(M)
 
     # perform inverse fft
     ts = np.fft.ifft(z_az) 
@@ -168,7 +167,7 @@ for axis in axes:
     print('tmax: ', tmax)
     print ()
 
-    #ts.real*=np.sqrt(N) # the result is scaled by number of points in the signal, so multiply - real part - by this
+    ts.real*=np.sqrt(N) # the result is scaled by number of points in the signal, so multiply - real part - by this
   # see https://docs.scipy.org/doc/numpy/reference/routines.fft.html for scaling desciption
   # ! this is wrong - appears to be scaled by 1/sqrt(N) - maybe since hermitian?
 
