@@ -19,7 +19,6 @@ from astropy import units as u
 
 from data_models.polarisation import PolarisationFrame
 from data_models.memory_data_models import Skycomponent, SkyModel
-from data_models.data_model_helpers import export_pointingtable_to_hdf5
 
 from wrappers.serial.visibility.base import create_blockvisibility
 from wrappers.serial.image.operations import show_image, qa_image, export_image_to_fits
@@ -50,6 +49,67 @@ log.setLevel(logging.INFO)
 log.addHandler(logging.StreamHandler(sys.stdout))
 mpl_logger = logging.getLogger("matplotlib")
 mpl_logger.setLevel(logging.WARNING)
+
+
+def create_vis_list_with_errors(bvis_list, original_components, use_radec=False, pointing_error=0.0,
+                                static_pointing_error=0.0,
+                                global_pointing_error=None, time_series=''):
+    if global_pointing_error is None:
+        global_pointing_error = [0.0, 0.0]
+    
+    # One pointing table per visibility
+    pt_list = [arlexecute.execute(create_pointingtable_from_blockvisibility)(bvis) for bvis in bvis_list]
+    
+    if time_series is '':
+        error_pt_list = [arlexecute.execute(simulate_pointingtable)(pt, pointing_error=pointing_error,
+                                                                    static_pointing_error=static_pointing_error,
+                                                                    global_pointing_error=global_pointing_error)
+                         for pt in pt_list]
+    else:
+        error_pt_list = [arlexecute.execute(simulate_pointingtable_from_timeseries)(pt, type=time_series)
+                         for pt in pt_list]
+    
+    if show:
+        error_pt_list = arlexecute.compute(error_pt_list, sync=True)
+        plt.clf()
+        r2a = 180.0 * 3600.0 / numpy.pi
+        for pt in error_pt_list:
+            plt.plot(pt.time, r2a * pt.pointing[:, 0, 0, 0, 0], '.', color='r')
+            plt.plot(pt.time, r2a * pt.pointing[:, 0, 0, 0, 1], '.', color='b')
+        plt.title("%s: pointing" % basename)
+        plt.xlabel('Time (s)')
+        plt.ylabel('Offset (arcsec)')
+        plt.show()
+    
+    # Create the gain tables, one per Visibility and per component
+    error_gt_list = [arlexecute.execute(simulate_gaintable_from_pointingtable)
+                     (bvis, original_components, error_pt_list[ibv], vp_list[ibv], use_radec=use_radec)
+                     for ibv, bvis in enumerate(bvis_list)]
+    if show:
+        error_gt_list = arlexecute.compute(error_gt_list, sync=True)
+        plt.clf()
+        for gt in error_gt_list:
+            plt.plot(gt[0].time, 1.0 / numpy.abs(gt[0].gain[:, 0, 0, 0]), '.')
+        plt.ylim([0.0, 1.1])
+        plt.title("%s: amplitude gain" % basename)
+        plt.xlabel('Time (s)')
+        plt.show()
+    
+    # Each component in original components becomes a separate skymodel
+    # Inner nest is over skymodels, outer is over bvis's
+    error_sm_list = [[
+        arlexecute.execute(SkyModel, nout=1)(components=[original_components[i]], gaintable=error_gt_list[ibv][i])
+        for i, _ in enumerate(original_components)] for ibv, bv in enumerate(bvis_list)]
+    
+    # Predict each visibility for each skymodel. We keep all the visibilities separate
+    # and add up dirty images at the end of processing. We calibrate which applies the voltage pattern
+    error_bvis_list = [arlexecute.execute(copy_visibility, nout=1)(bvis, zero=True) for bvis in bvis_list]
+    error_bvis_list = [predict_skymodel_list_compsonly_arlexecute_workflow(error_bvis_list[ibv], error_sm_list[ibv],
+                                                                           context='2d', docal=True)
+                       for ibv, bvis in enumerate(error_bvis_list)]
+    # Inner nest is over skymodels, outer is over bvis's
+    return error_bvis_list
+
 
 if __name__ == '__main__':
     
@@ -111,7 +171,8 @@ if __name__ == '__main__':
     
     seed = args.seed
     
-    print("Random number seed is ", seed)
+    print("Random number seed is", seed)
+    numpy.random.seed(seed)
     show = args.show == 'True'
     context = args.context
     rmax = args.rmax
@@ -123,9 +184,9 @@ if __name__ == '__main__':
     memory = args.memory
     
     ngroup = args.ngroup
-
+    
     basename = os.path.basename(os.getcwd())
-
+    
     print("Using %s Dask workers" % nworkers)
     client = get_dask_Client(threads_per_worker=threads_per_worker,
                              processes=threads_per_worker == 1,
@@ -166,22 +227,20 @@ if __name__ == '__main__':
     if pbtype == 'MID':
         HWHM_deg = 0.6 * 1.4e9 / frequency[0]
     elif pbtype == 'MID_GRASP':
-        HWHM_deg = 0.75 * 1.4e9 / frequency[0]
+        HWHM_deg = 0.755 * 1.4e9 / frequency[0]
     elif pbtype == 'MID_GAUSS':
         HWHM_deg = 0.6 * 1.4e9 / frequency[0]
     else:
         HWHM_deg = 0.6 * 1.4e9 / frequency[0]
     
     FOV_deg = 10.0 * HWHM_deg
-    
     print('%s: HWHM beam = %g deg' % (pbtype, HWHM_deg))
     
-    advice = advise_wide_field(vis_list[0], guard_band_image=1.0, delA=0.02)
-    
+    advice_list = [arlexecute.execute(advise_wide_field)(v, guard_band_image=1.0, delA=0.02) for v in vis_list]
+    advice = arlexecute.compute(advice_list, sync=True)[0]
     pb_npixel = 1024
     d2r = numpy.pi / 180.0
     pb_cellsize = d2r * FOV_deg / pb_npixel
-    
     cellsize = advice['cellsize']
     npixel = 512
     
@@ -239,6 +298,8 @@ if __name__ == '__main__':
         offset_direction = SkyCoord(ra=+15.0 * u.deg, dec=-45.0 * u.deg, frame='icrs', equinox='J2000')
     
     # Uniform weighting
+    vis_list = arlexecute.scatter(vis_list)
+    
     psf_list = [arlexecute.execute(create_image_from_visibility)(v, npixel=npixel, frequency=frequency,
                                                                  nchan=nfreqwin, cellsize=cellsize,
                                                                  phasecentre=phasecentre,
@@ -297,47 +358,27 @@ if __name__ == '__main__':
     # the prediction step will be as if the primary beam had been applied. We need one distinct gain table for each
     # component and for each visibility.
     
-    pt_list = [arlexecute.execute(create_pointingtable_from_blockvisibility)(bvis) for bvis in bvis_list]
-    no_error_pt_list = [arlexecute.execute(simulate_pointingtable)(pt, 0.0, 0.0, seed=seed) for pt in pt_list]
-    # Create the gain tables, one per Visibility and per component
-    no_error_gt_list = [arlexecute.execute(simulate_gaintable_from_pointingtable)
-                         (bvis, original_components, no_error_pt_list[ibv], vp_list[ibv], use_radec=use_radec)
-                         for ibv, bvis in enumerate(bvis_list)]
-    if show:
-        no_error_gt_list = arlexecute.compute(no_error_gt_list, sync=True)
-        print(no_error_gt_list)
-        plt.clf()
-        for gt in no_error_gt_list:
-            plt.plot(gt[0].time, 1.0/numpy.abs(gt[0].gain[:, 0, 0, 0]), '.')
-            plt.ylim([0.0, 1.1])
-        plt.show()
+    no_error_bvis_list = create_vis_list_with_errors(bvis_list, original_components, use_radec=use_radec)
+    no_error_bvis_list = arlexecute.compute(no_error_bvis_list, sync=True)
 
-    # Each component in original components becomes a separate skymodel
-    no_error_sm_list = [
-        arlexecute.execute(SkyModel)(components=[original_components[i]], gaintable=no_error_gt_list[0][i])
-        for i, _ in enumerate(original_components)]
-    
-    # Predict each visibility for each skymodel. We keep all the visibilities separate
-    # and add up dirty images at the end of processing. We calibrate which applies the voltage pattern
-    no_error_bvis_list = [arlexecute.execute(copy_visibility)(bvis, zero=True) for bvis in bvis_list]
-    no_error_bvis_list = predict_skymodel_list_compsonly_arlexecute_workflow(no_error_bvis_list, no_error_sm_list,
-                                                                             context='2d', docal=True)
-    ncomps = len(original_components)
-    no_error_vis_list = [[arlexecute.execute(convert_blockvisibility_to_visibility)(nebv)
-                         for nebv in no_error_bvis_list[icomp]] for icomp in range(ncomps)]
+    no_error_vis_list = [[arlexecute.execute(convert_blockvisibility_to_visibility)(no_error_bvis_list[inebvl][ineb])
+                       for ineb, _ in enumerate(nebvl)] for inebvl, nebvl in enumerate(no_error_bvis_list)]
     no_error_vis_list = arlexecute.compute(no_error_vis_list, sync=True)
 
-    print("Inverting to get dirty image for component[0]")
-    dirty_list = [invert_list_arlexecute_workflow(nevl, model_list, '2d') for nevl in no_error_vis_list]
+    # Inner nest is over skymodels, outer is over bvis's: need to swap these
+    skymodel0_vis_list = [nevl[0] for nevl in no_error_vis_list]
+    print("Inverting to get dirty image")
+    dirty_list = invert_list_arlexecute_workflow(skymodel0_vis_list, model_list, '2d')
     dirty_list = arlexecute.compute(dirty_list, sync=True)
-    dirty, sumwt = sum_invert_results(dirty_list[0])
+    dirty, sumwt = sum_invert_results(dirty_list)
+    print("Dirty image sumwt ", sumwt)
     print(qa_image(dirty))
     export_image_to_fits(dirty, 'dirty_arl.fits')
     if show:
         show_image(dirty, cm='gray_r', title='%s Dirty image' % basename)  # , vmin=-0.01, vmax=0.1)
         plt.savefig('dirty_arl.png')
         plt.show(block=False)
-        
+
     if time_series == '':
         pes = [1.0, 2.0, 4.0, 8.0, 16.0, 32.0, 64.0, 128.0, 256.0]
     else:
@@ -356,7 +397,10 @@ if __name__ == '__main__':
     dynamic_pe = args.dynamic_pe
     
     # Now loop over all pointing errors
+    print("***** Starting loop over pointing error ******")
     for pe in pes:
+        # We want all simulations to have the same errors, just scaled
+        numpy.random.seed(seed)
         
         result = dict()
         result['context'] = context
@@ -393,46 +437,31 @@ if __name__ == '__main__':
               (global_pointing_error[0], global_pointing_error[1], static_pointing_error,
                pointing_error))
         
-        if time_series is '':
-            error_pt = simulate_pointingtable(pt, pointing_error=pointing_error * a2r,
-                                              static_pointing_error=static_pointing_error * a2r,
-                                              global_pointing_error=global_pointing_error * a2r,
-                                              seed=seed)
-        else:
-            error_pt = simulate_pointingtable_from_timeseries(pt, seed=seed, type=time_series)
+        error_bvis_list = create_vis_list_with_errors(bvis_list, original_components, use_radec=use_radec,
+                                                      pointing_error=a2r * pointing_error,
+                                                      static_pointing_error=a2r * static_pointing_error,
+                                                      global_pointing_error=a2r * global_pointing_error,
+                                                      time_series=time_series)
+        error_bvis_list = arlexecute.compute(error_bvis_list, sync=True)
         
-        export_pointingtable_to_hdf5(error_pt,
-                                     'pointingsim_%s_error_%.0farcsec_pointingtable.hdf5' % (context, pe))
+        def difference_add_noise_convert(error_bvis, no_error_bvis):
+            error_bvis.data['vis'] -= no_error_bvis.data['vis']
+            error_bvis = addnoise_visibility(error_bvis, tsys)
+            error_vis = convert_blockvisibility_to_visibility(error_bvis)
+            return error_vis
         
-        print("Scaling pointing errors in %.3f, %.3f" % (scale[0], scale[1]))
-        error_pt.pointing[..., 0] *= scale[0]
-        error_pt.pointing[..., 1] *= scale[1]
-        
-        error_gt = simulate_gaintable_from_pointingtable(block_vis, original_components, error_pt, vp,
-                                                         use_radec=use_radec)
-        
-        error_sm = [SkyModel(components=[original_components[i]], gaintable=error_gt[i])
-                    for i, _ in enumerate(original_components)]
-        
-        error_blockvis = copy_visibility(block_vis, zero=True)
-        
-        print("Predicting corrupted visibilities in chunks of %d skymodels" % ngroup)
-        future_vis = arlexecute.scatter(error_blockvis)
-        chunks = [error_sm[i:i + ngroup] for i in range(0, len(error_sm), ngroup)]
-        for chunk in chunks:
-            temp_vis = predict_skymodel_list_compsonly_arlexecute_workflow(future_vis, chunk, context='2d', docal=True)
-            work_vis = arlexecute.compute(temp_vis, sync=True)
-            for w in work_vis:
-                error_blockvis.data['vis'] += w.data['vis']
-            assert numpy.max(numpy.abs(error_blockvis.data['vis'])) > 0.0
-        error_blockvis.data['vis'] -= no_error_blockvis.data['vis']
-        
-        error_blockvis = addnoise_visibility(error_blockvis, tsys)
+        error_vis_list = [[arlexecute.execute(difference_add_noise_convert)
+                           (error_bvis_list[iebvl][ieb], no_error_bvis_list[iebvl][ieb])
+                           for ieb, _ in enumerate(ebvl)] for iebvl, ebvl in enumerate(error_bvis_list)]
+
+        error_vis_list = arlexecute.compute(error_vis_list, sync=True)
         
         print("Inverting to get on-source dirty image")
-        error_vis = convert_blockvisibility_to_visibility(error_blockvis)
-        dirty_list = invert_list_arlexecute_workflow([error_vis], [model], '2d')
-        dirty, sumwt = arlexecute.compute(dirty_list, sync=True)[0]
+        skymodel0_vis_list = [evl[0] for evl in error_vis_list]
+        dirty_list = invert_list_arlexecute_workflow(skymodel0_vis_list, model_list, '2d')
+        dirty_list = arlexecute.compute(dirty_list, sync=True)
+        dirty, sumwt = sum_invert_results(dirty_list)
+        print(qa_image(dirty))
         export_image_to_fits(dirty, 'PE_%.1f_arcsec_arl.fits' % pe)
         if show:
             show_image(dirty, cm='gray_r', title='Pointing error %.1f arcsec ARL' % pe)
@@ -462,7 +491,7 @@ if __name__ == '__main__':
     
     plt.clf()
     colors = ['b', 'r', 'g', 'y']
-    for ifield, field in enumerate(['onsource_maxabs', 'onsource_rms', 'onsource_medianabs']):
+    for ifield, field in enumerate(['onsource_maxabs', 'onsource_rms', 'onsource_medianabs', 'onsource_abscentral']):
         plt.loglog(pes, [result[field] for result in results], '-', label=field, color=colors[ifield])
     
     plt.xlabel('Pointing error (arcsec)')

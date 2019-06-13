@@ -288,7 +288,7 @@ if __name__ == '__main__':
     print("Voltage pattern:", vp)
     pt = create_pointingtable_from_blockvisibility(block_vis)
     
-    no_error_pt = simulate_pointingtable(pt, 0.0, 0.0, seed=seed)
+    no_error_pt = simulate_pointingtable(pt, 0.0, 0.0)
 
     export_pointingtable_to_hdf5(no_error_pt, 'pointingsim_%s_noerror_pointingtable.hdf5' % context)
     no_error_gt = simulate_gaintable_from_pointingtable(block_vis, original_components, no_error_pt, vp,
@@ -380,10 +380,9 @@ if __name__ == '__main__':
         if time_series is '':
             error_pt = simulate_pointingtable(pt, pointing_error=pointing_error * a2r,
                                               static_pointing_error=static_pointing_error * a2r,
-                                              global_pointing_error=global_pointing_error * a2r,
-                                              seed=seed)
+                                              global_pointing_error=global_pointing_error * a2r)
         else:
-            error_pt = simulate_pointingtable_from_timeseries(pt, seed=seed, type=time_series)
+            error_pt = simulate_pointingtable_from_timeseries(pt, type=time_series)
 
         export_pointingtable_to_hdf5(error_pt,
                                      'pointingsim_%s_error_%.0farcsec_pointingtable.hdf5' % (context, pe))
