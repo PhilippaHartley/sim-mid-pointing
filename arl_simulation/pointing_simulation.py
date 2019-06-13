@@ -29,7 +29,7 @@ from wrappers.serial.simulation.noise import addnoise_visibility
 from wrappers.serial.imaging.primary_beams import create_vp, create_pb
 from wrappers.serial.imaging.base import create_image_from_visibility, advise_wide_field
 from wrappers.serial.calibration.pointing import create_pointingtable_from_blockvisibility
-from wrappers.serial.simulation.pointing import create_gaintable_from_pointingtable
+from wrappers.serial.simulation.pointing import simulate_gaintable_from_pointingtable
 from wrappers.arlexecute.visibility.base import copy_visibility
 from wrappers.arlexecute.visibility.coalesce import convert_blockvisibility_to_visibility, \
     convert_visibility_to_blockvisibility
@@ -270,7 +270,7 @@ if __name__ == '__main__':
                                          nchan=nfreqwin, cellsize=cellsize, phasecentre=offset_direction,
                                          polarisation_frame=PolarisationFrame("stokesI"))
     
-    # ### Calculate the voltage patterns with and without pointing errors
+    # ### Calculate the voltage pattern without pointing errors
     vp = create_image_from_visibility(block_vis, npixel=pb_npixel, frequency=frequency,
                                       nchan=nfreqwin, cellsize=pb_cellsize, phasecentre=phasecentre,
                                       override_cellsize=False)
@@ -291,9 +291,9 @@ if __name__ == '__main__':
     no_error_pt = simulate_pointingtable(pt, 0.0, 0.0, seed=seed)
 
     export_pointingtable_to_hdf5(no_error_pt, 'pointingsim_%s_noerror_pointingtable.hdf5' % context)
-    no_error_gt = create_gaintable_from_pointingtable(block_vis, original_components, no_error_pt, vp,
-                                                      use_radec=use_radec)
-    
+    no_error_gt = simulate_gaintable_from_pointingtable(block_vis, original_components, no_error_pt, vp,
+                                                        use_radec=use_radec)
+    # Each component in original components becomes a separate skymodel
     no_error_sm = [SkyModel(components=[original_components[i]], gaintable=no_error_gt[i])
                    for i, _ in enumerate(original_components)]
     
@@ -392,8 +392,8 @@ if __name__ == '__main__':
         error_pt.pointing[..., 0] *= scale[0]
         error_pt.pointing[..., 1] *= scale[1]
         
-        error_gt = create_gaintable_from_pointingtable(block_vis, original_components, error_pt, vp,
-                                                       use_radec=use_radec)
+        error_gt = simulate_gaintable_from_pointingtable(block_vis, original_components, error_pt, vp,
+                                                         use_radec=use_radec)
         
         error_sm = [SkyModel(components=[original_components[i]], gaintable=error_gt[i])
                     for i, _ in enumerate(original_components)]
