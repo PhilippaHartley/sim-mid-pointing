@@ -299,15 +299,13 @@ if __name__ == '__main__':
     
     pt_list = [arlexecute.execute(create_pointingtable_from_blockvisibility)(bvis) for bvis in bvis_list]
     no_error_pt_list = [arlexecute.execute(simulate_pointingtable)(pt, 0.0, 0.0, seed=seed) for pt in pt_list]
-    
     # Create the gain tables, one per Visibility and per component
     no_error_gt_list = [arlexecute.execute(simulate_gaintable_from_pointingtable)
                          (bvis, original_components, no_error_pt_list[ibv], vp_list[ibv], use_radec=use_radec)
                          for ibv, bvis in enumerate(bvis_list)]
-    
-    no_error_gt_list = arlexecute.compute(no_error_gt_list, sync=True)
-    print(no_error_gt_list)
     if show:
+        no_error_gt_list = arlexecute.compute(no_error_gt_list, sync=True)
+        print(no_error_gt_list)
         plt.clf()
         for gt in no_error_gt_list:
             plt.plot(gt[0].time, 1.0/numpy.abs(gt[0].gain[:, 0, 0, 0]), '.')
@@ -319,19 +317,11 @@ if __name__ == '__main__':
         arlexecute.execute(SkyModel)(components=[original_components[i]], gaintable=no_error_gt_list[0][i])
         for i, _ in enumerate(original_components)]
     
-    # Make empty block visibilities to hold the predictions.
-    no_error_bvis_list = [arlexecute.execute(copy_visibility)(bvis, zero=True) for bvis in bvis_list]
-    # no_error_bvis_list = arlexecute.compute(no_error_bvis_list, sync=True)
-    
     # Predict each visibility for each skymodel. We keep all the visibilities separate
     # and add up dirty images at the end of processing. We calibrate which applies the voltage pattern
+    no_error_bvis_list = [arlexecute.execute(copy_visibility)(bvis, zero=True) for bvis in bvis_list]
     no_error_bvis_list = predict_skymodel_list_compsonly_arlexecute_workflow(no_error_bvis_list, no_error_sm_list,
                                                                              context='2d', docal=True)
-    print(no_error_bvis_list)
-    print("Successful definition of predict_skymodel_list_compsonly_arlexecute_workflow")
-    no_error_bvis_list = arlexecute.compute(no_error_bvis_list, sync=True)
-    print("Successful execution of predict_skymodel_list_compsonly_arlexecute_workflow")
-    print(no_error_bvis_list)
     ncomps = len(original_components)
     no_error_vis_list = [[arlexecute.execute(convert_blockvisibility_to_visibility)(nebv)
                          for nebv in no_error_bvis_list[icomp]] for icomp in range(ncomps)]
@@ -348,8 +338,6 @@ if __name__ == '__main__':
         plt.savefig('dirty_arl.png')
         plt.show(block=False)
         
-    exit()
-    
     if time_series == '':
         pes = [1.0, 2.0, 4.0, 8.0, 16.0, 32.0, 64.0, 128.0, 256.0]
     else:
