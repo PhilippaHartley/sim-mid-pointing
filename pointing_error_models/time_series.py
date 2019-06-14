@@ -47,14 +47,17 @@ doplot = 1 # turn off for speed
 
 axes = ["az","el","pxel", "pel"]
 
-
 time_stamps = 65 # currently need to increase (reduce) freq_interval to reduce (increase) number of time series points
 
 for axis in axes:
     print ('*** Creating times series from PSD of %s axis ***'%axis)
     az = axesdict[axis]
 
-    freq_interval = 0.001
+    freq_interval = 0.001  
+
+    df = freq[1:]-freq[:-1]
+    psd2rms_pxel = np.sqrt(np.sum(az[1:]*df))
+    print ('Calculate rms of original PSD: ', psd2rms_pxel)
 
     # the orginal PSD need to be resampled in order to obtain fixed frequency intervals fot the IFFT
     # each PSD is broken into two parts in order to produce better polynomial fits to the data
@@ -75,13 +78,22 @@ for axis in axes:
         max_freq = 0.1
         freq_max_index = np.argwhere(freq>max_freq)[0][0]     
 
+    # construct regularly-spaced frequencies
+    regular_freq = np.arange(freq[0], freq[freq_max_index], freq_interval)
+
+    regular_az_max_index =  np.argwhere(np.abs(regular_freq-freq[az_max_index])==np.min(np.abs(regular_freq-freq[az_max_index])))[0][0]
+
     print ('Frequency break: ', freq[az_max_index])
     print ('Max frequency: ', max_freq)  
+
+    print ('New frequency break: ', regular_freq[regular_az_max_index])
+    print ('New max frequency: ', regular_freq[-1]) 
 
     if az_max_index>=freq_max_index:
         print ('Frequency break is higher than highest frequency; select a lower break')    
         sys.exit()
 
+    # use original frequency break and max frequency to fit function
     # fit polynomial to psd up to max value
     p_az1 = np.polyfit(freq[:az_max_index], az[:az_max_index], 5)
     f_az1 = np.poly1d(p_az1)
@@ -89,16 +101,26 @@ for axis in axes:
     p_az2 = np.polyfit(freq[az_max_index:freq_max_index], az[az_max_index:freq_max_index], 5)
     f_az2 = np.poly1d(p_az2)
 
-
-    #freq_interval2 = (freq[freq_max_index]-freq[0])/time_stamps
+    # use new frequency break and max frequency to apply function (ensures equal spacing of frequency intervals)
 
     # resampled to construct regularly-spaced frequencies
-    regular_freq1 = np.arange(freq[0], freq[az_max_index], freq_interval)
-    regular_az1 = f_az1(regular_freq1)
-    regular_freq2 = np.arange( freq[az_max_index],freq[freq_max_index] ,freq_interval)
-    regular_az2 = f_az2(regular_freq2)
-    regular_freq = np.append(regular_freq1, regular_freq2)
+ 
+    regular_az1 = f_az1(regular_freq[:regular_az_max_index])
+
+    regular_az2 = f_az2(regular_freq[regular_az_max_index:])
+
+    # join
     regular_az = np.append(regular_az1,regular_az2)
+
+    M0 = len(regular_az)
+   # print (len(regular_az))
+    #regular_freq = regular_freq[:M0]
+    #print (M0, len(regular_freq))
+
+    #  check rms of resampled PSD
+    df = regular_freq[1:]-regular_freq[:-1]
+    psd2rms_pxel = np.sqrt(np.sum(regular_az[:-1]*df))
+    print ('Calculate rms of resampled PSD: ', psd2rms_pxel)
 
     if (regular_az<0).any():
         print ('Resampling returns negative power values; change fit range')
@@ -115,16 +137,20 @@ for axis in axes:
         plt.savefig(plotdir+'sampled_psd_%s.png'%axis)
 
     # get amplitudes from psd values
-    amp_az = np.sqrt(regular_az) 
+
+    amp_az = np.sqrt(regular_az*(2*freq_interval))*(M0)
+    # need to scale PSD by 2* frequency interval before square rooting, then by number of modes in resampled PSD
+
+    amp_az = np.sqrt(regular_az*2*freq_interval)
 
     # window function to smooth edges
     #amp_az = np.hamming(len(amp_az))*amp_az # not sure if necessary?
 
     # generate some random phases
-    phi_az = np.random.rand(len(regular_az))*2*np.pi
+    phi_az = np.random.rand(M0)*2*np.pi
   
     # create complex array
-    z_az = amp_az * np.exp(1j*phi_az) # polar
+    z_az = amp_az * np.exp(1j*phi_az) # 
 
     # construct Hermitian PSD in order to produce real signal
  
@@ -144,9 +170,12 @@ for axis in axes:
     # add a 0 Fourier term
     z_az = np.append(0.* np.exp(1j*0.),z_az) # 0 DC component since mean 0 of time series(?)
     regular_freq = np.append(0, regular_freq)
+
+
+
     # set up and check scalings
     M=len(z_az)
-    print ('Number of frequencies: ', M) # N=M+1
+    print ('Number of frequencies: ', M) 
 
 
     # perform inverse fft
@@ -165,11 +194,16 @@ for axis in axes:
 #
     tmax = (N-1)*Dt
     print('tmax: ', tmax)
-    print ()
 
-    ts.real*=np.sqrt(N) # the result is scaled by number of points in the signal, so multiply - real part - by this
-  # see https://docs.scipy.org/doc/numpy/reference/routines.fft.html for scaling desciption
-  # ! this is wrong - appears to be scaled by 1/sqrt(N) - maybe since hermitian?
+
+
+
+    ts.real*=(M0) 
+    # the result is scaled by number of points in sampled PSD (before hermitian), so multiply - real part - by this
+    # see https://docs.scipy.org/doc/numpy/reference/routines.fft.html for scaling desciption 
+    # this doesnt mention the scaling from PSD to FFT above
+    # this combination of scalings works to recover orginal rms
+
 
 
     # The output of the iFFT will be a random time series on the finite 
@@ -191,11 +225,12 @@ for axis in axes:
         plt.savefig(plotdir+'time_series_%s.png'%axis)
     
     np.save(outdir+'time_series_%s'%axis, ts.real)
-
+    print ('Calculate times series rms: %s'%(np.std(np.real(ts))))
+    print ()
     if doplot:
-        # check fft returns original PSD (amplitudes plotted again)
-        ts.real/=np.sqrt(N)
-        fft =  np.fft.fft(ts)
+        # check fft returns original PSD (amplitudes plotted)
+        ts.real/=M0
+        fft =  np.fft.fft(ts.real)
 
         plt.clf()
         plt.scatter(np.arange(len(fft)), (np.absolute(fft))**2, label = '%s axis'%axis) 
