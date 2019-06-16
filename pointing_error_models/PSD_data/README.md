@@ -1,4 +1,4 @@
-The columns are:
+PSDs representing precision conditions. The columns are:
 
 
 * 0: Frequency in Hz
