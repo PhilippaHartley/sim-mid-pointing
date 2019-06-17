@@ -29,7 +29,7 @@ from wrappers.serial.simulation.noise import addnoise_visibility
 from wrappers.serial.imaging.primary_beams import create_vp, create_pb
 from wrappers.serial.imaging.base import create_image_from_visibility, advise_wide_field
 from wrappers.serial.calibration.pointing import create_pointingtable_from_blockvisibility
-from wrappers.serial.simulation.pointing import simulate_gaintable_from_pointingtable
+from wrappers.serial.simulation.pointing import create_gaintable_from_pointingtable
 from wrappers.arlexecute.visibility.base import copy_visibility
 from wrappers.arlexecute.visibility.coalesce import convert_blockvisibility_to_visibility, \
     convert_visibility_to_blockvisibility
@@ -112,7 +112,6 @@ if __name__ == '__main__':
     seed = args.seed
     
     print("Random number seed is ", seed)
-    numpy.random.seed(seed)
     show = args.show == 'True'
     outlier = args.outlier == 'True'
     context = args.context
@@ -125,8 +124,6 @@ if __name__ == '__main__':
     memory = args.memory
     
     ngroup = args.ngroup
-    
-    basename = os.path.basename(os.getcwd())
     
     print("Using %s Dask workers" % nworkers)
     client = get_dask_Client(threads_per_worker=threads_per_worker,
@@ -146,7 +143,7 @@ if __name__ == '__main__':
         ntimes = 1
         times = [0.0]
     else:
-        ntimes = numpy.round(3600.0 * (time_range[1] - time_range[0]) /integration_time).astype('int')
+        ntimes = 3600.0 * (time_range[1] - time_range[0]) /integration_time+ 1
         h2r = numpy.pi / 12.0
         times = numpy.linspace(time_range[0], time_range[1], ntimes)
         
@@ -171,7 +168,7 @@ if __name__ == '__main__':
     if pbtype == 'MID':
         HWHM_deg = 0.6 * 1.4e9 / frequency[0]
     elif pbtype == 'MID_GRASP':
-        HWHM_deg = 0.755 * 1.4e9 / frequency[0]
+        HWHM_deg = 0.75 * 1.4e9 / frequency[0]
     elif pbtype == 'MID_GAUSS':
         HWHM_deg = 0.6 * 1.4e9 / frequency[0]
     else:
@@ -246,6 +243,12 @@ if __name__ == '__main__':
     psf = create_image_from_visibility(vis, npixel=npixel, frequency=frequency,
                                        nchan=nfreqwin, cellsize=cellsize, phasecentre=phasecentre,
                                        polarisation_frame=PolarisationFrame("stokesI"))
+    print("Using %s Dask workers" % nworkers)
+    client = get_dask_Client(threads_per_worker=threads_per_worker,
+                             processes=threads_per_worker == 1,
+                             memory_limit=memory * 1024 * 1024 * 1024,
+                             n_workers=nworkers)
+    arlexecute.set_client(client=client)
 
     if use_natural:
         print("Using natural weighting")
@@ -267,7 +270,7 @@ if __name__ == '__main__':
                                          nchan=nfreqwin, cellsize=cellsize, phasecentre=offset_direction,
                                          polarisation_frame=PolarisationFrame("stokesI"))
     
-    # ### Calculate the voltage pattern without pointing errors
+    # ### Calculate the voltage patterns with and without pointing errors
     vp = create_image_from_visibility(block_vis, npixel=pb_npixel, frequency=frequency,
                                       nchan=nfreqwin, cellsize=pb_cellsize, phasecentre=phasecentre,
                                       override_cellsize=False)
@@ -285,12 +288,12 @@ if __name__ == '__main__':
     print("Voltage pattern:", vp)
     pt = create_pointingtable_from_blockvisibility(block_vis)
     
-    no_error_pt = simulate_pointingtable(pt, 0.0, 0.0)
+    no_error_pt = simulate_pointingtable(pt, 0.0, 0.0, seed=seed)
 
     export_pointingtable_to_hdf5(no_error_pt, 'pointingsim_%s_noerror_pointingtable.hdf5' % context)
-    no_error_gt = simulate_gaintable_from_pointingtable(block_vis, original_components, no_error_pt, vp,
-                                                        use_radec=use_radec)
-    # Each component in original components becomes a separate skymodel
+    no_error_gt = create_gaintable_from_pointingtable(block_vis, original_components, no_error_pt, vp,
+                                                      use_radec=use_radec)
+    
     no_error_sm = [SkyModel(components=[original_components[i]], gaintable=no_error_gt[i])
                    for i, _ in enumerate(original_components)]
     
@@ -337,9 +340,7 @@ if __name__ == '__main__':
     
     # Now loop over all pointing errors
     for pe in pes:
-    
-        numpy.random.seed(seed)
-
+        
         result = dict()
         result['context'] = context
         result['nb_name'] = sys.argv[0]
@@ -379,9 +380,10 @@ if __name__ == '__main__':
         if time_series is '':
             error_pt = simulate_pointingtable(pt, pointing_error=pointing_error * a2r,
                                               static_pointing_error=static_pointing_error * a2r,
-                                              global_pointing_error=global_pointing_error * a2r)
+                                              global_pointing_error=global_pointing_error * a2r,
+                                              seed=seed)
         else:
-            error_pt = simulate_pointingtable_from_timeseries(pt, type=time_series)
+            error_pt = simulate_pointingtable_from_timeseries(pt, seed=seed, type=time_series)
 
         export_pointingtable_to_hdf5(error_pt,
                                      'pointingsim_%s_error_%.0farcsec_pointingtable.hdf5' % (context, pe))
@@ -390,8 +392,8 @@ if __name__ == '__main__':
         error_pt.pointing[..., 0] *= scale[0]
         error_pt.pointing[..., 1] *= scale[1]
         
-        error_gt = simulate_gaintable_from_pointingtable(block_vis, original_components, error_pt, vp,
-                                                         use_radec=use_radec)
+        error_gt = create_gaintable_from_pointingtable(block_vis, original_components, error_pt, vp,
+                                                       use_radec=use_radec)
         
         error_sm = [SkyModel(components=[original_components[i]], gaintable=error_gt[i])
                     for i, _ in enumerate(original_components)]

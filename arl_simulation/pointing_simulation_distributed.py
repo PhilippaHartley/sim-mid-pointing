@@ -50,6 +50,9 @@ log.addHandler(logging.StreamHandler(sys.stdout))
 mpl_logger = logging.getLogger("matplotlib")
 mpl_logger.setLevel(logging.WARNING)
 
+import pprint
+
+pp = pprint.PrettyPrinter()
 
 def create_vis_list_with_errors(bvis_list, original_components, use_radec=False, pointing_error=0.0,
                                 static_pointing_error=0.0,
@@ -142,7 +145,7 @@ if __name__ == '__main__':
     parser.add_argument('--scale', type=float, nargs=2, default=[1.0, 1.0], help='Scale errors by this amount')
     parser.add_argument('--use_radec', type=str, default="False", help='Calculate in RADEC (false)?')
     parser.add_argument('--use_natural', type=str, default="False", help='Use natural weighting?')
-    parser.add_argument('--integration_time', type=float, default=43200.0 / 65.0, help="Integration time (s)")
+    parser.add_argument('--integration_time', type=float, default=600.0, help="Integration time (s)")
     parser.add_argument('--time_range', type=float, nargs=2, default=[-6.0, 6.0], help="Hourangle range (hours")
     parser.add_argument('--time_series', type=str, default='', help="'wind' or 'tracking' or ''")
     
@@ -203,12 +206,17 @@ if __name__ == '__main__':
     # Do each 30 minutes in parallel
     start_times = numpy.arange(time_range[0] * 3600, time_range[1] * 3600, 1800.0)
     end_times = start_times + 1800.0
+    print(start_times)
     
     times = [numpy.arange(start_times[itime], end_times[itime], integration_time) for itime in range(len(start_times))]
+    print(times)
     s2r = numpy.pi / (12.0 * 3600)
     rtimes = s2r * numpy.array(times)
+    ntimes = len(rtimes.flat)
+    nchunks = len(start_times)
+
+    print('%d integrations processed in %d chunks' % (ntimes, nchunks))
     
-    ntimes = len(start_times)
     
     phasecentre = SkyCoord(ra=+15.0 * u.deg, dec=-45.0 * u.deg, frame='icrs', equinox='J2000')
     location = EarthLocation(lon="21.443803", lat="-30.712925", height=0.0)
@@ -218,10 +226,10 @@ if __name__ == '__main__':
                                                             channel_bandwidth=channel_bandwidth, weight=1.0,
                                                             phasecentre=phasecentre,
                                                             polarisation_frame=PolarisationFrame("stokesI"), zerow=True)
-                 for itime in range(ntimes)]
+                 for itime in range(nchunks)]
     bvis_list = arlexecute.compute(bvis_list, sync=True)
     vis_list = [arlexecute.execute(convert_blockvisibility_to_visibility)(bv) for bv in bvis_list]
-    vis_list = arlexecute.compute(vis_list, sync=True)
+    vis_list = arlexecute.persist(vis_list, sync=True)
     
     # We need the HWHM of the primary beam. Got this by trial and error
     if pbtype == 'MID':
@@ -244,7 +252,8 @@ if __name__ == '__main__':
     cellsize = advice['cellsize']
     npixel = 512
     
-    if show:
+    pp.pprint(client.has_what())
+    if False:
         plt.clf()
         for vis in vis_list:
             plt.plot(-vis.u, -vis.v, '.', color='b', markersize=0.2)
@@ -266,7 +275,6 @@ if __name__ == '__main__':
         plt.xlabel('HA (rad)')
         plt.savefig('azel.png')
         plt.show(block=False)
-    
     # Construct the skycomponents
     if context == 'singlesource':
         print("Constructing single component")
@@ -298,8 +306,9 @@ if __name__ == '__main__':
         offset_direction = SkyCoord(ra=+15.0 * u.deg, dec=-45.0 * u.deg, frame='icrs', equinox='J2000')
     
     # Uniform weighting
-    vis_list = arlexecute.scatter(vis_list)
-    
+    pp.pprint(client.has_what())
+
+
     psf_list = [arlexecute.execute(create_image_from_visibility)(v, npixel=npixel, frequency=frequency,
                                                                  nchan=nfreqwin, cellsize=cellsize,
                                                                  phasecentre=phasecentre,
@@ -311,6 +320,8 @@ if __name__ == '__main__':
         print("Using natural weighting")
     else:
         print("Using uniform weighting")
+        pp.pprint(client.has_what())
+
         vis_list = weight_list_arlexecute_workflow(vis_list, psf_list)
         vis_list = arlexecute.compute(vis_list, sync=True)
         bvis_list = [arlexecute.execute(convert_visibility_to_blockvisibility)(vis) for vis in vis_list]
@@ -364,6 +375,9 @@ if __name__ == '__main__':
     no_error_vis_list = [[arlexecute.execute(convert_blockvisibility_to_visibility)(no_error_bvis_list[inebvl][ineb])
                        for ineb, _ in enumerate(nebvl)] for inebvl, nebvl in enumerate(no_error_bvis_list)]
     no_error_vis_list = arlexecute.compute(no_error_vis_list, sync=True)
+
+    print("After creating no_error_vis_list:")
+    pp.pprint(client.has_what())
 
     # Inner nest is over skymodels, outer is over bvis's: need to swap these
     skymodel0_vis_list = [nevl[0] for nevl in no_error_vis_list]
@@ -423,6 +437,7 @@ if __name__ == '__main__':
         result['use_radec'] = use_radec
         result['use_natural'] = use_natural
         result['time_series'] = time_series
+        result['seed'] = seed
         
         a2r = numpy.pi / (3600.0 * 180.0)
         global_pointing_error = global_pe
@@ -443,7 +458,11 @@ if __name__ == '__main__':
                                                       global_pointing_error=a2r * global_pointing_error,
                                                       time_series=time_series)
         error_bvis_list = arlexecute.compute(error_bvis_list, sync=True)
-        
+
+        print("After creating error_vis_list:")
+        pp.pprint(client.has_what())
+
+        # Dask function to be executed: difference, add noise, and convert to visibility
         def difference_add_noise_convert(error_bvis, no_error_bvis):
             error_bvis.data['vis'] -= no_error_bvis.data['vis']
             error_bvis = addnoise_visibility(error_bvis, tsys)
@@ -476,9 +495,6 @@ if __name__ == '__main__':
         
         results.append(result)
     
-    import pprint
-    
-    pp = pprint.PrettyPrinter()
     pp.pprint(results)
     
     with open(filename, 'a') as csvfile:
