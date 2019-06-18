@@ -238,13 +238,13 @@ if __name__ == '__main__':
 
     # We need the HWHM of the primary beam. Got this by trial and error
     if pbtype == 'MID':
-        HWHM_deg = 0.6 * 1.4e9 / frequency[0]
+        HWHM_deg = 0.596 * 1.4e9 / frequency[0]
     elif pbtype == 'MID_GRASP':
         HWHM_deg = 0.751 * 1.4e9 / frequency[0]
     elif pbtype == 'MID_GAUSS':
         HWHM_deg = 0.766 * 1.4e9 / frequency[0]
     else:
-        HWHM_deg = 0.6 * 1.4e9 / frequency[0]
+        HWHM_deg = 0.596 * 1.4e9 / frequency[0]
     
     FOV_deg = 10.0 * HWHM_deg
     print('%s: HWHM beam = %g deg' % (pbtype, HWHM_deg))
@@ -330,7 +330,7 @@ if __name__ == '__main__':
         bvis_graph = [arlexecute.execute(convert_visibility_to_blockvisibility)(vis) for vis in future_vis_list]
         bvis_list = arlexecute.compute(bvis_graph, sync=True)
     
-    print("Inverting to get on-source PSF")
+    print("Inverting to get PSF")
     psf_list = invert_list_arlexecute_workflow(future_vis_list, psf_list, '2d', dopsf=True)
     psf_list = arlexecute.compute(psf_list, sync=True)
     psf, sumwt = sum_invert_results(psf_list)
@@ -387,9 +387,10 @@ if __name__ == '__main__':
     skymodel0_vis_list = [nevl[0] for nevl in no_error_vis_list]
     
     print("Inverting to get dirty image")
+    future_model_list = arlexecute.scatter(model_list)
     skymodel0_list = arlexecute.scatter(skymodel0_vis_list)
     
-    dirty_list = invert_list_arlexecute_workflow(skymodel0_vis_list, model_list, '2d')
+    dirty_list = invert_list_arlexecute_workflow(skymodel0_vis_list, future_model_list, '2d')
     dirty_list = arlexecute.compute(dirty_list, sync=True)
     dirty, sumwt = sum_invert_results(dirty_list)
     print("Dirty image sumwt ", sumwt)
@@ -458,31 +459,32 @@ if __name__ == '__main__':
               (global_pointing_error[0], global_pointing_error[1], static_pointing_error,
                pointing_error))
 
-        error_vis_list = create_vis_list_with_errors(bvis_list, original_components, use_radec=use_radec,
+        future_bvis_list = arlexecute.scatter(bvis_list)
+        error_vis_list = create_vis_list_with_errors(future_bvis_list, original_components, use_radec=use_radec,
                                                       pointing_error=a2r * pointing_error,
                                                       static_pointing_error=a2r * static_pointing_error,
                                                       global_pointing_error=a2r * global_pointing_error,
                                                       time_series=time_series, seeds=seeds)
         error_vis_list = arlexecute.compute(error_vis_list, sync=True)
         
-        
         # Dask function to be executed: difference, add noise, and convert to visibility
         def difference_add_noise(error_vis, no_error_vis):
-            error_vis.data['vis'] -= no_error_vis.data['vis']
+            error_vis[0].data['vis'] -= no_error_vis[0].data['vis']
             if tsys > 0.0:
-                error_vis = addnoise_visibility(error_vis, tsys)
-            return error_vis
+                error_vis[0] = addnoise_visibility(error_vis[0], tsys)
+            return error_vis[0]
         
-        error_vis_list = [[arlexecute.execute(difference_add_noise)
-                           (error_vis_list[ievl][ie], no_error_vis_list[ievl][ie])
-                           for ie, _ in enumerate(evl)]
-                          for ievl, evl in enumerate(error_vis_list)]
+        print("Calculating residual visibility")
+        future_error_vis_list = arlexecute.scatter(error_vis_list)
+        future_no_error_vis_list = arlexecute.scatter(no_error_vis_list)
+        error_vis_list = [arlexecute.execute(difference_add_noise)(error, no_error)
+                           for (error, no_error) in zip(future_error_vis_list, future_no_error_vis_list)]
         
         error_vis_list = arlexecute.compute(error_vis_list, sync=True)
         
-        print("Inverting to get on-source dirty image")
-        skymodel0_vis_list = [evl[0] for evl in error_vis_list]
-        dirty_list = invert_list_arlexecute_workflow(skymodel0_vis_list, model_list, '2d')
+        print("Inverting to get dirty image")
+        future_error_vis_list = arlexecute.scatter(error_vis_list)
+        dirty_list = invert_list_arlexecute_workflow(future_error_vis_list, future_model_list, '2d')
         dirty_list = arlexecute.compute(dirty_list, sync=True)
         dirty, sumwt = sum_invert_results(dirty_list)
         print(qa_image(dirty))
