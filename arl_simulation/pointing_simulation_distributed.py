@@ -20,6 +20,7 @@ from astropy import units as u
 from data_models.polarisation import PolarisationFrame
 from data_models.memory_data_models import Skycomponent, SkyModel
 
+from processing_library.image.operations import create_empty_image_like
 from wrappers.serial.visibility.base import create_blockvisibility
 from wrappers.serial.image.operations import show_image, qa_image, export_image_to_fits
 from wrappers.serial.simulation.configurations import create_configuration_from_MIDfile
@@ -61,6 +62,8 @@ def create_vis_list_with_errors(bvis_list, original_components, use_radec=False,
                                 reference_times=None):
     if global_pointing_error is None:
         global_pointing_error = [0.0, 0.0]
+        
+    print("There are %d sky components" % len(original_components))
     
     # One pointing table per visibility
     pt_list = [arlexecute.execute(create_pointingtable_from_blockvisibility)(bvis) for bvis in bvis_list]
@@ -117,12 +120,19 @@ def create_vis_list_with_errors(bvis_list, original_components, use_radec=False,
                                                                            context='2d', docal=True)
                        for ibv, bvis in enumerate(error_bvis_list)]
     
-    # Inner nest is bvis per skymodels, outer is over vis's
+    # Inner nest is bvis per skymodels, outer is over vis's. First we convert all blockvisibilities to
+    # visibilities.
     error_vis_list = [[arlexecute.execute(convert_blockvisibility_to_visibility)(bv) for bv in bvis]
                       for bvis in error_bvis_list]
-    dirty_list = [invert_list_arlexecute_workflow(vis_chunk, future_model_list, '2d') for iv, vis_chunk in
-                  enumerate(error_vis_list)]
-    dirty_list = [arlexecute.execute(sum_invert_results)(d) for d in dirty_list]
+    # Now for each visibility/component, we make the dirty images
+    dirty_list = [invert_list_arlexecute_workflow(vis, future_model_list, '2d') for vis in error_vis_list]
+    def sum_results(d):
+        dout = create_empty_image_like(d[0][0])
+        for i, din in enumerate(d):
+            dout.data += din[0].data
+        return dout, d[0][1]
+    # Now we sum the images to produce one (image, sumwt) per Visibility.
+    dirty_list = [arlexecute.execute(sum_results)(d) for d in dirty_list]
 
     return dirty_list
 
@@ -161,6 +171,7 @@ if __name__ == '__main__':
     parser.add_argument('--integration_time', type=float, default=600.0, help="Integration time (s)")
     parser.add_argument('--time_range', type=float, nargs=2, default=[-6.0, 6.0], help="Hourangle range (hours")
     parser.add_argument('--time_series', type=str, default='', help="'wind' or 'tracking' or ''")
+    parser.add_argument('--time_chunk', type=float, default=1800.0, help="Time for a chunk (s)")
     parser.add_argument('--reference_interval', type=float, default=2400.0, help="Interval between reference pointing")
     
     args = parser.parse_args()
@@ -179,6 +190,7 @@ if __name__ == '__main__':
     tsys = args.tsys
     integration_time = args.integration_time
     time_range = args.time_range
+    time_chunk = args.time_chunk
     snapshot = args.snapshot == 'True'
     opposite = args.opposite == 'True'
     pbtype = args.pbtype
@@ -212,8 +224,8 @@ if __name__ == '__main__':
     channel_bandwidth = [1e7]
     
     # Do each 30 minutes in parallel
-    start_times = numpy.arange(time_range[0] * 3600, time_range[1] * 3600, 1800.0)
-    end_times = start_times + 1800.0
+    start_times = numpy.arange(time_range[0] * 3600, time_range[1] * 3600, time_chunk)
+    end_times = start_times + time_chunk
     print("Start times:", start_times)
     
     reference_times = numpy.arange(time_range[0] * 3600, time_range[1] * 3600, reference_interval)
@@ -319,6 +331,7 @@ if __name__ == '__main__':
                                                                 polarisation_frame=PolarisationFrame("stokesI"),
                                                                 frequency=numpy.array(frequency),
                                                                 radius=pb_cellsize * pb_npixel / 2.0)
+        print("Created %d original components" % len(original_components))
         # Primary beam points to the phasecentre
         offset_direction = SkyCoord(ra=+15.0 * u.deg, dec=-45.0 * u.deg, frame='icrs', equinox='J2000')
     
@@ -528,4 +541,4 @@ if __name__ == '__main__':
         print('Saving plot to %s' % plotfile)
         
         plt.savefig(plotfile)
-        plt.show()
+        plt.show(block=False)
