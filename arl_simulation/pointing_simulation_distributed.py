@@ -120,9 +120,8 @@ def create_vis_list_with_errors(bvis_list, original_components, use_radec=False,
     # Inner nest is bvis per skymodels, outer is over vis's
     error_vis_list = [[arlexecute.execute(convert_blockvisibility_to_visibility)(bv) for bv in bvis]
                       for bvis in error_bvis_list]
-
-    dirty_list = [invert_list_arlexecute_workflow(vis_chunk, future_model_list, '2d') for vis_chunk in
-                  error_vis_list]
+    dirty_list = [invert_list_arlexecute_workflow(vis_chunk, future_model_list, '2d') for iv, vis_chunk in
+                  enumerate(error_vis_list)]
     dirty_list = [arlexecute.execute(sum_invert_results)(d) for d in dirty_list]
 
     return dirty_list
@@ -257,7 +256,7 @@ if __name__ == '__main__':
     else:
         HWHM_deg = 0.596 * 1.4e9 / frequency[0]
     
-    FOV_deg = 10.0 * HWHM_deg
+    FOV_deg = 12.0 * HWHM_deg
     print('%s: HWHM beam = %g deg' % (pbtype, HWHM_deg))
     
     advice_list = arlexecute.execute(advise_wide_field)(future_vis_list[0].result(), guard_band_image=1.0,
@@ -326,6 +325,15 @@ if __name__ == '__main__':
     # Uniform weighting
     future_vis_list = arlexecute.scatter(vis_list)
     
+    model_list = [arlexecute.execute(create_image_from_visibility)(future_vis_list[0], npixel=npixel,
+                                                                   frequency=frequency,
+                                                                   nchan=nfreqwin, cellsize=cellsize,
+                                                                   phasecentre=offset_direction,
+                                                                   polarisation_frame=PolarisationFrame("stokesI"))
+                  for i, _ in enumerate(original_components)]
+    future_model_list = arlexecute.persist(model_list)
+    del model_list
+    
     psf_list = [arlexecute.execute(create_image_from_visibility)(v, npixel=npixel, frequency=frequency,
                                                                  nchan=nfreqwin, cellsize=cellsize,
                                                                  phasecentre=phasecentre,
@@ -361,14 +369,6 @@ if __name__ == '__main__':
         plt.savefig('PSF_arl.png')
         plt.show(block=False)
     del psf_list
-    
-    model_list = [arlexecute.execute(create_image_from_visibility)(v, npixel=npixel, frequency=frequency,
-                                                                   nchan=nfreqwin, cellsize=cellsize,
-                                                                   phasecentre=offset_direction,
-                                                                   polarisation_frame=PolarisationFrame("stokesI"))
-                  for v in future_vis_list]
-    future_model_list = arlexecute.persist(model_list)
-    del model_list
     
     # ### Calculate the voltage pattern without pointing errors
     vp_list = [arlexecute.execute(create_image_from_visibility)(bv, npixel=pb_npixel, frequency=frequency,
@@ -484,6 +484,7 @@ if __name__ == '__main__':
         error_dirty_list = arlexecute.compute(error_dirty_list, sync=True)
         error_dirty, sumwt = sum_invert_results(error_dirty_list)
         del error_dirty_list
+        export_image_to_fits(error_dirty, 'PE_%.1f_arcsec_arl_absolute.fits' % pe)
         error_dirty.data -= no_error_dirty.data
         print(qa_image(error_dirty))
         export_image_to_fits(error_dirty, 'PE_%.1f_arcsec_arl.fits' % pe)
