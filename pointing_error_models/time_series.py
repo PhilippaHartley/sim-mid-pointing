@@ -49,7 +49,7 @@ for i in psds:
     plt.semilogx(psd[:,0], psd[:,4],label = 'S_pel(f)')
     plt.legend()
     plt.xlabel('f, Hz')
-    plt.savefig(plotdir+'power_spectra.png')
+    plt.savefig(plotdir+outdir2+outpath+'power_spectra.png')
 
     # define some arrays
     freq = psd[:,0]
@@ -151,7 +151,7 @@ for i in psds:
             plt.ylabel('PSD, as^2/Hz')
             plt.xlabel('f, Hz')
             plt.legend()    
-            plt.savefig(plotdir+'sampled_psd_%s.png'%axis)
+            plt.savefig(plotdir+outdir2+outpath+'sampled_psd_%s.png'%axis)
 
         # get amplitudes from psd values
 
