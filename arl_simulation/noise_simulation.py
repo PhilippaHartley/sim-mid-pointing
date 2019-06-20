@@ -231,7 +231,7 @@ if __name__ == '__main__':
     vp = create_vp(vp, 'MID', pointingcentre=pb_direction)
     pt = create_pointingtable_from_blockvisibility(block_vis, vp)
     
-    no_error_pt = simulate_pointingtable(pt, 0.0, 0.0, seed=seed)
+    no_error_pt = simulate_pointingtable(pt, 0.0, 0.0)
    # export_pointingtable_to_hdf5(no_error_pt, 'pointingsim_%s_noerror_pointingtable.hdf5' % context)
     error_noise = create_gaintable_from_noise_sources(block_vis, original_components, no_error_pt, vp)
 
