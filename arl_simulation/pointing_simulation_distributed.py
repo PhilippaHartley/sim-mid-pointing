@@ -159,6 +159,7 @@ if __name__ == '__main__':
     parser.add_argument('--flux_limit', type=float, default=1.0, help='Flux limit (Jy)')
     parser.add_argument('--show', type=str, default='False', help='Show images?')
     parser.add_argument('--ngroup', type=int, default=8, help='Process in groups this large')
+    parser.add_argument('--npixel', type=int, default=512, help='Number of pixels in image')
     parser.add_argument('--seed', type=int, default=18051955, help='Random number seed')
     parser.add_argument('--snapshot', type=str, default='False', help='Do snapshot only?')
     parser.add_argument('--opposite', type=str, default='False', help='Move source to opposite side of pointing centre')
@@ -197,6 +198,7 @@ if __name__ == '__main__':
     reference_interval = args.reference_interval
     rmax = args.rmax
     flux_limit = args.flux_limit
+    npixel = args.npixel
     
     seed = args.seed
     print("Random number seed is", seed)
@@ -278,7 +280,6 @@ if __name__ == '__main__':
     d2r = numpy.pi / 180.0
     pb_cellsize = d2r * FOV_deg / pb_npixel
     cellsize = advice['cellsize']
-    npixel = 512
     
     if show:
         plt.clf()
