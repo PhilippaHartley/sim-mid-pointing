@@ -100,7 +100,8 @@ def create_vis_list_with_errors(bvis_list, original_components, use_radec=False,
         tmp_error_gt_list = arlexecute.compute(error_gt_list, sync=True)
         plt.clf()
         for gt in tmp_error_gt_list:
-            plt.plot(gt[0].time, 1.0 / numpy.abs(gt[0].gain[:, 0, 0, 0]), '.')
+            amp = numpy.abs(gt[0].gain[:, 0, 0, 0, 0])
+            plt.plot(gt[0].time[amp>0.0], 1.0/amp[amp>0.0], '.')
         plt.ylim([0.0, 1.1])
         plt.title("%s: amplitude gain" % basename)
         plt.xlabel('Time (s)')
