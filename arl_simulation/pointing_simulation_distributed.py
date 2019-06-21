@@ -1,4 +1,14 @@
 """Simulation of the effect of pointing errors on MID observations
+
+This measures the effect of pointing errors on the change in a dirty image induced by pointing errors:
+    - The pointing errors can be random per integration, static, or global, or drawn from power spectra
+    - The sky can be a point source at the half power point or a realistic sky constructed from S3-SEX catalog.
+    - The observation is by MID over a range of hour angles
+    - Processing can be divided into chunks of time (default 1800s)
+    - Dask is used to distribute the processing over a number of workers.
+    - Various plots are produced, The primary output is a csv file containing information about the statistics of
+    the residual images.
+    
 """
 import csv
 import os
@@ -219,6 +229,8 @@ if __name__ == '__main__':
                              memory_limit=memory * 1024 * 1024 * 1024,
                              n_workers=nworkers)
     arlexecute.set_client(client=client)
+    
+    time_started = time.time()
     
     # Set up details of simulated observation
     nfreqwin = 1
@@ -515,7 +527,11 @@ if __name__ == '__main__':
         result['onsource_abscentral'] = numpy.abs(error_dirty.data[0, 0, ny // 2, nx // 2])
         
         results.append(result)
+        
+        result['elapsed_time'] = time.time() - time_started
     
+        print('Elapsed time = %.1f (s)' % result['elapsed_time'])
+        
     pp.pprint(results)
     
     with open(filename, 'a') as csvfile:
@@ -526,7 +542,7 @@ if __name__ == '__main__':
             writer.writerow(result)
         csvfile.close()
     
-    if time_series == '':
+    if time_series == '' and show:
         title = '%s, %.3f GHz, %d times: dynamic %g, static %g \n%s %s %s' % \
                 (context, frequency[0] * 1e-9, ntimes, dynamic_pe, static_pe, socket.gethostname(), epoch,
                  basename)
