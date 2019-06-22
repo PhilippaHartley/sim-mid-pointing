@@ -30,7 +30,7 @@ from astropy import units as u
 from data_models.polarisation import PolarisationFrame
 from data_models.memory_data_models import Skycomponent, SkyModel
 
-from processing_library.image.operations import copy_image
+from processing_library.image.operations import create_empty_image_like
 from wrappers.serial.visibility.base import create_blockvisibility
 from wrappers.serial.image.operations import show_image, qa_image, export_image_to_fits
 from wrappers.serial.simulation.configurations import create_configuration_from_MIDfile
@@ -136,9 +136,9 @@ def create_vis_list_with_errors(bvis_list, original_components, model_list, vp_l
     
     # Now for each visibility/component, we make the dirty images
     dirty_list = list()
-    # We just add the component dirty images
+    # We just add the component dirty images since the weights should be the same
     def sum_images(images):
-        sum_image = copy_image(images[0][0])
+        sum_image = create_empty_image_like(images[0][0])
         for im in images:
             sum_image.data += im[0].data
         return sum_image, images[0][1]
