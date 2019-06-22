@@ -46,5 +46,8 @@ sim 24: sim23 but with 'wind' timeseries with +/- 6 hours and MID_GRASP
 sim 25: sim23 but with 'tracking' timeseries with +/- 6 hours and MID_GRASP
 sim 26: sim0 with distributed processing
 
+sim27: Aspirational: 10s integration with wind
+sim28: Aspirational: 1s integration with wind
+
 
 sim 13 is the current standard.
