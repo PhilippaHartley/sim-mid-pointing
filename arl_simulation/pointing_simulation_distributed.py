@@ -30,6 +30,7 @@ from astropy import units as u
 from data_models.polarisation import PolarisationFrame
 from data_models.memory_data_models import Skycomponent, SkyModel
 
+from processing_library.image.operations import copy_image
 from wrappers.serial.visibility.base import create_blockvisibility
 from wrappers.serial.image.operations import show_image, qa_image, export_image_to_fits
 from wrappers.serial.simulation.configurations import create_configuration_from_MIDfile
@@ -132,20 +133,28 @@ def create_vis_list_with_errors(bvis_list, original_components, model_list, vp_l
     # visibilities.
     error_vis_list = [[arlexecute.execute(convert_blockvisibility_to_visibility)(bvis[i])
                        for i, _ in enumerate(original_components)] for bvis in error_bvis_list]
+    
     # Now for each visibility/component, we make the dirty images
+    dirty_list = list()
+    # We just add the component dirty images
+    def sum_images(images):
+        sum_image = copy_image(images[0][0])
+        for im in images:
+            sum_image.data += im[0].data
+        return sum_image, images[0][1]
+    
     dirty_list = list()
     for vis in error_vis_list:
         assert len(vis) == len(original_components)
         result = invert_list_arlexecute_workflow(vis, model_list, '2d')
-        for r in result:
-            dirty_list.append(r)
-        assert len(result) == len(original_components)
-    assert len(dirty_list) == len(bvis_list) * len(original_components)
-    
+        dirty_list.append(arlexecute.execute(sum_images)(result))
+
     return dirty_list
 
 
 if __name__ == '__main__':
+    
+    print("Distributed simulation of pointing errors for SKA-MID")
     
     # Get command line inputs
     import argparse
@@ -252,7 +261,7 @@ if __name__ == '__main__':
     ntimes = len(rtimes.flat)
     nchunks = len(start_times)
     
-    print('%d integrations processed in %d chunks, with integration time %.1f' % (ntimes, nchunks, integration_time))
+    print('%d integrations of duration %.1f s processed in %d chunks' % (ntimes, integration_time, nchunks))
     
     phasecentre = SkyCoord(ra=+15.0 * u.deg, dec=-45.0 * u.deg, frame='icrs', equinox='J2000')
     location = EarthLocation(lon="21.443803", lat="-30.712925", height=0.0)
@@ -447,8 +456,8 @@ if __name__ == '__main__':
         result = arlexecute.compute(chunk_dirty_list, sync=True)
         for r in result:
             dirty_list.append(r)
+    print(dirty_list)
     no_error_dirty, sumwt = sum_invert_results(dirty_list)
-    sumwt /= len(original_components)
     print("Dirty image sumwt ", sumwt)
     print(qa_image(no_error_dirty))
     export_image_to_fits(no_error_dirty, 'dirty_arl.fits')
@@ -545,7 +554,6 @@ if __name__ == '__main__':
                 error_dirty_list.append(r)
         
         error_dirty, sumwt = sum_invert_results(error_dirty_list)
-        sumwt /= len(original_components)
         print("Dirty image sumwt", sumwt)
         del error_dirty_list
         error_dirty.data -= no_error_dirty.data
