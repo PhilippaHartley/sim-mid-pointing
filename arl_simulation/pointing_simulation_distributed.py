@@ -273,13 +273,10 @@ if __name__ == '__main__':
                                                              polarisation_frame=PolarisationFrame("stokesI"),
                                                              zerow=True)
                   for itime in range(nchunks)]
-    bvis_list = arlexecute.compute(bvis_graph, sync=True)
-    future_bvis_list = arlexecute.scatter(bvis_list)
-    del bvis_list
+    future_bvis_list = arlexecute.persist(bvis_graph, sync=True)
     
     vis_graph = [arlexecute.execute(convert_blockvisibility_to_visibility)(bv) for bv in future_bvis_list]
-    vis_list = arlexecute.compute(vis_graph, sync=True)
-    future_vis_list = arlexecute.scatter(vis_list)
+    future_vis_list = arlexecute.persist(vis_graph, sync=True)
     
     # We need the HWHM of the primary beam. Got this by trial and error
     if pbtype == 'MID':
@@ -358,8 +355,6 @@ if __name__ == '__main__':
         offset_direction = SkyCoord(ra=+15.0 * u.deg, dec=-45.0 * u.deg, frame='icrs', equinox='J2000')
     
     # Uniform weighting
-    future_vis_list = arlexecute.scatter(vis_list)
-    
     future_model_list = [arlexecute.execute(create_image_from_visibility)(future_vis_list[0], npixel=npixel,
                                                                           frequency=frequency,
                                                                           nchan=nfreqwin, cellsize=cellsize,
