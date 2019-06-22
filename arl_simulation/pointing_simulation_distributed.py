@@ -291,7 +291,7 @@ if __name__ == '__main__':
     FOV_deg = 12.0 * HWHM_deg
     print('%s: HWHM beam = %g deg' % (pbtype, HWHM_deg))
     
-    advice_list = arlexecute.execute(advise_wide_field)(future_vis_list[0].result(), guard_band_image=1.0,
+    advice_list = arlexecute.execute(advise_wide_field)(future_vis_list[0], guard_band_image=1.0,
                                                         delA=0.02)
     advice = arlexecute.compute(advice_list, sync=True)
     pb_npixel = 1024
