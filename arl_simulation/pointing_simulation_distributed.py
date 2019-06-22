@@ -300,9 +300,10 @@ if __name__ == '__main__':
     cellsize = advice['cellsize']
     
     if show:
+        future_vis_list = arlexecute.compute(future_vis_list, sync=True)
         plt.clf()
-        for fvis in future_vis_list:
-            vis = fvis.result()
+        for ivis in range(nchunks):
+            vis = future_vis_list[ivis]
             plt.plot(-vis.u, -vis.v, '.', color='b', markersize=0.2)
             plt.plot(vis.u, vis.v, '.', color='b', markersize=0.2)
         plt.xlabel('U (wavelengths)')
@@ -310,10 +311,12 @@ if __name__ == '__main__':
         plt.title('UV coverage')
         plt.savefig('uvcoverage.png')
         plt.show(block=False)
+        future_vis_list = arlexecute.scatter(future_vis_list)
         
         plt.clf()
-        for fbvis in future_bvis_list:
-            bvis = fbvis.result()
+        future_bvis_list = arlexecute.compute(future_bvis_list, sync=True)
+        for ivis in range(nchunks):
+            bvis = future_bvis_list[ivis]
             ha = numpy.pi * bvis.time / 43200.0
             dec = phasecentre.dec.rad
             latitude = bvis.configuration.location.lat.rad
@@ -323,6 +326,8 @@ if __name__ == '__main__':
         plt.xlabel('HA (rad)')
         plt.savefig('azel.png')
         plt.show(block=False)
+        future_bvis_list = arlexecute.scatter(future_bvis_list)
+
     # Construct the skycomponents
     if context == 'singlesource':
         print("Constructing single component")
