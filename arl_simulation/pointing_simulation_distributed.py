@@ -32,7 +32,7 @@ from data_models.memory_data_models import Skycomponent, SkyModel
 
 from processing_library.image.operations import create_empty_image_like
 from wrappers.serial.visibility.base import create_blockvisibility
-from wrappers.serial.image.operations import show_image, qa_image, export_image_to_fits
+from wrappers.serial.image.operations import show_image, show_components, qa_image, export_image_to_fits
 from wrappers.serial.simulation.configurations import create_configuration_from_MIDfile
 from wrappers.serial.simulation.testing_support import simulate_pointingtable, simulate_pointingtable_from_timeseries
 from wrappers.serial.imaging.primary_beams import create_vp, create_pb
@@ -154,8 +154,11 @@ def create_vis_list_with_errors(bvis_list, original_components, model_list, vp_l
 
 if __name__ == '__main__':
     
+    print(" ")
     print("Distributed simulation of pointing errors for SKA-MID")
-    
+    print("-----------------------------------------------------")
+    print(" ")
+
     # Get command line inputs
     import argparse
     
@@ -288,7 +291,7 @@ if __name__ == '__main__':
     else:
         HWHM_deg = 0.596 * 1.4e9 / frequency[0]
     
-    FOV_deg = 12.0 * HWHM_deg
+    FOV_deg = 10.0 * HWHM_deg
     print('%s: HWHM beam = %g deg' % (pbtype, HWHM_deg))
     
     advice_list = arlexecute.execute(advise_wide_field)(future_vis_list[0], guard_band_image=1.0,
@@ -354,7 +357,7 @@ if __name__ == '__main__':
                                                                 phasecentre=phasecentre,
                                                                 polarisation_frame=PolarisationFrame("stokesI"),
                                                                 frequency=numpy.array(frequency),
-                                                                radius=pb_cellsize * pb_npixel / 2.0)
+                                                                radius=pb_cellsize * pb_npixel / 4.0)
         print("Created %d original components" % len(original_components))
         # Primary beam points to the phasecentre
         offset_direction = SkyCoord(ra=+15.0 * u.deg, dec=-45.0 * u.deg, frame='icrs', equinox='J2000')
@@ -435,7 +438,8 @@ if __name__ == '__main__':
     
     # Make a set of seeds, one per bvis, to ensure that we can get the same errors on different passes
     seeds = numpy.round(numpy.random.uniform(1, numpy.power(2, 31), len(future_bvis_list))).astype(('int'))
-    print("Seeds per chunk", seeds)
+    print("Seeds per chunk:")
+    pp.pprint(seeds)
     
     # Process the data in chunks to avoid needing memory for the entire set of images in one pass
     print("Creating visibilities without any errors")
@@ -456,7 +460,6 @@ if __name__ == '__main__':
         result = arlexecute.compute(chunk_dirty_list, sync=True)
         for r in result:
             dirty_list.append(r)
-    print(dirty_list)
     no_error_dirty, sumwt = sum_invert_results(dirty_list)
     print("Dirty image sumwt ", sumwt)
     print(qa_image(no_error_dirty))
@@ -483,15 +486,26 @@ if __name__ == '__main__':
     static_pe = args.static_pe
     dynamic_pe = args.dynamic_pe
     
+    nants = len(mid.names)
+    nbaselines = nants * (nants - 1) // 2
+
+    time_started = time.time()
+
     print("Summary of processing:")
     print("    There are %d workers" % nworkers)
     print("    There are %d separate visibility time chunks being processed" % len(future_vis_list))
     print("    The integration time within each chunk is %.1f (s)" % integration_time)
+    print("    There are a total of %d integrations" % ntimes)
+    print("    There are %d baselines" % nbaselines)
     print("    There are %d components/skymodels" % len(original_components))
     print("    %d pointing scenario(s) will be tested" % len(pes))
+    ntotal = ntimes * nbaselines * len(original_components) * len(pes) / nworkers
+    print("    Total processing per worker %g times-baselines-components-scenarios" % ntotal)
     
     # Now loop over all pointing errors
+    print("")
     print("***** Starting loop over pointing error ******")
+    print("")
     for pe in pes:
         
         result = dict()
@@ -518,6 +532,7 @@ if __name__ == '__main__':
         result['time_series'] = time_series
         result['integration_time'] = integration_time
         result['seed'] = seed
+        result['ntotal'] = ntotal
         
         a2r = numpy.pi / (3600.0 * 180.0)
         global_pointing_error = global_pe
@@ -577,11 +592,16 @@ if __name__ == '__main__':
     
     pp.pprint(results)
     
+    print("Total processing %g times-baselines-components-scenarios" % ntotal)
+    processing_rate = ntotal / (time.time() - time_started)
+    print("Processing rate of time-baseline-component-scenario = %g (s^-1)" % processing_rate)
+
     with open(filename, 'a') as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=results[0].keys(), delimiter=',', quotechar='|',
                                 quoting=csv.QUOTE_MINIMAL)
         writer.writeheader()
         for result in results:
+            result["processing_rate"] = processing_rate
             writer.writerow(result)
         csvfile.close()
     
