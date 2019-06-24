@@ -32,7 +32,7 @@ from data_models.memory_data_models import Skycomponent, SkyModel
 
 from processing_library.image.operations import create_empty_image_like
 from wrappers.serial.visibility.base import create_blockvisibility
-from wrappers.serial.image.operations import show_image, show_components, qa_image, export_image_to_fits
+from wrappers.serial.image.operations import show_image, qa_image, export_image_to_fits
 from wrappers.serial.simulation.configurations import create_configuration_from_MIDfile
 from wrappers.serial.simulation.testing_support import simulate_pointingtable, simulate_pointingtable_from_timeseries
 from wrappers.serial.imaging.primary_beams import create_vp, create_pb
@@ -70,11 +70,12 @@ pp = pprint.PrettyPrinter()
 def create_vis_list_with_errors(bvis_list, original_components, model_list, vp_list,
                                 use_radec=False, pointing_error=0.0, static_pointing_error=0.0,
                                 global_pointing_error=None, time_series='', seeds=None,
-                                reference_times=None):
+                                reference_pointing=False, pointing_file=None):
     if global_pointing_error is None:
         global_pointing_error = [0.0, 0.0]
     
     # One pointing table per visibility
+    
     pt_list = [arlexecute.execute(create_pointingtable_from_blockvisibility)(bvis) for bvis in bvis_list]
     if time_series is '':
         pt_list = [arlexecute.execute(simulate_pointingtable)(pt, pointing_error=pointing_error,
@@ -84,7 +85,8 @@ def create_vis_list_with_errors(bvis_list, original_components, model_list, vp_l
                    for ipt, pt in enumerate(pt_list)]
     else:
         pt_list = [arlexecute.execute(simulate_pointingtable_from_timeseries)(pt, type=time_series,
-                                                                              reference_times=reference_times)
+                                                                              pointing_file=pointing_file,
+                                                                              reference_pointing=reference_pointing)
                    for pt in pt_list]
     
     if show:
@@ -193,8 +195,9 @@ if __name__ == '__main__':
     parser.add_argument('--integration_time', type=float, default=600.0, help="Integration time (s)")
     parser.add_argument('--time_range', type=float, nargs=2, default=[-6.0, 6.0], help="Hourangle range (hours")
     parser.add_argument('--time_series', type=str, default='', help="'wind' or 'tracking' or ''")
+    parser.add_argument('--pointing_file', type=str, default=None, help="Pointing file")
     parser.add_argument('--time_chunk', type=float, default=1800.0, help="Time for a chunk (s)")
-    parser.add_argument('--reference_interval', type=float, default=2400.0, help="Interval between reference pointing")
+    parser.add_argument('--reference_pointing', type=str, default="False", help="Use reference pointing")
     
     args = parser.parse_args()
     
@@ -208,6 +211,7 @@ if __name__ == '__main__':
     use_radec = args.use_radec == "True"
     use_natural = args.use_natural == "True"
     time_series = args.time_series
+    pointing_file = args.pointing_file
     scale = numpy.array(args.scale)
     tsys = args.tsys
     integration_time = args.integration_time
@@ -217,7 +221,7 @@ if __name__ == '__main__':
     opposite = args.opposite == 'True'
     pbtype = args.pbtype
     pbradius = args.pbradius
-    reference_interval = args.reference_interval
+    reference_pointing = args.reference_pointing == "True"
     rmax = args.rmax
     flux_limit = args.flux_limit
     npixel = args.npixel
@@ -259,9 +263,6 @@ if __name__ == '__main__':
     end_times = start_times + time_chunk
     print("Start times for chunks:")
     pp.pprint(start_times)
-    
-    reference_times = numpy.arange(time_range[0] * 3600, time_range[1] * 3600, reference_interval)
-    #    print("Reference_times:", reference_times)
     
     times = [numpy.arange(start_times[itime], end_times[itime], integration_time) for itime in range(len(start_times))]
     print("Observation times:")
@@ -370,7 +371,41 @@ if __name__ == '__main__':
         print("Created %d original components" % len(original_components))
         # Primary beam points to the phasecentre
         offset_direction = SkyCoord(ra=+15.0 * u.deg, dec=-45.0 * u.deg, frame='icrs', equinox='J2000')
-    
+        
+    if time_series == '':
+        pes = [1.0, 2.0, 4.0, 8.0, 16.0, 32.0, 64.0, 128.0, 256.0]
+    else:
+        pes = ['El15Az0.dat',
+               'El15Az135.dat',
+               'El15Az180.dat',
+               'El15Az45.dat',
+               'El15Az90.dat',
+               'El45Az0.dat',
+               'El45Az135.dat',
+               'El45Az180.dat',
+               'El45Az45.dat',
+               'El45Az90.dat',
+               'El90Az0.dat',
+               'El90Az135.dat',
+               'El90Az180.dat',
+               'El90Az45.dat',
+               'El90Az90.dat']
+        
+        
+    nants = len(mid.names)
+    nbaselines = nants * (nants - 1) // 2
+
+    print("Summary of processing:")
+    print("    There are %d workers" % nworkers)
+    print("    There are %d separate visibility time chunks being processed" % len(future_vis_list))
+    print("    The integration time within each chunk is %.1f (s)" % integration_time)
+    print("    There are a total of %d integrations" % ntimes)
+    print("    There are %d baselines" % nbaselines)
+    print("    There are %d components" % len(original_components))
+    print("    %d pointing scenario(s) will be tested" % len(pes))
+    ntotal = ntimes * nbaselines * len(original_components) * len(pes)
+    print("    Total processing %g times-baselines-components-scenarios" % ntotal)
+   
     # Uniform weighting
     future_model_list = [arlexecute.execute(create_image_from_visibility)(future_vis_list[0], npixel=npixel,
                                                                           frequency=frequency,
@@ -432,7 +467,7 @@ if __name__ == '__main__':
         pb = arlexecute.compute(pb, sync=True)
         print("Primary beam:", pb)
         if pbtype == 'MID_GRASP':
-            show_image(pb, title='%s: primary beam' % basename, max=0.01, vmin=0.0)
+            show_image(pb, title='%s: primary beam' % basename, vmax=0.01, vmin=0.0)
         else:
             show_image(pb, title='%s: primary beam' % basename, components=original_components, vmax=0.01, vmin=0.0)
 
@@ -460,7 +495,6 @@ if __name__ == '__main__':
     print("Predicting error-free visibilities in chunks of %d skymodels" % ngroup)
     dirty_list = list()
     chunk_bvis = [future_bvis_list[i:i + ngroup] for i in range(0, len(future_bvis_list), ngroup)]
-    chunk_reference_times = [reference_times[i:i + ngroup] for i in range(0, len(future_bvis_list), ngroup)]
     chunk_vp_list = [future_vp_list[i:i + ngroup] for i in range(0, len(future_vp_list), ngroup)]
     chunk_seeds = [seeds[i:i + ngroup] for i in range(0, len(future_bvis_list), ngroup)]
     for ichunk, chunk in enumerate(chunk_bvis):
@@ -470,7 +504,7 @@ if __name__ == '__main__':
                                                        vp_list=chunk_vp_list[ichunk],
                                                        use_radec=use_radec,
                                                        seeds=chunk_seeds[ichunk],
-                                                       reference_times=chunk_reference_times[ichunk])
+                                                       reference_pointing=reference_pointing)
         result = arlexecute.compute(chunk_dirty_list, sync=True)
         for r in result:
             dirty_list.append(r)
@@ -482,11 +516,6 @@ if __name__ == '__main__':
         show_image(no_error_dirty, cm='gray_r', title='%s Dirty image' % basename)  # , vmin=-0.01, vmax=0.1)
         plt.savefig('no_error_dirty_arl.png')
         plt.show(block=False)
-    
-    if time_series == '':
-        pes = [1.0, 2.0, 4.0, 8.0, 16.0, 32.0, 64.0, 128.0, 256.0]
-    else:
-        pes = [0.0]
     
     results = []
     
@@ -500,28 +529,11 @@ if __name__ == '__main__':
     static_pe = args.static_pe
     dynamic_pe = args.dynamic_pe
     
-    nants = len(mid.names)
-    nbaselines = nants * (nants - 1) // 2
-
     time_started = time.time()
 
-
-    print("Summary of processing:")
-    print("    There are %d workers" % nworkers)
-    print("    There are %d separate visibility time chunks being processed" % len(future_vis_list))
-    print("    The integration time within each chunk is %.1f (s)" % integration_time)
-    print("    There are a total of %d integrations" % ntimes)
-    print("    There are %d baselines" % nbaselines)
-    print("    There are %d components/skymodels" % len(original_components))
-    print("    %d pointing scenario(s) will be tested" % len(pes))
-    # Typical values:
-    # Sheldon 22000
-    ntotal = ntimes * nbaselines * len(original_components) * len(pes)
-    print("    Total processing %g times-baselines-components-scenarios" % ntotal)
-    
     # Now loop over all pointing errors
     print("")
-    print("***** Starting loop over pointing error ******")
+    print("***** Starting loop over scenarios ******")
     print("")
     for pe in pes:
         
@@ -553,48 +565,69 @@ if __name__ == '__main__':
         result['ntotal'] = ntotal
         
         a2r = numpy.pi / (3600.0 * 180.0)
-        global_pointing_error = global_pe
-        static_pointing_error = static_pe * pe
-        pointing_error = dynamic_pe * pe
+        if time_series == '':
+            global_pointing_error = global_pe
+            static_pointing_error = static_pe * pe
+            pointing_error = dynamic_pe * pe
+            result['static_pointing_error'] = static_pointing_error
+            result['dynamic_pointing_error'] = pointing_error
+            result['global_pointing_error'] = global_pointing_error
         
-        result['static_pointing_error'] = static_pointing_error
-        result['dynamic_pointing_error'] = pointing_error
-        result['global_pointing_error'] = global_pointing_error
-        
-        print("Pointing errors: global (%.1f, %.1f) arcsec, static %.1f arcsec, dynamic %.1f arcsec" %
-              (global_pointing_error[0], global_pointing_error[1], static_pointing_error,
-               pointing_error))
-        
-        error_dirty_list = list()
-        chunk_bvis = [future_bvis_list[i:i + ngroup] for i in range(0, len(future_bvis_list), ngroup)]
-        chunk_reference_times = [reference_times[i:i + ngroup] for i in range(0, len(future_bvis_list), ngroup)]
-        chunk_vp_list = [future_vp_list[i:i + ngroup] for i in range(0, len(future_vp_list), ngroup)]
-        chunk_seeds = [seeds[i:i + ngroup] for i in range(0, len(future_bvis_list), ngroup)]
-        for ichunk, chunk in enumerate(chunk_bvis):
-            print("Processing chunk %d" % ichunk)
-            chunk_dirty_list = create_vis_list_with_errors(chunk_bvis[ichunk], original_components,
-                                                           model_list=future_model_list,
-                                                           vp_list=chunk_vp_list[ichunk],
-                                                           use_radec=use_radec,
-                                                           pointing_error=a2r * pointing_error,
-                                                           static_pointing_error=a2r * static_pointing_error,
-                                                           global_pointing_error=a2r * global_pointing_error,
-                                                           time_series=time_series,
-                                                           seeds=chunk_seeds[ichunk],
-                                                           reference_times=chunk_reference_times[ichunk])
-            this_result = arlexecute.compute(chunk_dirty_list, sync=True)
-            for r in this_result:
-                error_dirty_list.append(r)
-        
+            print("Pointing errors: global (%.1f, %.1f) arcsec, static %.1f arcsec, dynamic %.1f arcsec" %
+                  (global_pointing_error[0], global_pointing_error[1], static_pointing_error,
+                   pointing_error))
+            file_name = 'PE_%.1f_arcsec_arl' % pe
+
+            error_dirty_list = list()
+            chunk_bvis = [future_bvis_list[i:i + ngroup] for i in range(0, len(future_bvis_list), ngroup)]
+            chunk_vp_list = [future_vp_list[i:i + ngroup] for i in range(0, len(future_vp_list), ngroup)]
+            chunk_seeds = [seeds[i:i + ngroup] for i in range(0, len(future_bvis_list), ngroup)]
+            for ichunk, chunk in enumerate(chunk_bvis):
+                print("Processing chunk %d" % ichunk)
+                chunk_dirty_list = create_vis_list_with_errors(chunk_bvis[ichunk], original_components,
+                                                               model_list=future_model_list,
+                                                               vp_list=chunk_vp_list[ichunk],
+                                                               use_radec=use_radec,
+                                                               pointing_error=a2r * pointing_error,
+                                                               static_pointing_error=a2r * static_pointing_error,
+                                                               global_pointing_error=a2r * global_pointing_error,
+                                                               seeds=chunk_seeds[ichunk])
+                this_result = arlexecute.compute(chunk_dirty_list, sync=True)
+                for r in this_result:
+                    error_dirty_list.append(r)
+        else:
+            root_dir = "../../pointing_error_models/PSD_data/precision"
+            result['pointing_file'] = "%s/%s" % (root_dir, pe)
+            file_name = 'PE_%s_%s_arl' % (pe, time_series)
+            print("Pointing errors: type of time series %s from file %s" % (time_series, result['pointing_file']))
+    
+            error_dirty_list = list()
+            chunk_bvis = [future_bvis_list[i:i + ngroup] for i in range(0, len(future_bvis_list), ngroup)]
+            chunk_vp_list = [future_vp_list[i:i + ngroup] for i in range(0, len(future_vp_list), ngroup)]
+            chunk_seeds = [seeds[i:i + ngroup] for i in range(0, len(future_bvis_list), ngroup)]
+            for ichunk, chunk in enumerate(chunk_bvis):
+                print("Processing chunk %d" % ichunk)
+                chunk_dirty_list = create_vis_list_with_errors(chunk_bvis[ichunk], original_components,
+                                                               model_list=future_model_list,
+                                                               vp_list=chunk_vp_list[ichunk],
+                                                               use_radec=use_radec,
+                                                               time_series=time_series,
+                                                               pointing_file=result['pointing_file'],
+                                                               seeds=chunk_seeds[ichunk],
+                                                               reference_pointing=reference_pointing)
+                this_result = arlexecute.compute(chunk_dirty_list, sync=True)
+                for r in this_result:
+                    error_dirty_list.append(r)
+
         error_dirty, sumwt = sum_invert_results(error_dirty_list)
         print("Dirty image sumwt", sumwt)
         del error_dirty_list
         error_dirty.data -= no_error_dirty.data
         print(qa_image(error_dirty))
-        export_image_to_fits(error_dirty, 'PE_%.1f_arcsec_arl.fits' % pe)
+        
         if show:
-            show_image(error_dirty, cm='gray_r', title='Pointing error %.1f arcsec ARL' % pe)
-            plt.savefig('PE_%.1f_arcsec_arl.png' % pe)
+            show_image(error_dirty, cm='gray_r', title='Pointing error %s' % file_name)
+            plt.savefig('%s.png' % file_name)
             plt.show(block=False)
         
         qa = qa_image(error_dirty)
@@ -612,6 +645,12 @@ if __name__ == '__main__':
     
     print("Total processing %g times-baselines-components-scenarios" % ntotal)
     processing_rate = ntotal / (nworkers * (time.time() - time_started))
+    # Typical values:
+    # Tim-MBP, MacBookPro14,3 Intel Core i7 2.9 GHz, 5818.72 /s/worker
+    # Sheldon, Intel(R) Core(TM) i7-6900K CPU @ 3.20GHz, 22000.0 /s/worker
+    # CSD3, single node, Intel(R) Xeon(R) Gold 6142 CPU @ 2.60GHz, 29522.8 /s/worker
+    # CSD3, multinode, Intel(R) Xeon(R) Gold 6142 CPU @ 2.60GHz, 12600.0 /s/worker
+    #
     print("Processing rate of time-baseline-component-scenario = %g per worker-second" % processing_rate)
 
     with open(filename, 'a') as csvfile:
