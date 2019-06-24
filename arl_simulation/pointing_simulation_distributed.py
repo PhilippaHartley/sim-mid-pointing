@@ -240,6 +240,11 @@ if __name__ == '__main__':
                              memory_limit=memory * 1024 * 1024 * 1024,
                              n_workers=nworkers)
     arlexecute.set_client(client=client)
+    # n_workers is only relevant if we are using LocalCluster (i.e. a single node) otherwise
+    # we need to read the actual number of workers
+    actualnworkers = len(arlexecute.client.scheduler_info()['workers'])
+    print("Actual number of workers is %d" % actualnworkers)
+    nworkers = actualnworkers
     
     time_started = time.time()
     
@@ -420,6 +425,7 @@ if __name__ == '__main__':
     future_vp_list = arlexecute.persist(vp_list)
     del vp_list
     
+    # Optionally show the primary beam, with components if the image is in RADEC coords
     if show:
         pb = arlexecute.execute(create_pb)(future_vp_list[0], pbtype, pointingcentre=phasecentre,
                                            use_local=False)
@@ -433,23 +439,23 @@ if __name__ == '__main__':
         plt.savefig('PB_arl.png')
         export_image_to_fits(pb, 'PB_arl.fits')
         plt.show(block=False)
-    
+        
+    # Construct the voltage patterns
     print("Constructing voltage pattern")
     vp_list = [arlexecute.execute(create_vp)(vp, pbtype, pointingcentre=phasecentre, use_local=not use_radec)
                for vp in future_vp_list]
     future_vp_list = arlexecute.persist(vp_list)
     del vp_list
     
-    # Set up null pointing error and gain tables. The gaintable will have the voltage pattern in it and so
-    # the prediction step will be as if the primary beam had been applied. We need one distinct gain table for each
-    # component and for each visibility.
-    
     # Make a set of seeds, one per bvis, to ensure that we can get the same errors on different passes
     seeds = numpy.round(numpy.random.uniform(1, numpy.power(2, 31), len(future_bvis_list))).astype(('int'))
     print("Seeds per chunk:")
     pp.pprint(seeds)
-    
-    # Process the data in chunks to avoid needing memory for the entire set of images in one pass
+
+    # Set up null pointing error and gain tables. The gaintable will have the voltage pattern in it and so
+    # the prediction step will be as if the primary beam had been applied. We need one distinct gain table for each
+    # component and for each visibility. Process the data in chunks to avoid needing memory for the entire set of
+    # images in one pass
     print("Creating visibilities without any errors")
     print("Predicting error-free visibilities in chunks of %d skymodels" % ngroup)
     dirty_list = list()
@@ -499,6 +505,7 @@ if __name__ == '__main__':
 
     time_started = time.time()
 
+
     print("Summary of processing:")
     print("    There are %d workers" % nworkers)
     print("    There are %d separate visibility time chunks being processed" % len(future_vis_list))
@@ -507,6 +514,8 @@ if __name__ == '__main__':
     print("    There are %d baselines" % nbaselines)
     print("    There are %d components/skymodels" % len(original_components))
     print("    %d pointing scenario(s) will be tested" % len(pes))
+    # Typical values:
+    # Sheldon 22000
     ntotal = ntimes * nbaselines * len(original_components) * len(pes)
     print("    Total processing %g times-baselines-components-scenarios" % ntotal)
     
@@ -523,6 +532,7 @@ if __name__ == '__main__':
         result['hostname'] = socket.gethostname()
         result['epoch'] = epoch
         result['basename'] = basename
+        result['nworkers'] = nworkers
         
         result['npixel'] = npixel
         result['pb_npixel'] = pb_npixel
