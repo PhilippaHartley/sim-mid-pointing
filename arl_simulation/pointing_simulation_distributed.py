@@ -183,6 +183,7 @@ if __name__ == '__main__':
     parser.add_argument('--seed', type=int, default=18051955, help='Random number seed')
     parser.add_argument('--snapshot', type=str, default='False', help='Do snapshot only?')
     parser.add_argument('--opposite', type=str, default='False', help='Move source to opposite side of pointing centre')
+    parser.add_argument('--pbradius', type=float, default=4.0, help='Radius of sources to include (in HWHM)')
     parser.add_argument('--pbtype', type=str, default='MID', help='Primary beam model: MID or MID_GAUSS')
     parser.add_argument('--use_agg', type=str, default="True", help='Use Agg matplotlib backend?')
     parser.add_argument('--tsys', type=float, default=0.0, help='System temperature: standard 20K')
@@ -215,6 +216,7 @@ if __name__ == '__main__':
     snapshot = args.snapshot == 'True'
     opposite = args.opposite == 'True'
     pbtype = args.pbtype
+    pbradius = args.pbradius
     reference_interval = args.reference_interval
     rmax = args.rmax
     flux_limit = args.flux_limit
@@ -290,6 +292,8 @@ if __name__ == '__main__':
         HWHM_deg = 0.766 * 1.4e9 / frequency[0]
     else:
         HWHM_deg = 0.596 * 1.4e9 / frequency[0]
+        
+    HWHM = HWHM_deg * numpy.pi / 180.0
     
     FOV_deg = 10.0 * HWHM_deg
     print('%s: HWHM beam = %g deg' % (pbtype, HWHM_deg))
@@ -357,7 +361,7 @@ if __name__ == '__main__':
                                                                 phasecentre=phasecentre,
                                                                 polarisation_frame=PolarisationFrame("stokesI"),
                                                                 frequency=numpy.array(frequency),
-                                                                radius=pb_cellsize * pb_npixel / 4.0)
+                                                                radius=pbradius * HWHM)
         print("Created %d original components" % len(original_components))
         # Primary beam points to the phasecentre
         offset_direction = SkyCoord(ra=+15.0 * u.deg, dec=-45.0 * u.deg, frame='icrs', equinox='J2000')
@@ -418,10 +422,14 @@ if __name__ == '__main__':
     
     if show:
         pb = arlexecute.execute(create_pb)(future_vp_list[0], pbtype, pointingcentre=phasecentre,
-                                           use_local=not use_radec)
+                                           use_local=False)
         pb = arlexecute.compute(pb, sync=True)
         print("Primary beam:", pb)
-        show_image(pb, title='%s: primary beam' % basename)
+        if pbtype == 'MID_GRASP':
+            show_image(pb, title='%s: primary beam' % basename, max=0.01, vmin=0.0)
+        else:
+            show_image(pb, title='%s: primary beam' % basename, components=original_components, vmax=0.01, vmin=0.0)
+
         plt.savefig('PB_arl.png')
         export_image_to_fits(pb, 'PB_arl.fits')
         plt.show(block=False)
@@ -499,8 +507,8 @@ if __name__ == '__main__':
     print("    There are %d baselines" % nbaselines)
     print("    There are %d components/skymodels" % len(original_components))
     print("    %d pointing scenario(s) will be tested" % len(pes))
-    ntotal = ntimes * nbaselines * len(original_components) * len(pes) / nworkers
-    print("    Total processing per worker %g times-baselines-components-scenarios" % ntotal)
+    ntotal = ntimes * nbaselines * len(original_components) * len(pes)
+    print("    Total processing %g times-baselines-components-scenarios" % ntotal)
     
     # Now loop over all pointing errors
     print("")
@@ -593,8 +601,8 @@ if __name__ == '__main__':
     pp.pprint(results)
     
     print("Total processing %g times-baselines-components-scenarios" % ntotal)
-    processing_rate = ntotal / (time.time() - time_started)
-    print("Processing rate of time-baseline-component-scenario = %g (s^-1)" % processing_rate)
+    processing_rate = ntotal / (nworkers * (time.time() - time_started))
+    print("Processing rate of time-baseline-component-scenario = %g per worker-second" % processing_rate)
 
     with open(filename, 'a') as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=results[0].keys(), delimiter=',', quotechar='|',
