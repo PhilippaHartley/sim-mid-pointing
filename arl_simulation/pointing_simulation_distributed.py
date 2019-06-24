@@ -198,6 +198,8 @@ if __name__ == '__main__':
     parser.add_argument('--pointing_file', type=str, default=None, help="Pointing file")
     parser.add_argument('--time_chunk', type=float, default=1800.0, help="Time for a chunk (s)")
     parser.add_argument('--reference_pointing', type=str, default="False", help="Use reference pointing")
+    parser.add_argument('--pointing_directory', type=str, default='../../pointing_error_models/PSD_data/precision/',
+                        help='Location of pointing files')
     
     args = parser.parse_args()
     
@@ -222,6 +224,7 @@ if __name__ == '__main__':
     pbtype = args.pbtype
     pbradius = args.pbradius
     reference_pointing = args.reference_pointing == "True"
+    pointing_directory = args.pointing_directory
     rmax = args.rmax
     flux_limit = args.flux_limit
     npixel = args.npixel
@@ -596,8 +599,7 @@ if __name__ == '__main__':
                 for r in this_result:
                     error_dirty_list.append(r)
         else:
-            root_dir = "../../pointing_error_models/PSD_data/precision"
-            result['pointing_file'] = "%s/%s" % (root_dir, pe)
+            result['pointing_file'] = "%s/%s" % (pointing_directory, pe)
             file_name = 'PE_%s_%s_arl' % (pe, time_series)
             print("Pointing errors: type of time series %s from file %s" % (time_series, result['pointing_file']))
     
