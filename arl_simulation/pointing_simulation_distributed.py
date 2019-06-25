@@ -161,6 +161,8 @@ if __name__ == '__main__':
     print("-----------------------------------------------------")
     print(" ")
 
+    memory_use = dict()
+    
     # Get command line inputs
     import argparse
     
@@ -289,6 +291,10 @@ if __name__ == '__main__':
                   for itime in range(nchunks)]
     future_bvis_list = arlexecute.persist(bvis_graph, sync=True)
     
+    bvis_list0 = arlexecute.compute(bvis_graph[0], sync=True)
+    memory_use['bvis_list'] = nchunks * bvis_list0.size()
+    del bvis_list0
+
     vis_graph = [arlexecute.execute(convert_blockvisibility_to_visibility)(bv) for bv in future_bvis_list]
     future_vis_list = arlexecute.persist(vis_graph, sync=True)
     
@@ -398,6 +404,13 @@ if __name__ == '__main__':
     nants = len(mid.names)
     nbaselines = nants * (nants - 1) // 2
 
+    memory_use['model_list'] = 8 * npixel * npixel * len(frequency) * len(original_components) / 1024 / 1024 / 1024
+    memory_use['vp_list'] = 16 * npixel * npixel * len(frequency) * nchunks / 1024 / 1024 / 1024
+    print("Memory use (GB)")
+    pp.pprint(memory_use)
+    total_memory_use = numpy.sum([memory_use[key] for key in memory_use.keys()])
+
+
     print("Summary of processing:")
     print("    There are %d workers" % nworkers)
     print("    There are %d separate visibility time chunks being processed" % len(future_vis_list))
@@ -408,7 +421,8 @@ if __name__ == '__main__':
     print("    %d pointing scenario(s) will be tested" % len(pes))
     ntotal = ntimes * nbaselines * len(original_components) * len(pes)
     print("    Total processing %g times-baselines-components-scenarios" % ntotal)
-   
+    print("    Approximate total memory use for data = %.3f GB" % total_memory_use)
+
     # Uniform weighting
     future_model_list = [arlexecute.execute(create_image_from_visibility)(future_vis_list[0], npixel=npixel,
                                                                           frequency=frequency,
@@ -427,6 +441,7 @@ if __name__ == '__main__':
     psf_list = arlexecute.compute(psf_list, sync=True)
     future_psf_list = arlexecute.scatter(psf_list)
     del psf_list
+    
     
     if use_natural:
         print("Using natural weighting")
@@ -477,7 +492,7 @@ if __name__ == '__main__':
         plt.savefig('PB_arl.png')
         export_image_to_fits(pb, 'PB_arl.fits')
         plt.show(block=False)
-        
+
     # Construct the voltage patterns
     print("Constructing voltage pattern")
     vp_list = [arlexecute.execute(create_vp)(vp, pbtype, pointingcentre=phasecentre, use_local=not use_radec)
