@@ -671,10 +671,10 @@ if __name__ == '__main__':
         plt.clf()
         colors = ['b', 'r', 'g', 'y']
         for ifield, field in enumerate(['onsource_maxabs', 'onsource_rms', 'onsource_medianabs']):
-            plt.loglog(pes, [result[field] for result in results], '-', label=field, color=colors[ifield])
+            plt.loglog(pes, [1e6 * result[field] for result in results], '-', label=field, color=colors[ifield])
         
         plt.xlabel('Pointing error (arcsec)')
-        plt.ylabel('Error (Jy)')
+        plt.ylabel('Error (uJy)')
         
         plt.title(title)
         plt.legend(fontsize='x-small')
@@ -682,3 +682,33 @@ if __name__ == '__main__':
         
         plt.savefig(plotfile)
         plt.show(block=False)
+        
+    else:
+    
+        title = '%s, %.3f GHz, %d times %s \n%s %s %s' % \
+                (context, frequency[0] * 1e-9, ntimes, time_series, socket.gethostname(), epoch,
+                 basename)
+        bar_width = 0.35
+        opacity = 0.8
+
+        plt.clf()
+        index = numpy.arange(len(pes))
+        fig, ax = plt.subplots()
+        colors = ['b', 'r', 'g', 'y']
+        for ifield, field in enumerate(['onsource_rms', 'onsource_medianabs']):
+
+            plt.bar(index + ifield * bar_width, [1e6 * result[field] for result in results],
+                    bar_width, label=field, color=colors[ifield],
+                    alpha=opacity)
+    
+        plt.xlabel('Pointing file')
+        plt.ylabel('Error (uJy)')
+        plt.xticks(numpy.arange(len(pes))+ bar_width, pes, rotation='vertical')
+        plt.title(title)
+        plt.legend(fontsize='x-small')
+        print('Saving plot to %s' % plotfile)
+    
+        plt.tight_layout()
+        plt.savefig(plotfile)
+        plt.show(block=False)
+
