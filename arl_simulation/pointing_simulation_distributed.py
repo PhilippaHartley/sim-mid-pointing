@@ -24,6 +24,7 @@ results_dir = arl_path('test_results')
 
 import numpy
 
+import matplotlib as plt
 from astropy.coordinates import SkyCoord, EarthLocation
 from astropy import units as u
 
@@ -67,30 +68,32 @@ pp = pprint.PrettyPrinter()
 
 # Process a set of BlockVisibility's, creating pointing errors, converting to gainables, applying
 # the gaintables to the FT of the skycomponents, and dirty images, one per BlockVisibility
-def create_vis_list_with_errors(bvis_list, original_components, model_list, vp_list,
-                                use_radec=False, pointing_error=0.0, static_pointing_error=0.0,
-                                global_pointing_error=None, time_series='', seeds=None,
-                                reference_pointing=False, pointing_file=None):
+def create_vis_list_with_errors(sub_bvis_list, sub_components, sub_model_list, sub_vp_list, use_radec=False,
+                                pointing_error=0.0, static_pointing_error=0.0, global_pointing_error=None,
+                                time_series='', seeds=None, reference_pointing=False, pointing_directory=None):
     if global_pointing_error is None:
         global_pointing_error = [0.0, 0.0]
     
     # One pointing table per visibility
     
-    pt_list = [arlexecute.execute(create_pointingtable_from_blockvisibility)(bvis) for bvis in bvis_list]
+    error_pt_list = [arlexecute.execute(create_pointingtable_from_blockvisibility)(bvis) for bvis in sub_bvis_list]
+    no_error_pt_list = [arlexecute.execute(create_pointingtable_from_blockvisibility)(bvis) for bvis in sub_bvis_list]
+
     if time_series is '':
-        pt_list = [arlexecute.execute(simulate_pointingtable)(pt, pointing_error=pointing_error,
-                                                              static_pointing_error=static_pointing_error,
-                                                              global_pointing_error=global_pointing_error,
-                                                              seed=seeds[ipt])
-                   for ipt, pt in enumerate(pt_list)]
+        error_pt_list = [arlexecute.execute(simulate_pointingtable)(pt, pointing_error=pointing_error,
+                                                                    static_pointing_error=static_pointing_error,
+                                                                    global_pointing_error=global_pointing_error,
+                                                                    seed=seeds[ipt])
+                         for ipt, pt in enumerate(error_pt_list)]
     else:
-        pt_list = [arlexecute.execute(simulate_pointingtable_from_timeseries)(pt, type=time_series,
-                                                                              pointing_file=pointing_file,
-                                                                              reference_pointing=reference_pointing)
-                   for pt in pt_list]
+        error_pt_list = [arlexecute.execute(simulate_pointingtable_from_timeseries)(pt, type=time_series,
+                                                                                    pointing_directory=pointing_directory,
+                                                                                    reference_pointing=reference_pointing,
+                                                                                    seed=seeds[ipt])
+                         for ipt, pt in enumerate(error_pt_list)]
     
     if show:
-        tmp_error_pt_list = arlexecute.compute(pt_list, sync=True)
+        tmp_error_pt_list = arlexecute.compute(error_pt_list, sync=True)
         plt.clf()
         r2a = 180.0 * 3600.0 / numpy.pi
         for pt in tmp_error_pt_list:
@@ -103,16 +106,19 @@ def create_vis_list_with_errors(bvis_list, original_components, model_list, vp_l
         plt.show(block=False)
     
     # Create the gain tables, one per Visibility and per component
-    gt_list = [arlexecute.execute(simulate_gaintable_from_pointingtable)
-               (bvis, original_components, pt_list[ibv], vp_list[ibv], use_radec=use_radec)
-               for ibv, bvis in enumerate(bvis_list)]
+    no_error_gt_list = [arlexecute.execute(simulate_gaintable_from_pointingtable)
+                        (bvis, sub_components, no_error_pt_list[ibv], sub_vp_list[ibv], use_radec=use_radec)
+                        for ibv, bvis in enumerate(sub_bvis_list)]
+    error_gt_list = [arlexecute.execute(simulate_gaintable_from_pointingtable)
+                     (bvis, sub_components, error_pt_list[ibv], sub_vp_list[ibv], use_radec=use_radec)
+                     for ibv, bvis in enumerate(sub_bvis_list)]
     if show:
-        tmp_gt_list = arlexecute.compute(gt_list, sync=True)
+        tmp_gt_list = arlexecute.compute(error_gt_list, sync=True)
         plt.clf()
         for gt in tmp_gt_list:
             amp = numpy.abs(gt[0].gain[:, 0, 0, 0, 0])
-            plt.semilogy(gt[0].time[amp > 0.0], 1.0 / amp[amp > 0.0], '.')
-        plt.ylim([1e-3, 1.1])
+            plt.plot(gt[0].time[amp > 0.0], 1.0 / amp[amp > 0.0], '.')
+        plt.ylim([1e-1, 1.1])
         plt.title("%s: dish 0 amplitude gain" % basename)
         plt.xlabel('Time (s)')
         plt.savefig('gaintable.png')
@@ -121,36 +127,51 @@ def create_vis_list_with_errors(bvis_list, original_components, model_list, vp_l
     # Each component in original components becomes a separate skymodel
     # Inner nest is over skymodels, outer is over bvis's
     error_sm_list = [[
-        arlexecute.execute(SkyModel, nout=1)(components=[original_components[i]], gaintable=gt_list[ibv][i])
-        for i, _ in enumerate(original_components)] for ibv, bv in enumerate(bvis_list)]
+        arlexecute.execute(SkyModel, nout=1)(components=[sub_components[i]], gaintable=error_gt_list[ibv][i])
+        for i, _ in enumerate(sub_components)] for ibv, bv in enumerate(sub_bvis_list)]
+    
+    no_error_sm_list = [[
+        arlexecute.execute(SkyModel, nout=1)(components=[sub_components[i]], gaintable=no_error_gt_list[ibv][i])
+        for i, _ in enumerate(sub_components)] for ibv, bv in enumerate(sub_bvis_list)]
     
     # Predict each visibility for each skymodel. We keep all the visibilities separate
     # and add up dirty images at the end of processing. We calibrate which applies the voltage pattern
-    error_bvis_list = [arlexecute.execute(copy_visibility, nout=1)(bvis, zero=True) for bvis in bvis_list]
+    no_error_bvis_list = [arlexecute.execute(copy_visibility, nout=1)(bvis, zero=True) for bvis in sub_bvis_list]
+    no_error_bvis_list = [
+        predict_skymodel_list_compsonly_arlexecute_workflow(no_error_bvis_list[ibv], no_error_sm_list[ibv],
+                                                            context='2d', docal=True)
+        for ibv, bvis in enumerate(no_error_bvis_list)]
+    
+    error_bvis_list = [arlexecute.execute(copy_visibility, nout=1)(bvis, zero=True) for bvis in sub_bvis_list]
     error_bvis_list = [predict_skymodel_list_compsonly_arlexecute_workflow(error_bvis_list[ibv], error_sm_list[ibv],
                                                                            context='2d', docal=True)
                        for ibv, bvis in enumerate(error_bvis_list)]
     
-    # Inner nest is bvis per skymodels, outer is over vis's. First we convert all blockvisibilities to
-    # visibilities.
-    error_vis_list = [[arlexecute.execute(convert_blockvisibility_to_visibility)(bvis[i])
-                       for i, _ in enumerate(original_components)] for bvis in error_bvis_list]
+    # Inner nest is bvis per skymodels, outer is over vis's. Calculate residual visibility
+    def subtract_vis_convert(error_bvis, no_error_bvis):
+        error_bvis.data['vis'] = error_bvis.data['vis'] - no_error_bvis.data['vis']
+        error_vis = convert_blockvisibility_to_visibility(error_bvis)
+        return error_vis
     
-    # Now for each visibility/component, we make the dirty images
-    dirty_list = list()
-    # We just add the component dirty images since the weights should be the same
+    error_vis_list = [[arlexecute.execute(subtract_vis_convert)(error_bvis_list[ibvis][icomp],
+                                                                no_error_bvis_list[ibvis][icomp])
+                       for icomp, _ in enumerate(sub_components)]
+                      for ibvis, _ in enumerate(error_bvis_list)]
+    
+    # Now for each visibility/component, we make the component dirty images. We just add these
+    # component dirty images since the weights should be the same
     def sum_images(images):
         sum_image = create_empty_image_like(images[0][0])
         for im in images:
+            print("In sum_images:", numpy.max(im[0].data), im[1])
             sum_image.data += im[0].data
         return sum_image, images[0][1]
     
     dirty_list = list()
     for vis in error_vis_list:
-        assert len(vis) == len(original_components)
-        result = invert_list_arlexecute_workflow(vis, model_list, '2d')
+        result = invert_list_arlexecute_workflow(vis, sub_model_list, '2d')
         dirty_list.append(arlexecute.execute(sum_images)(result))
-
+    
     return dirty_list
 
 
@@ -160,7 +181,7 @@ if __name__ == '__main__':
     print("Distributed simulation of pointing errors for SKA-MID")
     print("-----------------------------------------------------")
     print(" ")
-
+    
     memory_use = dict()
     
     # Get command line inputs
@@ -186,7 +207,8 @@ if __name__ == '__main__':
     parser.add_argument('--npixel', type=int, default=512, help='Number of pixels in image')
     parser.add_argument('--seed', type=int, default=18051955, help='Random number seed')
     parser.add_argument('--snapshot', type=str, default='False', help='Do snapshot only?')
-    parser.add_argument('--opposite', type=str, default='False', help='Move source to opposite side of pointing centre')
+    parser.add_argument('--opposite', type=str, default='False',
+                        help='Move source to opposite side of pointing centre')
     parser.add_argument('--pbradius', type=float, default=4.0, help='Radius of sources to include (in HWHM)')
     parser.add_argument('--pbtype', type=str, default='MID', help='Primary beam model: MID or MID_GAUSS')
     parser.add_argument('--use_agg', type=str, default="True", help='Use Agg matplotlib backend?')
@@ -269,7 +291,8 @@ if __name__ == '__main__':
     print("Start times for chunks:")
     pp.pprint(start_times)
     
-    times = [numpy.arange(start_times[itime], end_times[itime], integration_time) for itime in range(len(start_times))]
+    times = [numpy.arange(start_times[itime], end_times[itime], integration_time) for itime in
+             range(len(start_times))]
     print("Observation times:")
     pp.pprint(times)
     s2r = numpy.pi / (12.0 * 3600)
@@ -294,7 +317,7 @@ if __name__ == '__main__':
     bvis_list0 = arlexecute.compute(bvis_graph[0], sync=True)
     memory_use['bvis_list'] = nchunks * bvis_list0.size()
     del bvis_list0
-
+    
     vis_graph = [arlexecute.execute(convert_blockvisibility_to_visibility)(bv) for bv in future_bvis_list]
     future_vis_list = arlexecute.persist(vis_graph, sync=True)
     
@@ -311,7 +334,7 @@ if __name__ == '__main__':
         HWHM_deg = 0.766 * 1.4e9 / frequency[0]
     else:
         HWHM_deg = 0.596 * 1.4e9 / frequency[0]
-        
+    
     HWHM = HWHM_deg * numpy.pi / 180.0
     
     FOV_deg = 10.0 * HWHM_deg
@@ -353,7 +376,7 @@ if __name__ == '__main__':
         plt.savefig('azel.png')
         plt.show(block=False)
         future_bvis_list = arlexecute.scatter(future_bvis_list)
-
+    
     # Construct the skycomponents
     if context == 'singlesource':
         print("Constructing single component")
@@ -384,38 +407,20 @@ if __name__ == '__main__':
         print("Created %d original components" % len(original_components))
         # Primary beam points to the phasecentre
         offset_direction = SkyCoord(ra=+15.0 * u.deg, dec=-45.0 * u.deg, frame='icrs', equinox='J2000')
-        
-        
+    
     if time_series == '':
         pes = [1.0, 2.0, 4.0, 8.0, 16.0, 32.0, 64.0, 128.0, 256.0]
     else:
-        pes = ['El15Az0',
-               'El15Az135',
-               'El15Az180',
-               'El15Az45',
-               'El15Az90',
-               'El45Az0',
-               'El45Az135',
-               'El45Az180',
-               'El45Az45',
-               'El45Az90',
-               'El90Az0',
-               'El90Az135',
-               'El90Az180',
-               'El90Az45',
-               'El90Az90']
-        
-        
+        pes = [0.0]
+    
     nants = len(mid.names)
     nbaselines = nants * (nants - 1) // 2
-
+    
     memory_use['model_list'] = 8 * npixel * npixel * len(frequency) * len(original_components) / 1024 / 1024 / 1024
     memory_use['vp_list'] = 16 * npixel * npixel * len(frequency) * nchunks / 1024 / 1024 / 1024
     print("Memory use (GB)")
     pp.pprint(memory_use)
     total_memory_use = numpy.sum([memory_use[key] for key in memory_use.keys()])
-
-    pp.pprint(arlexecute.client.who_has())
     
     print("Summary of processing:")
     print("    There are %d workers" % nworkers)
@@ -428,7 +433,7 @@ if __name__ == '__main__':
     ntotal = ntimes * nbaselines * len(original_components) * len(pes)
     print("    Total processing %g times-baselines-components-scenarios" % ntotal)
     print("    Approximate total memory use for data = %.3f GB" % total_memory_use)
-
+    
     # Uniform weighting
     future_model_list = [arlexecute.execute(create_image_from_visibility)(future_vis_list[0], npixel=npixel,
                                                                           frequency=frequency,
@@ -447,7 +452,6 @@ if __name__ == '__main__':
     psf_list = arlexecute.compute(psf_list, sync=True)
     future_psf_list = arlexecute.scatter(psf_list)
     del psf_list
-    
     
     if use_natural:
         print("Using natural weighting")
@@ -494,11 +498,11 @@ if __name__ == '__main__':
             show_image(pb, title='%s: primary beam' % basename, vmax=0.01, vmin=0.0)
         else:
             show_image(pb, title='%s: primary beam' % basename, components=original_components, vmax=0.01, vmin=0.0)
-
+        
         plt.savefig('PB_arl.png')
         export_image_to_fits(pb, 'PB_arl.fits')
         plt.show(block=False)
-
+    
     # Construct the voltage patterns
     print("Constructing voltage pattern")
     vp_list = [arlexecute.execute(create_vp)(vp, pbtype, pointingcentre=phasecentre, use_local=not use_radec)
@@ -510,36 +514,6 @@ if __name__ == '__main__':
     seeds = numpy.round(numpy.random.uniform(1, numpy.power(2, 31), len(future_bvis_list))).astype(('int'))
     print("Seeds per chunk:")
     pp.pprint(seeds)
-
-    # Set up null pointing error and gain tables. The gaintable will have the voltage pattern in it and so
-    # the prediction step will be as if the primary beam had been applied. We need one distinct gain table for each
-    # component and for each visibility. Process the data in chunks to avoid needing memory for the entire set of
-    # images in one pass
-    print("Creating visibilities without any errors")
-    print("Predicting error-free visibilities in chunks of %d skymodels" % ngroup)
-    dirty_list = list()
-    chunk_bvis = [future_bvis_list[i:i + ngroup] for i in range(0, len(future_bvis_list), ngroup)]
-    chunk_vp_list = [future_vp_list[i:i + ngroup] for i in range(0, len(future_vp_list), ngroup)]
-    chunk_seeds = [seeds[i:i + ngroup] for i in range(0, len(future_bvis_list), ngroup)]
-    for ichunk, chunk in enumerate(chunk_bvis):
-        print("Processing chunk %d" % ichunk)
-        chunk_dirty_list = create_vis_list_with_errors(chunk_bvis[ichunk], original_components,
-                                                       model_list=future_model_list,
-                                                       vp_list=chunk_vp_list[ichunk],
-                                                       use_radec=use_radec,
-                                                       seeds=chunk_seeds[ichunk],
-                                                       reference_pointing=reference_pointing)
-        result = arlexecute.compute(chunk_dirty_list, sync=True)
-        for r in result:
-            dirty_list.append(r)
-    no_error_dirty, sumwt = sum_invert_results(dirty_list)
-    print("Dirty image sumwt ", sumwt)
-    print(qa_image(no_error_dirty))
-    export_image_to_fits(no_error_dirty, 'dirty_arl.fits')
-    if show:
-        show_image(no_error_dirty, cm='gray_r', title='%s Dirty image' % basename)  # , vmin=-0.01, vmax=0.1)
-        plt.savefig('no_error_dirty_arl.png')
-        plt.show(block=False)
     
     results = []
     
@@ -554,7 +528,7 @@ if __name__ == '__main__':
     dynamic_pe = args.dynamic_pe
     
     time_started = time.time()
-
+    
     # Now loop over all pointing errors
     print("")
     print("***** Starting loop over scenarios ******")
@@ -569,6 +543,7 @@ if __name__ == '__main__':
         result['epoch'] = epoch
         result['basename'] = basename
         result['nworkers'] = nworkers
+        result['ngroup'] = ngroup
         
         result['npixel'] = npixel
         result['pb_npixel'] = pb_npixel
@@ -589,6 +564,12 @@ if __name__ == '__main__':
         result['ntotal'] = ntotal
         
         a2r = numpy.pi / (3600.0 * 180.0)
+        
+        chunk_components = [original_components[i:i + ngroup] for i in range(0, len(original_components), ngroup)]
+        chunk_bvis = [future_bvis_list[i:i + ngroup] for i in range(0, len(future_bvis_list), ngroup)]
+        chunk_vp_list = [future_vp_list[i:i + ngroup] for i in range(0, len(future_vp_list), ngroup)]
+        chunk_seeds = [seeds[i:i + ngroup] for i in range(0, len(future_bvis_list), ngroup)]
+        
         if time_series == '':
             global_pointing_error = global_pe
             static_pointing_error = static_pe * pe
@@ -596,66 +577,57 @@ if __name__ == '__main__':
             result['static_pointing_error'] = static_pointing_error
             result['dynamic_pointing_error'] = pointing_error
             result['global_pointing_error'] = global_pointing_error
-        
+            
             print("Pointing errors: global (%.1f, %.1f) arcsec, static %.1f arcsec, dynamic %.1f arcsec" %
                   (global_pointing_error[0], global_pointing_error[1], static_pointing_error,
                    pointing_error))
             file_name = 'PE_%.1f_arcsec_arl' % pe
-
+            
             error_dirty_list = list()
-            chunk_bvis = [future_bvis_list[i:i + ngroup] for i in range(0, len(future_bvis_list), ngroup)]
-            chunk_vp_list = [future_vp_list[i:i + ngroup] for i in range(0, len(future_vp_list), ngroup)]
-            chunk_seeds = [seeds[i:i + ngroup] for i in range(0, len(future_bvis_list), ngroup)]
-            for ichunk, chunk in enumerate(chunk_bvis):
-                print("Processing chunk %d" % ichunk)
-                chunk_dirty_list = create_vis_list_with_errors(chunk_bvis[ichunk], original_components,
-                                                               model_list=future_model_list,
-                                                               vp_list=chunk_vp_list[ichunk],
-                                                               use_radec=use_radec,
-                                                               pointing_error=a2r * pointing_error,
-                                                               static_pointing_error=a2r * static_pointing_error,
-                                                               global_pointing_error=a2r * global_pointing_error,
-                                                               seeds=chunk_seeds[ichunk])
-                this_result = arlexecute.compute(chunk_dirty_list, sync=True)
-                for r in this_result:
-                    error_dirty_list.append(r)
+            for icomp_chunk, comp_chunk in enumerate(chunk_components):
+                for ivis_chunk, vis_chunk in enumerate(chunk_bvis):
+                    print("Processing component_chunk %d, visibility chunk %d" % (icomp_chunk, ivis_chunk))
+                    vis_comp_chunk_dirty_list = create_vis_list_with_errors(chunk_bvis[ivis_chunk],
+                                                                            chunk_components[icomp_chunk],
+                                                                            sub_model_list=future_model_list,
+                                                                            sub_vp_list=chunk_vp_list[ivis_chunk],
+                                                                            use_radec=use_radec,
+                                                                            pointing_error=a2r * pointing_error,
+                                                                            static_pointing_error=a2r * static_pointing_error,
+                                                                            global_pointing_error=a2r * global_pointing_error,
+                                                                            seeds=chunk_seeds[ivis_chunk],
+                                                                            reference_pointing=reference_pointing)
+                    this_result = arlexecute.compute(vis_comp_chunk_dirty_list, sync=True)
+                    for r in this_result:
+                        error_dirty_list.append(r)
+        
         else:
-            result['pointing_file'] = "%s/%s.dat" % (pointing_directory, pe)
-            az = float(pe.split('dat')[0].split('Az')[1])
-            el = float(pe.split('dat')[0].split('Az')[0].split('El')[1])
-            result['wind_azimuth'] = az
-            result['wind_elevation'] = el
-            file_name = 'PE_%s_%s_arl' % (pe, time_series)
-            print("Pointing errors: type of time series %s from file %s" % (time_series, result['pointing_file']))
-
-            pp.pprint(arlexecute.client.who_has())
-
+            
+            file_name = 'PE_wind_arl'
+            # Chunk up bvis and components
             error_dirty_list = list()
-            chunk_bvis = [future_bvis_list[i:i + ngroup] for i in range(0, len(future_bvis_list), ngroup)]
-            chunk_vp_list = [future_vp_list[i:i + ngroup] for i in range(0, len(future_vp_list), ngroup)]
-            chunk_seeds = [seeds[i:i + ngroup] for i in range(0, len(future_bvis_list), ngroup)]
-            for ichunk, chunk in enumerate(chunk_bvis):
-                print("Processing chunk %d" % ichunk)
-                chunk_dirty_list = create_vis_list_with_errors(chunk_bvis[ichunk], original_components,
-                                                               model_list=future_model_list,
-                                                               vp_list=chunk_vp_list[ichunk],
-                                                               use_radec=use_radec,
-                                                               time_series=time_series,
-                                                               pointing_file=result['pointing_file'],
-                                                               seeds=chunk_seeds[ichunk],
-                                                               reference_pointing=reference_pointing)
-                this_result = arlexecute.compute(chunk_dirty_list, sync=True)
-                for r in this_result:
-                    error_dirty_list.append(r)
-
+            for icomp_chunk, comp_chunk in enumerate(chunk_components):
+                for ivis_chunk, vis_chunk in enumerate(chunk_bvis):
+                    print("Processing component_chunk %d, visibility chunk %d" % (icomp_chunk, ivis_chunk))
+                    vis_comp_chunk_dirty_list = create_vis_list_with_errors(chunk_bvis[ivis_chunk],
+                                                                            chunk_components[icomp_chunk],
+                                                                            sub_model_list=future_model_list,
+                                                                            sub_vp_list=chunk_vp_list[ivis_chunk],
+                                                                            use_radec=use_radec,
+                                                                            time_series=time_series,
+                                                                            seeds=chunk_seeds[ivis_chunk],
+                                                                            reference_pointing=reference_pointing)
+                    this_result = arlexecute.compute(vis_comp_chunk_dirty_list, sync=True)
+                    for r in this_result:
+                        error_dirty_list.append(r)
+        
         error_dirty, sumwt = sum_invert_results(error_dirty_list)
         print("Dirty image sumwt", sumwt)
         del error_dirty_list
-        error_dirty.data -= no_error_dirty.data
         print(qa_image(error_dirty))
         
         if show:
-            show_image(error_dirty, cm='gray_r', title='Pointing error %s' % file_name)
+            show_image(error_dirty, cm='gray_r')
             plt.savefig('%s.png' % file_name)
             plt.show(block=False)
         
@@ -681,7 +653,7 @@ if __name__ == '__main__':
     # CSD3, multinode, Intel(R) Xeon(R) Gold 6142 CPU @ 2.60GHz, 12600.0 /s/worker
     #
     print("Processing rate of time-baseline-component-scenario = %g per worker-second" % processing_rate)
-
+    
     with open(filename, 'a') as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=results[0].keys(), delimiter=',', quotechar='|',
                                 quoting=csv.QUOTE_MINIMAL)
@@ -709,33 +681,31 @@ if __name__ == '__main__':
         
         plt.savefig(plotfile)
         plt.show(block=False)
-        
-    else:
     
+    else:
+        
         title = '%s, %.3f GHz, %d times %s \n%s %s %s' % \
                 (context, frequency[0] * 1e-9, ntimes, time_series, socket.gethostname(), epoch,
                  basename)
         bar_width = 0.35
         opacity = 0.8
-
+        
         plt.clf()
         index = numpy.arange(len(pes))
         fig, ax = plt.subplots()
         colors = ['b', 'r', 'g', 'y']
         for ifield, field in enumerate(['onsource_rms', 'onsource_medianabs']):
-
             plt.bar(index + ifield * bar_width, [1e6 * result[field] for result in results],
                     bar_width, label=field, color=colors[ifield],
                     alpha=opacity)
-    
+        
         plt.xlabel('Pointing file')
         plt.ylabel('Error (uJy)')
-        plt.xticks(numpy.arange(len(pes))+ bar_width, pes, rotation='vertical')
+        plt.xticks(numpy.arange(len(pes)) + bar_width, pes, rotation='vertical')
         plt.title(title)
         plt.legend(fontsize='x-small')
         print('Saving plot to %s' % plotfile)
-    
+        
         plt.tight_layout()
         plt.savefig(plotfile)
         plt.show(block=False)
-
