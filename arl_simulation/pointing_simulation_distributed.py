@@ -298,6 +298,10 @@ if __name__ == '__main__':
     vis_graph = [arlexecute.execute(convert_blockvisibility_to_visibility)(bv) for bv in future_bvis_list]
     future_vis_list = arlexecute.persist(vis_graph, sync=True)
     
+    vis_list0 = arlexecute.compute(vis_graph[0], sync=True)
+    memory_use['vis_list'] = nchunks * vis_list0.size()
+    del vis_list0
+    
     # We need the HWHM of the primary beam. Got this by trial and error
     if pbtype == 'MID':
         HWHM_deg = 0.596 * 1.4e9 / frequency[0]
@@ -381,24 +385,25 @@ if __name__ == '__main__':
         # Primary beam points to the phasecentre
         offset_direction = SkyCoord(ra=+15.0 * u.deg, dec=-45.0 * u.deg, frame='icrs', equinox='J2000')
         
+        
     if time_series == '':
         pes = [1.0, 2.0, 4.0, 8.0, 16.0, 32.0, 64.0, 128.0, 256.0]
     else:
-        pes = ['El15Az0.dat',
-               'El15Az135.dat',
-               'El15Az180.dat',
-               'El15Az45.dat',
-               'El15Az90.dat',
-               'El45Az0.dat',
-               'El45Az135.dat',
-               'El45Az180.dat',
-               'El45Az45.dat',
-               'El45Az90.dat',
-               'El90Az0.dat',
-               'El90Az135.dat',
-               'El90Az180.dat',
-               'El90Az45.dat',
-               'El90Az90.dat']
+        pes = ['El15Az0',
+               'El15Az135',
+               'El15Az180',
+               'El15Az45',
+               'El15Az90',
+               'El45Az0',
+               'El45Az135',
+               'El45Az180',
+               'El45Az45',
+               'El45Az90',
+               'El90Az0',
+               'El90Az135',
+               'El90Az180',
+               'El90Az45',
+               'El90Az90']
         
         
     nants = len(mid.names)
@@ -410,7 +415,8 @@ if __name__ == '__main__':
     pp.pprint(memory_use)
     total_memory_use = numpy.sum([memory_use[key] for key in memory_use.keys()])
 
-
+    pp.pprint(arlexecute.client.who_has())
+    
     print("Summary of processing:")
     print("    There are %d workers" % nworkers)
     print("    There are %d separate visibility time chunks being processed" % len(future_vis_list))
@@ -614,10 +620,16 @@ if __name__ == '__main__':
                 for r in this_result:
                     error_dirty_list.append(r)
         else:
-            result['pointing_file'] = "%s/%s" % (pointing_directory, pe)
+            result['pointing_file'] = "%s/%s.dat" % (pointing_directory, pe)
+            az = float(pe.split('dat')[0].split('Az')[1])
+            el = float(pe.split('dat')[0].split('Az')[0].split('El')[1])
+            result['wind_azimuth'] = az
+            result['wind_elevation'] = el
             file_name = 'PE_%s_%s_arl' % (pe, time_series)
             print("Pointing errors: type of time series %s from file %s" % (time_series, result['pointing_file']))
-    
+
+            pp.pprint(arlexecute.client.who_has())
+
             error_dirty_list = list()
             chunk_bvis = [future_bvis_list[i:i + ngroup] for i in range(0, len(future_bvis_list), ngroup)]
             chunk_vp_list = [future_vp_list[i:i + ngroup] for i in range(0, len(future_vp_list), ngroup)]
