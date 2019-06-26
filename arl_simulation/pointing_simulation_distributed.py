@@ -163,7 +163,6 @@ def create_vis_list_with_errors(sub_bvis_list, sub_components, sub_model_list, s
     def sum_images(images):
         sum_image = create_empty_image_like(images[0][0])
         for im in images:
-            print("In sum_images:", numpy.max(im[0].data), im[1])
             sum_image.data += im[0].data
         return sum_image, images[0][1]
     
