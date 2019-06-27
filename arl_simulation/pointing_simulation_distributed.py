@@ -8,7 +8,7 @@ This measures the effect of pointing errors on the change in a dirty image induc
     - Dask is used to distribute the processing over a number of workers.
     - Various plots are produced, The primary output is a csv file containing information about the statistics of
     the residual images.
-    
+
 """
 import csv
 import os
@@ -78,7 +78,7 @@ def create_vis_list_with_errors(sub_bvis_list, sub_components, sub_model_list, s
     
     error_pt_list = [arlexecute.execute(create_pointingtable_from_blockvisibility)(bvis) for bvis in sub_bvis_list]
     no_error_pt_list = [arlexecute.execute(create_pointingtable_from_blockvisibility)(bvis) for bvis in sub_bvis_list]
-
+    
     if time_series is '':
         error_pt_list = [arlexecute.execute(simulate_pointingtable)(pt, pointing_error=pointing_error,
                                                                     static_pointing_error=static_pointing_error,
@@ -264,7 +264,6 @@ if __name__ == '__main__':
     
     basename = os.path.basename(os.getcwd())
     
-    print("Using %s Dask workers" % nworkers)
     client = get_dask_Client(threads_per_worker=threads_per_worker,
                              processes=threads_per_worker == 1,
                              memory_limit=memory * 1024 * 1024 * 1024,
@@ -273,8 +272,8 @@ if __name__ == '__main__':
     # n_workers is only relevant if we are using LocalCluster (i.e. a single node) otherwise
     # we need to read the actual number of workers
     actualnworkers = len(arlexecute.client.scheduler_info()['workers'])
-    print("Actual number of workers is %d" % actualnworkers)
     nworkers = actualnworkers
+    print("Using %s Dask workers" % nworkers)
     
     time_started = time.time()
     
@@ -635,6 +634,11 @@ if __name__ == '__main__':
         for field in ['maxabs', 'rms', 'medianabs']:
             result["onsource_" + field] = qa.data[field]
         result['onsource_abscentral'] = numpy.abs(error_dirty.data[0, 0, ny // 2, nx // 2])
+        
+        qa_psf = qa_image(psf)
+        _, _, ny, nx = psf.shape
+        for field in ['maxabs', 'rms', 'medianabs']:
+            result["psf_" + field] = qa_psf.data[field]
         
         result['elapsed_time'] = time.time() - time_started
         print('Elapsed time = %.1f (s)' % result['elapsed_time'])
