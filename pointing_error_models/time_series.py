@@ -2,8 +2,9 @@ import numpy as np, os, sys, glob
 from matplotlib import pyplot as plt
 from scipy import optimize
 
+category = 'degraded'
 
-psds = glob.glob('PSD_data/precision/*')
+psds = glob.glob('PSD_data/'+category+'/*')
 
 print(psds)
 
@@ -15,7 +16,7 @@ for i in psds:
 
     plotdir = "plots/"
     outdir = "out/"
-    outdir2 = "precision/"
+    outdir2 = category+'/'
 
 
     if not os.path.isdir(plotdir):
@@ -70,7 +71,7 @@ for i in psds:
         print ('*** Creating times series from PSD of %s axis ***'%axis)
         az = axesdict[axis]
 
-        freq_interval = 0.001  
+        freq_interval = 0.001  # decrease the interval to increase number of Fourier modes and therefore length of final time series
 
         df = freq[1:]-freq[:-1]
         psd2rms_pxel = np.sqrt(np.sum(az[1:]*df))
@@ -137,10 +138,10 @@ for i in psds:
         #  check rms of resampled PSD
         df = regular_freq[1:]-regular_freq[:-1]
         psd2rms_pxel = np.sqrt(np.sum(regular_az[:-1]*df))
-        print ('Calculate rms of resampled PSD: ', psd2rms_pxel)
+        print ('Calculating rms of resampled PSD: ', psd2rms_pxel)
 
         if (regular_az<0).any():
-            print ('Resampling returns negative power values; change fit range')
+            print ('Resampling returns negative power values; try a different fit range')
             sys.exit()
 
         if doplot:
@@ -221,8 +222,6 @@ for i in psds:
         # this doesnt mention the scaling from PSD to FFT above
         # this combination of scalings works to recover orginal rms
 
-
-
         # The output of the iFFT will be a random time series on the finite 
         # (bounded, limited) time interval t = 0 to tmax = (N-1) X Dt, #
         # where Dt = 1 / (Fmax)
@@ -240,8 +239,13 @@ for i in psds:
             plt.legend()
             plt.title(  'r.m.s. = %s'%(np.std(np.real(ts))))
             plt.savefig(plotdir+outdir2+outpath+'time_series_%s.png'%axis)
-        
-        np.save(outdir+outdir2+outpath+'_time_series_%s'%axis, ts.real)
+
+
+        # create 2D array containing times and offsets 
+        time_series = np.vstack((times, ts.real))   
+
+
+        np.save(outdir+outdir2+outpath+'_time_series_%s'%axis, time_series)
         print ('Calculate times series rms: %s'%(np.std(np.real(ts))))
         print ()
         if doplot:
