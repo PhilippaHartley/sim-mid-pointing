@@ -264,7 +264,6 @@ if __name__ == '__main__':
     
     basename = os.path.basename(os.getcwd())
     
-    print("Using %s Dask workers" % nworkers)
     client = get_dask_Client(threads_per_worker=threads_per_worker,
                              processes=threads_per_worker == 1,
                              memory_limit=memory * 1024 * 1024 * 1024,
@@ -273,9 +272,9 @@ if __name__ == '__main__':
     # n_workers is only relevant if we are using LocalCluster (i.e. a single node) otherwise
     # we need to read the actual number of workers
     actualnworkers = len(arlexecute.client.scheduler_info()['workers'])
-    print("Actual number of workers is %d" % actualnworkers)
     nworkers = actualnworkers
-    
+    print("Using %s Dask workers" % nworkers)
+
     time_started = time.time()
     
     # Set up details of simulated observation
@@ -561,7 +560,7 @@ if __name__ == '__main__':
         result['integration_time'] = integration_time
         result['seed'] = seed
         result['ntotal'] = ntotal
-        
+
         a2r = numpy.pi / (3600.0 * 180.0)
         
         chunk_components = [original_components[i:i + ngroup] for i in range(0, len(original_components), ngroup)]
@@ -635,7 +634,12 @@ if __name__ == '__main__':
         for field in ['maxabs', 'rms', 'medianabs']:
             result["onsource_" + field] = qa.data[field]
         result['onsource_abscentral'] = numpy.abs(error_dirty.data[0, 0, ny // 2, nx // 2])
-        
+
+        qa_psf = qa_image(psf)
+        _, _, ny, nx = psf.shape
+        for field in ['maxabs', 'rms', 'medianabs']:
+            result["psf_" + field] = qa_psf.data[field]
+
         result['elapsed_time'] = time.time() - time_started
         print('Elapsed time = %.1f (s)' % result['elapsed_time'])
         
