@@ -70,7 +70,8 @@ pp = pprint.PrettyPrinter()
 # the gaintables to the FT of the skycomponents, and dirty images, one per BlockVisibility
 def create_vis_list_with_errors(sub_bvis_list, sub_components, sub_model_list, sub_vp_list, use_radec=False,
                                 pointing_error=0.0, static_pointing_error=0.0, global_pointing_error=None,
-                                time_series='', seeds=None, reference_pointing=False, pointing_directory=None):
+                                time_series='', time_series_type='',
+                                seeds=None, reference_pointing=False, pointing_directory=None):
     if global_pointing_error is None:
         global_pointing_error = [0.0, 0.0]
     
@@ -87,6 +88,7 @@ def create_vis_list_with_errors(sub_bvis_list, sub_components, sub_model_list, s
                          for ipt, pt in enumerate(error_pt_list)]
     else:
         error_pt_list = [arlexecute.execute(simulate_pointingtable_from_timeseries)(pt, type=time_series,
+                                                                                    time_series_type=time_series_type,
                                                                                     pointing_directory=pointing_directory,
                                                                                     reference_pointing=reference_pointing,
                                                                                     seed=seeds[ipt])
@@ -221,7 +223,7 @@ if __name__ == '__main__':
     parser.add_argument('--pointing_file', type=str, default=None, help="Pointing file")
     parser.add_argument('--time_chunk', type=float, default=1800.0, help="Time for a chunk (s)")
     parser.add_argument('--reference_pointing', type=str, default="False", help="Use reference pointing")
-    parser.add_argument('--pointing_directory', type=str, default='../../pointing_error_models/PSD_data/precision/',
+    parser.add_argument('--pointing_directory', type=str, default='../../pointing_error_models/PSD_data/',
                         help='Location of pointing files')
     
     args = parser.parse_args()
@@ -409,7 +411,7 @@ if __name__ == '__main__':
     if time_series == '':
         pes = [1.0, 2.0, 4.0, 8.0, 16.0, 32.0, 64.0, 128.0, 256.0]
     else:
-        pes = [0.0]
+        pes = ['precision', 'standard', 'degraded']
     
     nants = len(mid.names)
     nbaselines = nants * (nants - 1) // 2
@@ -560,6 +562,7 @@ if __name__ == '__main__':
         result['integration_time'] = integration_time
         result['seed'] = seed
         result['ntotal'] = ntotal
+        result['pe'] = pe
         
         a2r = numpy.pi / (3600.0 * 180.0)
         
@@ -601,7 +604,7 @@ if __name__ == '__main__':
         
         else:
             
-            file_name = 'PE_wind_arl'
+            file_name = 'PE_%s_%s_arl' % (time_series, pe)
             # Chunk up bvis and components
             error_dirty_list = list()
             for icomp_chunk, comp_chunk in enumerate(chunk_components):
@@ -613,6 +616,7 @@ if __name__ == '__main__':
                                                                             sub_vp_list=chunk_vp_list[ivis_chunk],
                                                                             use_radec=use_radec,
                                                                             time_series=time_series,
+                                                                            time_series_type=pe,
                                                                             seeds=chunk_seeds[ivis_chunk],
                                                                             reference_pointing=reference_pointing)
                     this_result = arlexecute.compute(vis_comp_chunk_dirty_list, sync=True)
@@ -704,7 +708,7 @@ if __name__ == '__main__':
         
         plt.xlabel('Pointing file')
         plt.ylabel('Error (uJy)')
-        plt.xticks(numpy.arange(len(pes)) + bar_width, pes, rotation='vertical')
+        plt.xticks(numpy.arange(len(pes)) + 0.5 * bar_width, pes, rotation='vertical')
         plt.title(title)
         plt.legend(fontsize='x-small')
         print('Saving plot to %s' % plotfile)
