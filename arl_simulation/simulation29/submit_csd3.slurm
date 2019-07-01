@@ -57,10 +57,6 @@ echo ${SLURM_JOB_NODELIST}
 
 cd $SLURM_SUBMIT_DIR
 echo -e "Changed directory to `pwd`.\n"
-# Archive the results
-#archive="output_N2_W32_${JOBID}_INCOMPLETE"
-#mkdir ${archive}
-#cd ${archive}
 
 #! Create a hostfile:
 scontrol show hostnames $SLURM_JOB_NODELIST > hostfile.$JOBID
@@ -101,8 +97,7 @@ echo "Scheduler is running at ${scheduler}"
 root=/home/vs237/software.ext/sim-mid-pointing/arl_simulation/simulation27
 #CMD="python ${root}/pipelines-timings.py --nnodes NUMBER_NODES --nworkers NUMBER_TASKS --memory MEMORY --nfreqwin NUMBER_FREQUENCY_WINDOWS --nthreads NUMBER_THREADS --jobid $JOBID --use_serial_imaging False --rmax 3000 --context wstack > pipelines-timings.out"
 #CMD="python3 -u ${root}/pointing_simulation.py --context singlesource --rmax 1e5 --flux_limit 0.03 --ngroup 128 --static_pe 0.0 --dynamic_pe 1.0 --nworkers NUMBER_TASKS --show True --seed 18051955 --pbtype MID_GRASP"
-CMD="python3 -u ${root}/../pointing_simulation_distributed.py --context singlesource --rmax 1e5 --flux_limit 1.0 --ngroup 128 --static_pe 0.0 --dynamic_pe 1.0 --show True --seed 18051955 --scale 1.0 1.0 --use_agg True --use_radec False --integration_time 5 --time_range -6 6 --pbtype MID_GAUSS --memory 16 --time_series wind"
-
+CMD="python ../pointing_simulation_distributed.py --context s3sky --rmax 1e5 --flux_limit 3 --ngroup 8 --nworkers 16 --show True --seed 18051955  --pbtype MID_GAUSS --memory 8  --integration_time 100 --use_agg True --time_series wind --time_chunk 1800 --reference_pointing True | tee pointing_simulation.log"
 
 echo "About to execute $CMD"
 eval $CMD
