@@ -20,7 +20,7 @@
 #! Memory limit: P3 has roughly 107GB per node
 ##SBATCH --mem 25000
 #! How much wallclock time will be required?
-#SBATCH --time=10:00:00
+#SBATCH --time=12:00:00
 #! What types of email messages do you wish to receive?
 #SBATCH --mail-type=FAIL
 #! Uncomment this to prevent the job from being requeued (e.g. if
@@ -33,6 +33,9 @@
 #! Uncomment this to prevent the job from being requeued (e.g. if
 #! interrupted by node failure or system downtime):
 ##SBATCH --no-requeue
+#! Request Infiniband
+##SBATCH --constraint=IB
+
 
 #! Modify the settings below to specify the application's environment, location
 #! and launch method:
@@ -56,7 +59,8 @@ JOBID=${SLURM_JOB_ID}
 echo ${SLURM_JOB_NODELIST}
 
 #! Create a hostfile:
-scontrol show hostnames $SLURM_JOB_NODELIST | uniq > hostfile.$JOBID
+#scontrol show hostnames $SLURM_JOB_NODELIST | uniq > hostfile.$JOBID
+cp ibhostfile hostfile.$JOBID
 
 scheduler=$(head -1 hostfile.$JOBID)
 hostIndex=0
@@ -81,8 +85,9 @@ echo "Scheduler is running at ${scheduler}"
 
 CMD="python ../../pointing_simulation_distributed.py --context s3sky --rmax 1e5 --flux_limit 0.3 --ngroup 8 --show True
 \
---seed 18051955  --pbtype MID_GRASP --memory 32  --integration_time 10 --use_agg True --time_series wind --time_chunk \
-1800 --reference_pointing True --time | tee pointing_simulation.log"
+--seed 18051955  --pbtype MID_GRASP --memory 32  --integration_time 10 --use_agg True \
+--static_pe 0.5 0.05 --time_chunk \
+1800 --reference_pointing True --shared_directory ../../../shared | tee pointing_simulation.log"
 echo "About to execute $CMD"
 
 eval $CMD

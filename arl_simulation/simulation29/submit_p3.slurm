@@ -33,6 +33,8 @@
 #! Uncomment this to prevent the job from being requeued (e.g. if
 #! interrupted by node failure or system downtime):
 ##SBATCH --no-requeue
+#! Request Infiniband
+#SBATCH --constraint=IB
 
 #! Modify the settings below to specify the application's environment, location
 #! and launch method:
