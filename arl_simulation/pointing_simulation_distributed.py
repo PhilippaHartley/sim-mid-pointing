@@ -490,14 +490,15 @@ if __name__ == '__main__':
     
     # Optionally show the primary beam, with components if the image is in RADEC coords
     if show:
-        pb = arlexecute.execute(create_pb)(future_vp_list[0], pbtype, pointingcentre=phasecentre,
-                                           use_local=False)
-        pb = arlexecute.compute(pb, sync=True)
+        if pbtype == "MID_GRASP":
+            pb = arlexecute.execute(create_pb)(future_vp_list[0], pbtype, pointingcentre=phasecentre,
+                                               use_local=False)
+            pb = arlexecute.compute(pb, sync=True)
+            print("Coercing AZELGEO WCS of GRASP beam to RADEC to show components")
+            pb.wcs = psf.wcs.deepcopy()
+            
         print("Primary beam:", pb)
-        if pbtype == 'MID_GRASP':
-            show_image(pb, title='%s: primary beam' % basename, vmax=0.01, vmin=0.0)
-        else:
-            show_image(pb, title='%s: primary beam' % basename, components=original_components, vmax=0.01, vmin=0.0)
+        show_image(pb, title='%s: primary beam' % basename, components=original_components, vmax=1.0, vmin=0.0)
         
         plt.savefig('PB_arl.png')
         export_image_to_fits(pb, 'PB_arl.fits')
@@ -566,6 +567,8 @@ if __name__ == '__main__':
         
         a2r = numpy.pi / (3600.0 * 180.0)
         
+        # The strategy for distribution is to iterate through big cells in (bvis, components). Within each
+        # cell we do distribution over the each bvis, component using create_bics_with_error
         chunk_components = [original_components[i:i + ngroup] for i in range(0, len(original_components), ngroup)]
         chunk_bvis = [future_bvis_list[i:i + ngroup] for i in range(0, len(future_bvis_list), ngroup)]
         chunk_vp_list = [future_vp_list[i:i + ngroup] for i in range(0, len(future_vp_list), ngroup)]
