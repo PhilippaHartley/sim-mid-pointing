@@ -10,17 +10,17 @@
 
 #! sbatch directives begin here ###############################
 #! Name of the job:
-#SBATCH -J SIM29
+#SBATCH -J GLD0
 #! Which project should be charged:
 #SBATCH -A SKA-SDP-SL2-CPU
 #! How many whole nodes should be allocated?
-#SBATCH --nodes=1
+#SBATCH --nodes=4
 #! How many (MPI) tasks will there be in total? (<= nodes*32)
-#SBATCH --ntasks=8
+#SBATCH --ntasks=32
 #! Memory limit
 #SBATCH --mem 128000
 #! How much wallclock time will be required?
-#SBATCH --time=2:00:00
+#SBATCH --time=6:00:00
 #! What types of email messages do you wish to receive?
 #SBATCH --mail-type=ALL
 #! Uncomment this to prevent the job from being requeued (e.g. if
@@ -95,16 +95,10 @@ echo "Scheduler is running at ${scheduler}"
 #root=${ARL}/workflows/scripts/pipelines/performance/pipelines-timings
 #root=/home/vs237/rds/hpc-work/software/algorithm-reference-library/workflows/notebooks
 root=/home/vs237/software.ext/sim-mid-pointing/arl_simulation/simulation27
-#CMD="python ${root}/pipelines-timings.py --nnodes NUMBER_NODES --nworkers NUMBER_TASKS --memory MEMORY --nfreqwin NUMBER_FREQUENCY_WINDOWS --nthreads NUMBER_THREADS --jobid $JOBID --use_serial_imaging False --rmax 3000 --context wstack > pipelines-timings.out"
-#CMD="python3 -u ${root}/pointing_simulation.py --context singlesource --rmax 1e5 --flux_limit 0.03 --ngroup 128 --static_pe 0.0 --dynamic_pe 1.0 --nworkers NUMBER_TASKS --show True --seed 18051955 --pbtype MID_GRASP"
-CMD="python ../pointing_simulation_distributed.py --context s3sky --rmax 1e5 --flux_limit 3 --ngroup 8 --nworkers 16 --show True --seed 18051955  --pbtype MID_GAUSS --memory 8  --integration_time 100 --use_agg True --time_series wind --time_chunk 1800 --reference_pointing True | tee pointing_simulation.log"
+CMD="python ../pointing_simulation_distributed.py --context s3sky --rmax 1e5 --flux_limit 0.3 --ngroup 8 --nworkers 16 --show True --seed 18051955  --pbtype MID_GAUSS --memory 8  --integration_time 10 --use_agg True --time_series wind --time_chunk 1800 --reference_pointing True | tee pointing_simulation.log"
 
 echo "About to execute $CMD"
 eval $CMD
 
-#cp ${root}/pointing_simulation.py .
-#cp ${0}  ./
-#mv ../slurm-${JOBID}.out .
-#mv ../${archive} ../output_N1_W32_${JOBID}_COMPLETE
 exit
 
