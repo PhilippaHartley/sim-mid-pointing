@@ -10,13 +10,13 @@
 
 #! sbatch directives begin here ###############################
 #! Name of the job:
-#SBATCH -J SDP_ARL
+#SBATCH -J CASE6P15
 #! Which project should be charged:
 #SBATCH -A SKA-SDP
 #! How many whole nodes should be allocated?
 #SBATCH --nodes=8
 #! How many (MPI) tasks will there be in total? (<= nodes*16)
-#SBATCH --ntasks=33
+#SBATCH --ntasks=129
 #! Memory limit: P3 has roughly 107GB per node
 ##SBATCH --mem 25000
 #! How much wallclock time will be required?
@@ -69,7 +69,7 @@ for host in `cat hostfile.$JOBID`; do
         sleep 5
     fi
     echo "run dask-worker"
-    ssh $host dask-worker --host ${host} --nprocs 4 --nthreads 1  \
+    ssh $host dask-worker --host ${host} --nprocs 16 --nthreads 1  \
     --memory-limit 0.75 --local-directory /tmp $scheduler:8786  &
         sleep 1
     hostIndex="1"
@@ -83,7 +83,7 @@ echo "Scheduler is running at ${scheduler}"
 CMD="python ../../../pointing_simulation_distributed.py --context s3sky --rmax 1e5 --flux_limit 0.3 --ngroup 8
 --show True \
 --seed 18051955  --pbtype MID_GRASP --memory 32  --integration_time 10 --use_agg True --time_series wind --time_chunk \
-1800 --reference_pointing True --shared_directory ../../../shared --declination +15 | tee pointing_simulation.log"
+1800 --reference_pointing True --shared_directory ../../../../shared --declination +15 | tee pointing_simulation.log"
 echo "About to execute $CMD"
 
 eval $CMD

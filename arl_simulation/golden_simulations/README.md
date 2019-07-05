@@ -1,4 +1,4 @@
-These are the golden simulation.
+These are the golden simulations.
 
 From https://confluence.skatelescope.org/display/SE/SIM+Team%3A++Agree+pointing+simulation+parameters+%28SIM-43%29+next+steps+-+280619
 

@@ -10,13 +10,13 @@
 
 #! sbatch directives begin here ###############################
 #! Name of the job:
-#SBATCH -J SDP_ARL
+#SBATCH -J CASE2
 #! Which project should be charged:
 #SBATCH -A SKA-SDP
 #! How many whole nodes should be allocated?
 #SBATCH --nodes=8
 #! How many (MPI) tasks will there be in total? (<= nodes*16)
-#SBATCH --ntasks=33
+#SBATCH --ntasks=65
 #! Memory limit: P3 has roughly 107GB per node
 ##SBATCH --mem 25000
 #! How much wallclock time will be required?
@@ -33,9 +33,6 @@
 #! Uncomment this to prevent the job from being requeued (e.g. if
 #! interrupted by node failure or system downtime):
 ##SBATCH --no-requeue
-#! Request Infiniband
-##SBATCH --constraint=IB
-
 
 #! Modify the settings below to specify the application's environment, location
 #! and launch method:
@@ -72,7 +69,7 @@ for host in `cat hostfile.$JOBID`; do
         sleep 5
     fi
     echo "run dask-worker"
-    ssh $host dask-worker --host ${host} --nprocs 4 --nthreads 1  \
+    ssh $host dask-worker --host ${host} --nprocs 8 --nthreads 1  \
     --memory-limit 0.75 --local-directory /tmp $scheduler:8786  &
         sleep 1
     hostIndex="1"
