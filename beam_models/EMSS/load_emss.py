@@ -15,6 +15,7 @@ beamsize = 512 # even number
 
 
 D = scipy.io.loadmat("SKA_B2_%d.mat"%freq)
+#print (D.items())
 th = D["th"].squeeze() # angle from bore sight with th=0 defining bore sight [deg]
 ph = D["ph"].squeeze() # angle in aperture plane with 0="up from vertex" and defines plane of symmetry [deg]
 JHH = D["Jqh"].squeeze() # Jones "voltage" pattern, arranged rows:th x columns:ph
@@ -23,7 +24,7 @@ JHV = D["Jqv"].squeeze()
 JVH = D["Jph"].squeeze()
 
 # keep theta in deg?
-print (ph.shape,th.shape)
+
 ph_rad = (ph/360.)*(2*np.pi)
 th_rad = (th/360.)*(2*np.pi)
 
@@ -59,8 +60,6 @@ polarr = np.dstack((JHH, JVV,JHV,JVH))
 pols = ["JHH","JVV","JHV", "JVH"]
 
 for k , pol in enumerate(pols):
-    print (poldict[pol].shape)
-    print (polarr[:,:,k].shape)
     for i in range(beamsize):
         for j in range(np.int(beamsize/2)):
 
@@ -71,16 +70,16 @@ flipped_azel = np.flip(azel, 1)
 azel = np.hstack((flipped_azel,azel))
 
 hdu_new = fits.PrimaryHDU((np.real(azel)))
-hdu_new.writeto('real_%s.fits'%freq)
+hdu_new.writeto('real_%sMHz.fits'%freq)
 
 hdu_new = fits.PrimaryHDU((np.imag(azel)))
-hdu_new.writeto('imag_%s.fits'%freq)
+hdu_new.writeto('imag_%sMHz.fits'%freq)
 
 hdu_new = fits.PrimaryHDU((np.absolute(azel)))
-hdu_new.writeto('amp_%s.fits'%freq)
+hdu_new.writeto('amp_%sMHz.fits'%freq)
 
 hdu_new = fits.PrimaryHDU((np.angle(azel)))
-hdu_new.writeto('phas_%s.fits'%freq)
+hdu_new.writeto('phas_%sMHz.fits'%freq)
 
 plt.clf()
 
@@ -97,7 +96,7 @@ for count, ax in enumerate(axes.flat):
 
 plt.tight_layout()
 fig.colorbar(im, ax=axes.ravel().tolist(), use_gridspec=True)
-plt.savefig('amplitudes_pol.png')
+plt.savefig('pol_amp_%sMHz.png'%freq)
 
 
 
@@ -114,7 +113,7 @@ for count, ax in enumerate(axes.flat):
 
 plt.tight_layout()
 fig.colorbar(im, ax=axes.ravel().tolist(), use_gridspec=True)
-plt.savefig('phases_pol.png')
+plt.savefig('pol_phas_%sMHz.png'%freq)
 
 
 
@@ -124,38 +123,32 @@ azel_names = ['amp', 'imag', 'real', 'phase']
 
 for i in range(4):
     azel_type = azel_types[i]
-    print (azel_type.shape)
     plt.clf()
     fig, axes = plt.subplots(nrows=2, ncols=2, sharex = True, sharey = True, figsize = (8,6))
     for count, ax in enumerate(axes.flat):
         if i==0:
-            print (i)
             azel_type[count,:,:] = 10*np.log((azel_type[count,:,:])/np.max(azel_type[count,:,:])) # power not voltage
-            print (azel_type)
-            print (azel_names[i])
+            vmin = -70
+            vmax = 0
+        else:
+            vmax  = np.max(azel_type[0,:,:])    
+            vmin  = np.min(azel_type[0,:,:])     
         norm = None
         if (i==1) or (i==2):
             norm=colors.SymLogNorm(linthresh=0.03, linscale=0.03,   vmin=-1.0, vmax=1.0)
-            
-
-  
-        vmax  = np.max(azel_type[0,:,:])    
-        vmin  = np.min(azel_type[0,:,:])       
-      
         im = ax.imshow((azel_type[count,:,:]), vmin = vmin, vmax = vmax, origin = 'lower', extent = [-6, 6, -6, 6], norm=norm)
         if (count==2) or (count==3):
             ax.set_xlabel(r'$\rho$cos($\phi$) [deg]')   
         if (count==0) or (count==2):
             ax.set_ylabel(r'$\rho$sin($\phi$) [deg]')
         ax.set_title(pols[count])  
-
     plt.tight_layout()
     cbar = fig.colorbar(im, ax=axes.ravel().tolist(), use_gridspec=True)
     if (i==1) or (i==2):
         pass
        # cbar.set_ticks(ticker.LogLocator(), update_ticks=True)
     cbar.ax.tick_params(size=0)    
-    plt.savefig('azel_%s.png'%azel_names[i])
+    plt.savefig('azel_%s_%sMHz.png'%(azel_names[i],freq))
 
 
 hdr = fits.Header.fromstring("""\
@@ -191,7 +184,7 @@ LATPOLE =                -35.0 / [deg] Native latitude of celestial pole
 END         
  """%(beamsize,beamsize,beamsize/2,(beamsize/2)+1, -(np.max(th)/beamsize), (np.max(th)/beamsize), (freq*1000)), sep='\n')
 
-print (hdr)
+
 
 
 
