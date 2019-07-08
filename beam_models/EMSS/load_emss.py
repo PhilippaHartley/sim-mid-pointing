@@ -42,8 +42,6 @@ tharr, pharr = np.meshgrid((th), ph_rad)
 x, y = np.meshgrid(np.linspace(np.min(vflat),np.max(vflat), np.int(beamsize/2)), np.linspace(np.min(uflat),np.max(uflat), beamsize))
 r, theta = cart2pol(x,y)
 
-
-
 azel = np.zeros((4,np.int(beamsize/2),np.int(beamsize)), dtype = complex)
 
 poldict =    {
