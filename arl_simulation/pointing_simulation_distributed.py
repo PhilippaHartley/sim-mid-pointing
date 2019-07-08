@@ -69,8 +69,9 @@ pp = pprint.PrettyPrinter()
 # Process a set of BlockVisibility's, creating pointing errors, converting to gainables, applying
 # the gaintables to the FT of the skycomponents, and dirty images, one per BlockVisibility
 def create_vis_list_with_errors(sub_bvis_list, sub_components, sub_model_list, sub_vp_list, use_radec=False,
-                                pointing_error=0.0, static_pointing_error=0.0, global_pointing_error=None,
-                                time_series='', seeds=None, reference_pointing=False, pointing_directory=None):
+                                pointing_error=0.0, static_pointing_error=None, global_pointing_error=None,
+                                time_series='', time_series_type='',
+                                seeds=None, reference_pointing=False, pointing_directory=None):
     if global_pointing_error is None:
         global_pointing_error = [0.0, 0.0]
     
@@ -87,6 +88,7 @@ def create_vis_list_with_errors(sub_bvis_list, sub_components, sub_model_list, s
                          for ipt, pt in enumerate(error_pt_list)]
     else:
         error_pt_list = [arlexecute.execute(simulate_pointingtable_from_timeseries)(pt, type=time_series,
+                                                                                    time_series_type=time_series_type,
                                                                                     pointing_directory=pointing_directory,
                                                                                     reference_pointing=reference_pointing,
                                                                                     seed=seeds[ipt])
@@ -194,7 +196,7 @@ if __name__ == '__main__':
                         help='Maximum distance of station from centre (m)')
     
     parser.add_argument('--global_pe', type=float, nargs=2, default=[0.0, 0.0], help='Global pointing error')
-    parser.add_argument('--static_pe', type=float, default=0.0, help='Multiplier for static errors')
+    parser.add_argument('--static_pe', type=float, nargs=2, default=[0.0, 0.0], help='Multipliers for static errors')
     parser.add_argument('--dynamic_pe', type=float, default=1.0, help='Multiplier for dynamic errors')
     parser.add_argument('--nnodes', type=int, default=1, help='Number of nodes')
     parser.add_argument('--nthreads', type=int, default=1, help='Number of threads')
@@ -211,6 +213,7 @@ if __name__ == '__main__':
     parser.add_argument('--pbradius', type=float, default=4.0, help='Radius of sources to include (in HWHM)')
     parser.add_argument('--pbtype', type=str, default='MID', help='Primary beam model: MID or MID_GAUSS')
     parser.add_argument('--use_agg', type=str, default="True", help='Use Agg matplotlib backend?')
+    parser.add_argument('--declination', type=float, default=45.0, help='Declination (degrees)')
     parser.add_argument('--tsys', type=float, default=0.0, help='System temperature: standard 20K')
     parser.add_argument('--scale', type=float, nargs=2, default=[1.0, 1.0], help='Scale errors by this amount')
     parser.add_argument('--use_radec', type=str, default="False", help='Calculate in RADEC (false)?')
@@ -221,9 +224,11 @@ if __name__ == '__main__':
     parser.add_argument('--pointing_file', type=str, default=None, help="Pointing file")
     parser.add_argument('--time_chunk', type=float, default=1800.0, help="Time for a chunk (s)")
     parser.add_argument('--reference_pointing', type=str, default="False", help="Use reference pointing")
-    parser.add_argument('--pointing_directory', type=str, default='../../pointing_error_models/PSD_data/precision/',
+    parser.add_argument('--pointing_directory', type=str, default='../../pointing_error_models/PSD_data/',
                         help='Location of pointing files')
-    
+    parser.add_argument('--shared_directory', type=str, default='../../shared/',
+                        help='Location of pointing files')
+
     args = parser.parse_args()
     
     use_agg = args.use_agg == "True"
@@ -233,6 +238,7 @@ if __name__ == '__main__':
         mpl.use('Agg')
     from matplotlib import pyplot as plt
     
+    declination = args.declination
     use_radec = args.use_radec == "True"
     use_natural = args.use_natural == "True"
     time_series = args.time_series
@@ -251,7 +257,8 @@ if __name__ == '__main__':
     rmax = args.rmax
     flux_limit = args.flux_limit
     npixel = args.npixel
-    
+    shared_directory = args.shared_directory
+
     seed = args.seed
     print("Random number seed is", seed)
     show = args.show == 'True'
@@ -300,9 +307,10 @@ if __name__ == '__main__':
     
     print('%d integrations of duration %.1f s processed in %d chunks' % (ntimes, integration_time, nchunks))
     
-    phasecentre = SkyCoord(ra=+15.0 * u.deg, dec=-45.0 * u.deg, frame='icrs', equinox='J2000')
+    phasecentre = SkyCoord(ra=+15.0 * u.deg, dec=declination * u.deg, frame='icrs', equinox='J2000')
     location = EarthLocation(lon="21.443803", lat="-30.712925", height=0.0)
-    mid = create_configuration_from_MIDfile('../../shared/ska1mid_local.cfg', rmax=rmax, location=location)
+    mid = create_configuration_from_MIDfile('%s/ska1mid_local.cfg' % shared_directory, rmax=rmax,
+                                            location=location)
     
     bvis_graph = [arlexecute.execute(create_blockvisibility)(mid, rtimes[itime], frequency=frequency,
                                                              channel_bandwidth=channel_bandwidth, weight=1.0,
@@ -409,7 +417,7 @@ if __name__ == '__main__':
     if time_series == '':
         pes = [1.0, 2.0, 4.0, 8.0, 16.0, 32.0, 64.0, 128.0, 256.0]
     else:
-        pes = [0.0]
+        pes = ['precision', 'standard', 'degraded']
     
     nants = len(mid.names)
     nbaselines = nants * (nants - 1) // 2
@@ -488,14 +496,15 @@ if __name__ == '__main__':
     
     # Optionally show the primary beam, with components if the image is in RADEC coords
     if show:
-        pb = arlexecute.execute(create_pb)(future_vp_list[0], pbtype, pointingcentre=phasecentre,
-                                           use_local=False)
-        pb = arlexecute.compute(pb, sync=True)
+        if pbtype == "MID_GRASP":
+            pb = arlexecute.execute(create_pb)(future_vp_list[0], pbtype, pointingcentre=phasecentre,
+                                               use_local=False)
+            pb = arlexecute.compute(pb, sync=True)
+            print("Coercing AZELGEO WCS of GRASP beam to RADEC to show components")
+            pb.wcs = psf.wcs.deepcopy()
+            
         print("Primary beam:", pb)
-        if pbtype == 'MID_GRASP':
-            show_image(pb, title='%s: primary beam' % basename, vmax=0.01, vmin=0.0)
-        else:
-            show_image(pb, title='%s: primary beam' % basename, components=original_components, vmax=0.01, vmin=0.0)
+        show_image(pb, title='%s: primary beam' % basename, components=original_components, vmax=1.0, vmin=0.0)
         
         plt.savefig('PB_arl.png')
         export_image_to_fits(pb, 'PB_arl.fits')
@@ -522,7 +531,7 @@ if __name__ == '__main__':
     epoch = time.strftime("%Y-%m-%d %H:%M:%S")
     
     global_pe = numpy.array(args.global_pe)
-    static_pe = args.static_pe
+    static_pe = numpy.array(args.static_pe)
     dynamic_pe = args.dynamic_pe
     
     time_started = time.time()
@@ -553,6 +562,7 @@ if __name__ == '__main__':
         result['snapshot'] = snapshot
         result['opposite'] = opposite
         result['tsys'] = tsys
+        result['declination'] = declination
         result['scale'] = scale
         result['use_radec'] = use_radec
         result['use_natural'] = use_natural
@@ -560,9 +570,12 @@ if __name__ == '__main__':
         result['integration_time'] = integration_time
         result['seed'] = seed
         result['ntotal'] = ntotal
+        result['pe'] = pe
         
         a2r = numpy.pi / (3600.0 * 180.0)
         
+        # The strategy for distribution is to iterate through big cells in (bvis, components). Within each
+        # cell we do distribution over the each bvis, component using create_bics_with_error
         chunk_components = [original_components[i:i + ngroup] for i in range(0, len(original_components), ngroup)]
         chunk_bvis = [future_bvis_list[i:i + ngroup] for i in range(0, len(future_bvis_list), ngroup)]
         chunk_vp_list = [future_vp_list[i:i + ngroup] for i in range(0, len(future_vp_list), ngroup)]
@@ -576,9 +589,9 @@ if __name__ == '__main__':
             result['dynamic_pointing_error'] = pointing_error
             result['global_pointing_error'] = global_pointing_error
             
-            print("Pointing errors: global (%.1f, %.1f) arcsec, static %.1f arcsec, dynamic %.1f arcsec" %
-                  (global_pointing_error[0], global_pointing_error[1], static_pointing_error,
-                   pointing_error))
+            print("Pointing errors: global (%.1f, %.1f) arcsec, static %.1f, %.1f arcsec, dynamic %.1f arcsec" %
+                  (global_pointing_error[0], global_pointing_error[1], static_pointing_error[0],
+                   static_pointing_error[1], pointing_error))
             file_name = 'PE_%.1f_arcsec_arl' % pe
             
             error_dirty_list = list()
@@ -601,7 +614,7 @@ if __name__ == '__main__':
         
         else:
             
-            file_name = 'PE_wind_arl'
+            file_name = 'PE_%s_%s_arl' % (time_series, pe)
             # Chunk up bvis and components
             error_dirty_list = list()
             for icomp_chunk, comp_chunk in enumerate(chunk_components):
@@ -613,6 +626,7 @@ if __name__ == '__main__':
                                                                             sub_vp_list=chunk_vp_list[ivis_chunk],
                                                                             use_radec=use_radec,
                                                                             time_series=time_series,
+                                                                            time_series_type=pe,
                                                                             seeds=chunk_seeds[ivis_chunk],
                                                                             reference_pointing=reference_pointing)
                     this_result = arlexecute.compute(vis_comp_chunk_dirty_list, sync=True)
@@ -667,8 +681,8 @@ if __name__ == '__main__':
         csvfile.close()
     
     if time_series == '':
-        title = '%s, %.3f GHz, %d times: dynamic %g, static %g \n%s %s %s' % \
-                (context, frequency[0] * 1e-9, ntimes, dynamic_pe, static_pe, socket.gethostname(), epoch,
+        title = '%s, %.3f GHz, %d times: dynamic %g, static %g, %g \n%s %s %s' % \
+                (context, frequency[0] * 1e-9, ntimes, dynamic_pe, static_pe[0], static_pe[1], socket.gethostname(), epoch,
                  basename)
         plt.clf()
         colors = ['b', 'r', 'g', 'y']
@@ -704,7 +718,7 @@ if __name__ == '__main__':
         
         plt.xlabel('Pointing file')
         plt.ylabel('Error (uJy)')
-        plt.xticks(numpy.arange(len(pes)) + bar_width, pes, rotation='vertical')
+        plt.xticks(numpy.arange(len(pes)) + 0.5 * bar_width, pes, rotation='vertical')
         plt.title(title)
         plt.legend(fontsize='x-small')
         print('Saving plot to %s' % plotfile)

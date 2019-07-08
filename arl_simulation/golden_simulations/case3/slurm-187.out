@@ -1,0 +1,1449 @@
+PYTHONPATH is /alaska/tim/Code/algorithm-reference-library/::/alaska/tim/Code/algorithm-reference-library/
+Running python: /alaska/tim/alaska-venv/bin/python
+Running dask-scheduler: /alaska/tim/alaska-venv/bin/dask-scheduler
+Changed directory to /alaska/tim/Code/sim-mid-pointing/arl_simulation/golden_simulations/case3.
+
+openhpc-compute-[0-7]
+Working on 10.3.0.40 ....
+run dask-scheduler
+run dask-worker
+Working on 10.3.0.26 ....
+run dask-worker
+Working on 10.3.0.17 ....
+run dask-worker
+Working on 10.3.0.6 ....
+run dask-worker
+Working on 10.3.0.28 ....
+run dask-worker
+Working on 10.3.0.3 ....
+run dask-worker
+Working on 10.3.0.1 ....
+run dask-worker
+Working on 10.3.0.10 ....
+run dask-worker
+Working on 10.3.0.5 ....
+run dask-worker
+Scheduler and workers now running
+Scheduler is running at 10.3.0.40
+About to execute python ../../pointing_simulation_distributed.py --context s3sky --rmax 1e5 --flux_limit 0.3 --ngroup 8 --show True
+--seed 18051955  --pbtype MID_GRASP --memory 32  --integration_time 10 --use_agg True --time_series wind --time_chunk 180 --reference_pointing True --time_range -0.05 0.05 --shared_directory ../../../shared | tee pointing_simulation.log
+ 
+Distributed simulation of pointing errors for SKA-MID
+-----------------------------------------------------
+ 
+Random number seed is 18051955
+Creating Dask Client using externally defined scheduler
+Using 38 Dask workers
+Start times for chunks:
+array([-180.,    0.])
+Observation times:
+[array([-180., -170., -160., -150., -140., -130., -120., -110., -100.,
+        -90.,  -80.,  -70.,  -60.,  -50.,  -40.,  -30.,  -20.,  -10.]),
+ array([  0.,  10.,  20.,  30.,  40.,  50.,  60.,  70.,  80.,  90., 100.,
+       110., 120., 130., 140., 150., 160., 170.])]
+36 integrations of duration 10.0 s processed in 2 chunks
+MID_GRASP: HWHM beam = 0.751 deg
+Constructing s3sky components
+create_test_skycomponents_from_s3: Reading S3-SEX sources from /alaska/tim/Code/algorithm-reference-library/data/models/S3_1400MHz_1mJy_18deg.csv 
+create_test_skycomponents_from_s3: 57 sources found above fluxlimit inside search radius
+Created 57 original components
+Memory use (GB)
+{'bvis_list': 0.07286649942398071,
+ 'model_list': 0.111328125,
+ 'vis_list': 0.07249581813812256,
+ 'vp_list': 0.0078125}
+Summary of processing:
+    There are 38 workers
+    There are 2 separate visibility time chunks being processed
+    The integration time within each chunk is 10.0 (s)
+    There are a total of 36 integrations
+    There are 19306 baselines
+    There are 57 components
+    3 pointing scenario(s) will be tested
+    Total processing 1.18848e+08 times-baselines-components-scenarios
+    Approximate total memory use for data = 0.265 GB
+Using uniform weighting
+Inverting to get PSF
+PSF sumwt  [[3613.]]
+Coercing AZELGEO WCS of GRASP beam to RADEC to show components
+Primary beam: Image:
+	Shape: (1, 4, 281, 281)
+	WCS: WCS Transformation
+
+This transformation has 4 pixel and 4 world dimensions
+
+Array shape (Numpy order): None
+
+Pixel Dim  Data size  Bounds
+        0       None  None
+        1       None  None
+        2       None  None
+        3       None  None
+
+World Dim  Physical Type  Units
+        0  pos.eq.ra      deg
+        1  pos.eq.dec     deg
+        2  None           unknown
+        3  em.freq        Hz
+
+Correlation between pixel and world axes:
+
+               Pixel Dim
+World Dim    0    1    2    3
+        0  yes  yes   no   no
+        1  yes  yes   no   no
+        2   no   no  yes   no
+        3   no   no   no  yes
+	Polarisation frame: linear
+
+Constructing voltage pattern
+Seeds per chunk:
+array([1484200055, 1655417773])
+Saving results to ./pointingsimulation_openhpc-compute-0.novalocal_4.csv
+
+***** Starting loop over scenarios ******
+
+Processing component_chunk 0, visibility chunk 0
+Processing component_chunk 1, visibility chunk 0
+Processing component_chunk 2, visibility chunk 0
+Processing component_chunk 3, visibility chunk 0
+Processing component_chunk 4, visibility chunk 0
+Processing component_chunk 5, visibility chunk 0
+Processing component_chunk 6, visibility chunk 0
+Processing component_chunk 7, visibility chunk 0
+Dirty image sumwt [[28904.00000002]]
+Quality assessment:
+	Origin: qa_image
+	Context: 
+	Data:
+		shape: '(1, 1, 512, 512)'
+		max: '9.433161385640632e-07'
+		min: '-1.0775289666917529e-06'
+		maxabs: '1.0775289666917529e-06'
+		rms: '2.163608412466743e-07'
+		sum: '-1.859397474169211e-05'
+		medianabs: '1.4601000262642129e-07'
+		medianabsdevmedian: '1.4602141121991608e-07'
+		median: '2.231470184206749e-10'
+
+Elapsed time = 246.9 (s)
+Processing component_chunk 0, visibility chunk 0
+Processing component_chunk 1, visibility chunk 0
+Processing component_chunk 2, visibility chunk 0
+Processing component_chunk 3, visibility chunk 0
+Processing component_chunk 4, visibility chunk 0
+Processing component_chunk 5, visibility chunk 0
+Processing component_chunk 6, visibility chunk 0
+Processing component_chunk 7, visibility chunk 0
+Dirty image sumwt [[28904.00000002]]
+Quality assessment:
+	Origin: qa_image
+	Context: 
+	Data:
+		shape: '(1, 1, 512, 512)'
+		max: '3.868337026136375e-06'
+		min: '-4.372606383954617e-06'
+		maxabs: '4.372606383954617e-06'
+		rms: '8.838036576971528e-07'
+		sum: '-9.12005802533352e-05'
+		medianabs: '5.963266946429047e-07'
+		medianabsdevmedian: '5.96303665749679e-07'
+		median: '3.35756275443726e-10'
+
+Elapsed time = 474.8 (s)
+Processing component_chunk 0, visibility chunk 0
+Processing component_chunk 1, visibility chunk 0
+Processing component_chunk 2, visibility chunk 0
+Processing component_chunk 3, visibility chunk 0
+Processing component_chunk 4, visibility chunk 0
+Processing component_chunk 5, visibility chunk 0
+Processing component_chunk 6, visibility chunk 0
+Processing component_chunk 7, visibility chunk 0
+Dirty image sumwt [[28904.00000002]]
+Quality assessment:
+	Origin: qa_image
+	Context: 
+	Data:
+		shape: '(1, 1, 512, 512)'
+		max: '6.607056048020895e-06'
+		min: '-7.34442783211542e-06'
+		maxabs: '7.34442783211542e-06'
+		rms: '1.502053087029442e-06'
+		sum: '-0.0001999875306819398'
+		medianabs: '1.0151744920263142e-06'
+		medianabsdevmedian: '1.015215426993335e-06'
+		median: '6.146509912259268e-10'
+
+Elapsed time = 699.6 (s)
+[{'basename': 'case3',
+  'context': 's3sky',
+  'dynamic_pe': 1.0,
+  'elapsed_time': 246.8629355430603,
+  'epoch': '2019-07-04 10:10:05',
+  'flux_limit': 0.3,
+  'global_pe': array([0., 0.]),
+  'hostname': 'openhpc-compute-0.novalocal',
+  'integration_time': 10.0,
+  'nb_name': '../../pointing_simulation_distributed.py',
+  'ngroup': 8,
+  'npixel': 512,
+  'ntotal': 118847736,
+  'nworkers': 38,
+  'onsource_abscentral': 3.698236526493088e-07,
+  'onsource_maxabs': 1.0775289666917529e-06,
+  'onsource_medianabs': 1.4601000262642129e-07,
+  'onsource_rms': 2.163608412466743e-07,
+  'opposite': False,
+  'pb_npixel': 1024,
+  'pbtype': 'MID_GRASP',
+  'pe': 'precision',
+  'plotfile': './pointingsimulation_openhpc-compute-0.novalocal_4.jpg',
+  'psf_maxabs': 0.9989997605856716,
+  'psf_medianabs': 0.007465596849647855,
+  'psf_rms': 0.015653317325991137,
+  'scale': array([1., 1.]),
+  'seed': 18051955,
+  'snapshot': False,
+  'static_pe': 0.0,
+  'time_series': 'wind',
+  'tsys': 0.0,
+  'use_natural': False,
+  'use_radec': False},
+ {'basename': 'case3',
+  'context': 's3sky',
+  'dynamic_pe': 1.0,
+  'elapsed_time': 474.8103995323181,
+  'epoch': '2019-07-04 10:10:05',
+  'flux_limit': 0.3,
+  'global_pe': array([0., 0.]),
+  'hostname': 'openhpc-compute-0.novalocal',
+  'integration_time': 10.0,
+  'nb_name': '../../pointing_simulation_distributed.py',
+  'ngroup': 8,
+  'npixel': 512,
+  'ntotal': 118847736,
+  'nworkers': 38,
+  'onsource_abscentral': 1.5087258208782282e-06,
+  'onsource_maxabs': 4.372606383954617e-06,
+  'onsource_medianabs': 5.963266946429047e-07,
+  'onsource_rms': 8.838036576971528e-07,
+  'opposite': False,
+  'pb_npixel': 1024,
+  'pbtype': 'MID_GRASP',
+  'pe': 'standard',
+  'plotfile': './pointingsimulation_openhpc-compute-0.novalocal_4.jpg',
+  'psf_maxabs': 0.9989997605856716,
+  'psf_medianabs': 0.007465596849647855,
+  'psf_rms': 0.015653317325991137,
+  'scale': array([1., 1.]),
+  'seed': 18051955,
+  'snapshot': False,
+  'static_pe': 0.0,
+  'time_series': 'wind',
+  'tsys': 0.0,
+  'use_natural': False,
+  'use_radec': False},
+ {'basename': 'case3',
+  'context': 's3sky',
+  'dynamic_pe': 1.0,
+  'elapsed_time': 699.5600092411041,
+  'epoch': '2019-07-04 10:10:05',
+  'flux_limit': 0.3,
+  'global_pe': array([0., 0.]),
+  'hostname': 'openhpc-compute-0.novalocal',
+  'integration_time': 10.0,
+  'nb_name': '../../pointing_simulation_distributed.py',
+  'ngroup': 8,
+  'npixel': 512,
+  'ntotal': 118847736,
+  'nworkers': 38,
+  'onsource_abscentral': 2.552526741158459e-06,
+  'onsource_maxabs': 7.34442783211542e-06,
+  'onsource_medianabs': 1.0151744920263142e-06,
+  'onsource_rms': 1.502053087029442e-06,
+  'opposite': False,
+  'pb_npixel': 1024,
+  'pbtype': 'MID_GRASP',
+  'pe': 'degraded',
+  'plotfile': './pointingsimulation_openhpc-compute-0.novalocal_4.jpg',
+  'psf_maxabs': 0.9989997605856716,
+  'psf_medianabs': 0.007465596849647855,
+  'psf_rms': 0.015653317325991137,
+  'scale': array([1., 1.]),
+  'seed': 18051955,
+  'snapshot': False,
+  'static_pe': 0.0,
+  'time_series': 'wind',
+  'tsys': 0.0,
+  'use_natural': False,
+  'use_radec': False}]
+Total processing 1.18848e+08 times-baselines-components-scenarios
+Processing rate of time-baseline-component-scenario = 4470.74 per worker-second
+Saving plot to ./pointingsimulation_openhpc-compute-0.novalocal_4.jpg
+ributed.diskutils - INFO - Found stale lock file and directory '/tmp/worker-h0bctq1c', purging
+distributed.nanny - INFO -         Start Nanny at: 'tcp://10.3.0.3:43336'
+distributed.nanny - INFO -         Start Nanny at: 'tcp://10.3.0.3:36267'
+distributed.nanny - INFO -         Start Nanny at: 'tcp://10.3.0.3:37447'
+distributed.diskutils - INFO - Found stale lock file and directory '/tmp/worker-_6ue4akd', purging
+distributed.diskutils - INFO - Found stale lock file and directory '/tmp/worker-5hm8qakn', purging
+distributed.diskutils - INFO - Found stale lock file and directory '/tmp/worker-gtr4bvtu', purging
+distributed.worker - INFO -       Start worker at:      tcp://10.3.0.26:32774
+distributed.worker - INFO -          Listening to:      tcp://10.3.0.26:32774
+distributed.scheduler - INFO - Register tcp://10.3.0.26:41881
+distributed.worker - INFO -          dashboard at:            10.3.0.26:36362
+distributed.worker - INFO -       Start worker at:      tcp://10.3.0.26:35632
+distributed.worker - INFO -       Start worker at:      tcp://10.3.0.26:41881
+distributed.worker - INFO -       Start worker at:      tcp://10.3.0.26:34754
+distributed.worker - INFO - Waiting to connect to:       tcp://10.3.0.40:8786
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO -          Listening to:      tcp://10.3.0.26:35632
+distributed.worker - INFO -          dashboard at:            10.3.0.26:42191
+distributed.worker - INFO -          Listening to:      tcp://10.3.0.26:41881
+distributed.worker - INFO - Waiting to connect to:       tcp://10.3.0.40:8786
+distributed.worker - INFO -          Listening to:      tcp://10.3.0.26:34754
+distributed.worker - INFO -          dashboard at:            10.3.0.26:44850
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO -          dashboard at:            10.3.0.26:34415
+distributed.worker - INFO - Waiting to connect to:       tcp://10.3.0.40:8786
+distributed.worker - INFO - Waiting to connect to:       tcp://10.3.0.40:8786
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO -               Threads:                          1
+distributed.worker - INFO -                Memory:                  101.18 GB
+distributed.worker - INFO -       Local Directory:       /tmp/worker-o__k180q
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO -               Threads:                          1
+distributed.worker - INFO -               Threads:                          1
+distributed.worker - INFO -                Memory:                  101.18 GB
+distributed.worker - INFO -               Threads:                          1
+distributed.worker - INFO -                Memory:                  101.18 GB
+distributed.worker - INFO -       Local Directory:       /tmp/worker-t_p47gd7
+distributed.worker - INFO -       Local Directory:       /tmp/worker-rwnfknpr
+distributed.worker - INFO -                Memory:                  101.18 GB
+distributed.worker - INFO -       Local Directory:       /tmp/worker-e2_rmbxp
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO -         Registered to:       tcp://10.3.0.40:8786
+distributed.worker - INFO -         Registered to:       tcp://10.3.0.40:8786
+distributed.worker - INFO -         Registered to:       tcp://10.3.0.40:8786
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO -         Registered to:       tcp://10.3.0.40:8786
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO - -------------------------------------------------
+distributed.core - INFO - Starting established connection
+distributed.core - INFO - Starting established connection
+distributed.core - INFO - Starting established connection
+distributed.core - INFO - Starting established connection
+distributed.scheduler - INFO - Register tcp://10.3.0.26:35632
+distributed.scheduler - INFO - Register tcp://10.3.0.26:34754
+distributed.scheduler - INFO - Register tcp://10.3.0.26:32774
+distributed.scheduler - INFO - Starting worker compute stream, tcp://10.3.0.26:41881
+distributed.core - INFO - Starting established connection
+distributed.scheduler - INFO - Starting worker compute stream, tcp://10.3.0.26:35632
+distributed.core - INFO - Starting established connection
+distributed.scheduler - INFO - Starting worker compute stream, tcp://10.3.0.26:34754
+distributed.core - INFO - Starting established connection
+distributed.scheduler - INFO - Starting worker compute stream, tcp://10.3.0.26:32774
+distributed.core - INFO - Starting established connection
+distributed.diskutils - INFO - Found stale lock file and directory '/tmp/worker-3279t752', purging
+distributed.diskutils - INFO - Found stale lock file and directory '/tmp/worker-88lvpbje', purging
+distributed.diskutils - INFO - Found stale lock file and directory '/tmp/worker-554ve9bg', purging
+distributed.diskutils - INFO - Found stale lock file and directory '/tmp/worker-yzjnm3r4', purging
+distributed.nanny - INFO -         Start Nanny at: 'tcp://10.3.0.1:36817'
+distributed.nanny - INFO -         Start Nanny at: 'tcp://10.3.0.1:38517'
+distributed.nanny - INFO -         Start Nanny at: 'tcp://10.3.0.1:39276'
+distributed.nanny - INFO -         Start Nanny at: 'tcp://10.3.0.1:37354'
+distributed.diskutils - INFO - Found stale lock file and directory '/tmp/worker-8of4r0lq', purging
+distributed.diskutils - INFO - Found stale lock file and directory '/tmp/worker-n671f3hx', purging
+distributed.diskutils - INFO - Found stale lock file and directory '/tmp/worker-heurnq87', purging
+distributed.diskutils - INFO - Found stale lock file and directory '/tmp/worker-hfgfzceq', purging
+distributed.worker - INFO -       Start worker at:       tcp://10.3.0.6:40070
+distributed.worker - INFO -       Start worker at:       tcp://10.3.0.6:32982
+distributed.worker - INFO -       Start worker at:       tcp://10.3.0.6:37891
+distributed.worker - INFO -       Start worker at:       tcp://10.3.0.6:33713
+distributed.worker - INFO -          Listening to:       tcp://10.3.0.6:40070
+distributed.worker - INFO -          Listening to:       tcp://10.3.0.6:32982
+distributed.worker - INFO -          Listening to:       tcp://10.3.0.6:37891
+distributed.worker - INFO -          Listening to:       tcp://10.3.0.6:33713
+distributed.worker - INFO -          dashboard at:             10.3.0.6:45843
+distributed.scheduler - INFO - Register tcp://10.3.0.6:32982
+distributed.worker - INFO -          dashboard at:             10.3.0.6:36668
+distributed.worker - INFO -          dashboard at:             10.3.0.6:41358
+distributed.worker - INFO - Waiting to connect to:       tcp://10.3.0.40:8786
+distributed.worker - INFO -          dashboard at:             10.3.0.6:46709
+distributed.worker - INFO - Waiting to connect to:       tcp://10.3.0.40:8786
+distributed.worker - INFO - Waiting to connect to:       tcp://10.3.0.40:8786
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO - Waiting to connect to:       tcp://10.3.0.40:8786
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO -               Threads:                          1
+distributed.worker - INFO -               Threads:                          1
+distributed.worker - INFO -                Memory:                  101.18 GB
+distributed.worker - INFO -               Threads:                          1
+distributed.worker - INFO -                Memory:                  101.18 GB
+distributed.worker - INFO -       Local Directory:       /tmp/worker-ticju494
+distributed.worker - INFO -               Threads:                          1
+distributed.worker - INFO -                Memory:                  101.18 GB
+distributed.worker - INFO -       Local Directory:       /tmp/worker-m_ji6aj9
+distributed.worker - INFO -                Memory:                  101.18 GB
+distributed.worker - INFO -       Local Directory:       /tmp/worker-meneqhih
+distributed.worker - INFO -       Local Directory:       /tmp/worker-i61gcxsn
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO -         Registered to:       tcp://10.3.0.40:8786
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO -         Registered to:       tcp://10.3.0.40:8786
+distributed.worker - INFO - -------------------------------------------------
+distributed.core - INFO - Starting established connection
+distributed.core - INFO - Starting established connection
+distributed.scheduler - INFO - Register tcp://10.3.0.6:33713
+distributed.scheduler - INFO - Register tcp://10.3.0.6:40070
+distributed.scheduler - INFO - Register tcp://10.3.0.6:37891
+distributed.scheduler - INFO - Starting worker compute stream, tcp://10.3.0.6:32982
+distributed.core - INFO - Starting established connection
+distributed.scheduler - INFO - Starting worker compute stream, tcp://10.3.0.6:33713
+distributed.core - INFO - Starting established connection
+distributed.scheduler - INFO - Starting worker compute stream, tcp://10.3.0.6:40070
+distributed.core - INFO - Starting established connection
+distributed.scheduler - INFO - Starting worker compute stream, tcp://10.3.0.6:37891
+distributed.core - INFO - Starting established connection
+distributed.worker - INFO -         Registered to:       tcp://10.3.0.40:8786
+distributed.worker - INFO -         Registered to:       tcp://10.3.0.40:8786
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO - -------------------------------------------------
+distributed.core - INFO - Starting established connection
+distributed.core - INFO - Starting established connection
+distributed.nanny - INFO -         Start Nanny at: 'tcp://10.3.0.10:42040'
+distributed.worker - INFO -       Start worker at:      tcp://10.3.0.17:41394
+distributed.worker - INFO -          Listening to:      tcp://10.3.0.17:41394
+distributed.scheduler - INFO - Register tcp://10.3.0.17:43852
+distributed.nanny - INFO -         Start Nanny at: 'tcp://10.3.0.10:35794'
+distributed.nanny - INFO -         Start Nanny at: 'tcp://10.3.0.10:37444'
+distributed.nanny - INFO -         Start Nanny at: 'tcp://10.3.0.10:34478'
+distributed.nanny - INFO -         Start Nanny at: 'tcp://10.3.0.5:40525'
+distributed.worker - INFO -          dashboard at:            10.3.0.17:45625
+distributed.worker - INFO - Waiting to connect to:       tcp://10.3.0.40:8786
+distributed.worker - INFO -       Start worker at:      tcp://10.3.0.17:35287
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO -       Start worker at:      tcp://10.3.0.17:36379
+distributed.worker - INFO -       Start worker at:      tcp://10.3.0.17:43852
+distributed.worker - INFO -          Listening to:      tcp://10.3.0.17:35287
+distributed.worker - INFO -          Listening to:      tcp://10.3.0.17:36379
+distributed.worker - INFO -          Listening to:      tcp://10.3.0.17:43852
+distributed.worker - INFO -          dashboard at:            10.3.0.17:44038
+distributed.worker - INFO -          dashboard at:            10.3.0.17:36527
+distributed.worker - INFO -          dashboard at:            10.3.0.17:40148
+distributed.worker - INFO - Waiting to connect to:       tcp://10.3.0.40:8786
+distributed.worker - INFO - Waiting to connect to:       tcp://10.3.0.40:8786
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO - Waiting to connect to:       tcp://10.3.0.40:8786
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO -               Threads:                          1
+distributed.worker - INFO -                Memory:                  101.18 GB
+distributed.worker - INFO -       Local Directory:       /tmp/worker-577wxj8r
+distributed.worker - INFO -               Threads:                          1
+distributed.worker - INFO -               Threads:                          1
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO -               Threads:                          1
+distributed.worker - INFO -                Memory:                  101.18 GB
+distributed.worker - INFO -                Memory:                  101.18 GB
+distributed.worker - INFO -       Local Directory:       /tmp/worker-tv6zebf_
+distributed.worker - INFO -                Memory:                  101.18 GB
+distributed.worker - INFO -       Local Directory:       /tmp/worker-b7pxs8ta
+distributed.worker - INFO -       Local Directory:       /tmp/worker-r5oiuk4q
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO -         Registered to:       tcp://10.3.0.40:8786
+distributed.worker - INFO - -------------------------------------------------
+distributed.core - INFO - Starting established connection
+distributed.worker - INFO -         Registered to:       tcp://10.3.0.40:8786
+distributed.worker - INFO -         Registered to:       tcp://10.3.0.40:8786
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO - -------------------------------------------------
+distributed.core - INFO - Starting established connection
+distributed.core - INFO - Starting established connection
+distributed.worker - INFO -         Registered to:       tcp://10.3.0.40:8786
+distributed.worker - INFO - -------------------------------------------------
+distributed.core - INFO - Starting established connection
+distributed.scheduler - INFO - Starting worker compute stream, tcp://10.3.0.17:43852
+distributed.core - INFO - Starting established connection
+distributed.scheduler - INFO - Register tcp://10.3.0.17:36379
+distributed.scheduler - INFO - Register tcp://10.3.0.17:35287
+distributed.scheduler - INFO - Register tcp://10.3.0.17:41394
+distributed.scheduler - INFO - Starting worker compute stream, tcp://10.3.0.17:36379
+distributed.core - INFO - Starting established connection
+distributed.scheduler - INFO - Starting worker compute stream, tcp://10.3.0.17:35287
+distributed.core - INFO - Starting established connection
+distributed.scheduler - INFO - Starting worker compute stream, tcp://10.3.0.17:41394
+distributed.core - INFO - Starting established connection
+distributed.nanny - INFO -         Start Nanny at: 'tcp://10.3.0.5:34053'
+distributed.nanny - INFO -         Start Nanny at: 'tcp://10.3.0.5:40577'
+distributed.nanny - INFO -         Start Nanny at: 'tcp://10.3.0.5:37415'
+distributed.diskutils - INFO - Found stale lock file and directory '/tmp/worker-ch7x4211', purging
+distributed.diskutils - INFO - Found stale lock file and directory '/tmp/worker-rwhy6cpe', purging
+distributed.diskutils - INFO - Found stale lock file and directory '/tmp/worker-1lum3fok', purging
+distributed.diskutils - INFO - Found stale lock file and directory '/tmp/worker-uusuzbrm', purging
+distributed.worker - INFO -       Start worker at:       tcp://10.3.0.3:35702
+distributed.worker - INFO -       Start worker at:       tcp://10.3.0.3:46388
+distributed.worker - INFO -       Start worker at:       tcp://10.3.0.3:42170
+distributed.worker - INFO -          Listening to:       tcp://10.3.0.3:35702
+distributed.worker - INFO -          Listening to:       tcp://10.3.0.3:46388
+distributed.worker - INFO -          Listening to:       tcp://10.3.0.3:42170
+distributed.worker - INFO -       Start worker at:       tcp://10.3.0.3:40752
+distributed.scheduler - INFO - Register tcp://10.3.0.3:46388
+distributed.worker - INFO -          dashboard at:             10.3.0.3:42750
+distributed.worker - INFO -          dashboard at:             10.3.0.3:38434
+distributed.worker - INFO -          dashboard at:             10.3.0.3:44122
+distributed.worker - INFO -          Listening to:       tcp://10.3.0.3:40752
+distributed.worker - INFO - Waiting to connect to:       tcp://10.3.0.40:8786
+distributed.worker - INFO - Waiting to connect to:       tcp://10.3.0.40:8786
+distributed.worker - INFO - Waiting to connect to:       tcp://10.3.0.40:8786
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO -          dashboard at:             10.3.0.3:45827
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO - Waiting to connect to:       tcp://10.3.0.40:8786
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO -               Threads:                          1
+distributed.worker - INFO -               Threads:                          1
+distributed.worker - INFO -                Memory:                  101.18 GB
+distributed.worker - INFO -               Threads:                          1
+distributed.worker - INFO -                Memory:                  101.18 GB
+distributed.worker - INFO -       Local Directory:       /tmp/worker-9k4eb7h6
+distributed.worker - INFO -       Local Directory:       /tmp/worker-whyfbwmi
+distributed.worker - INFO -                Memory:                  101.18 GB
+distributed.worker - INFO -               Threads:                          1
+distributed.worker - INFO -       Local Directory:       /tmp/worker-l3_dktzs
+distributed.worker - INFO -                Memory:                  101.18 GB
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO -       Local Directory:       /tmp/worker-_woox6k4
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO -         Registered to:       tcp://10.3.0.40:8786
+distributed.worker - INFO -         Registered to:       tcp://10.3.0.40:8786
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO - -------------------------------------------------
+distributed.core - INFO - Starting established connection
+distributed.core - INFO - Starting established connection
+distributed.worker - INFO -         Registered to:       tcp://10.3.0.40:8786
+distributed.worker - INFO - -------------------------------------------------
+distributed.core - INFO - Starting established connection
+distributed.worker - INFO -         Registered to:       tcp://10.3.0.40:8786
+distributed.worker - INFO - -------------------------------------------------
+distributed.core - INFO - Starting established connection
+distributed.scheduler - INFO - Register tcp://10.3.0.3:40752
+distributed.scheduler - INFO - Starting worker compute stream, tcp://10.3.0.3:46388
+distributed.core - INFO - Starting established connection
+distributed.scheduler - INFO - Starting worker compute stream, tcp://10.3.0.3:40752
+distributed.core - INFO - Starting established connection
+distributed.scheduler - INFO - Register tcp://10.3.0.3:42170
+distributed.scheduler - INFO - Register tcp://10.3.0.3:35702
+distributed.scheduler - INFO - Starting worker compute stream, tcp://10.3.0.3:42170
+distributed.core - INFO - Starting established connection
+distributed.scheduler - INFO - Starting worker compute stream, tcp://10.3.0.3:35702
+distributed.core - INFO - Starting established connection
+distributed.worker - INFO -       Start worker at:      tcp://10.3.0.28:40827
+distributed.worker - INFO -          Listening to:      tcp://10.3.0.28:40827
+distributed.worker - INFO -          dashboard at:            10.3.0.28:34972
+distributed.scheduler - INFO - Register tcp://10.3.0.28:40827
+distributed.worker - INFO -       Start worker at:      tcp://10.3.0.28:42140
+distributed.worker - INFO - Waiting to connect to:       tcp://10.3.0.40:8786
+distributed.worker - INFO -       Start worker at:      tcp://10.3.0.28:44512
+distributed.worker - INFO -          Listening to:      tcp://10.3.0.28:42140
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO -          Listening to:      tcp://10.3.0.28:44512
+distributed.worker - INFO -          dashboard at:            10.3.0.28:42398
+distributed.worker - INFO - Waiting to connect to:       tcp://10.3.0.40:8786
+distributed.worker - INFO -       Start worker at:      tcp://10.3.0.28:33640
+distributed.worker - INFO -          dashboard at:            10.3.0.28:33050
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO -          Listening to:      tcp://10.3.0.28:33640
+distributed.worker - INFO - Waiting to connect to:       tcp://10.3.0.40:8786
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO -          dashboard at:            10.3.0.28:34673
+distributed.worker - INFO - Waiting to connect to:       tcp://10.3.0.40:8786
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO -               Threads:                          1
+distributed.worker - INFO -                Memory:                  101.18 GB
+distributed.worker - INFO -               Threads:                          1
+distributed.worker - INFO -                Memory:                  101.18 GB
+distributed.worker - INFO -               Threads:                          1
+distributed.worker - INFO -       Local Directory:       /tmp/worker-ifqk_bie
+distributed.worker - INFO -                Memory:                  101.18 GB
+distributed.worker - INFO -       Local Directory:       /tmp/worker-lgbqmw4l
+distributed.worker - INFO -       Local Directory:       /tmp/worker-7lwj221f
+distributed.worker - INFO -               Threads:                          1
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO -                Memory:                  101.18 GB
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO -       Local Directory:       /tmp/worker-nuk_kkcz
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO -         Registered to:       tcp://10.3.0.40:8786
+distributed.worker - INFO - -------------------------------------------------
+distributed.core - INFO - Starting established connection
+distributed.worker - INFO -         Registered to:       tcp://10.3.0.40:8786
+distributed.worker - INFO - -------------------------------------------------
+distributed.core - INFO - Starting established connection
+distributed.worker - INFO -         Registered to:       tcp://10.3.0.40:8786
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO -         Registered to:       tcp://10.3.0.40:8786
+distributed.worker - INFO - -------------------------------------------------
+distributed.core - INFO - Starting established connection
+distributed.core - INFO - Starting established connection
+distributed.worker - INFO -       Start worker at:       tcp://10.3.0.5:46766
+distributed.worker - INFO -          Listening to:       tcp://10.3.0.5:46766
+distributed.scheduler - INFO - Register tcp://10.3.0.28:42140
+distributed.scheduler - INFO - Register tcp://10.3.0.28:44512
+distributed.scheduler - INFO - Register tcp://10.3.0.28:33640
+distributed.scheduler - INFO - Starting worker compute stream, tcp://10.3.0.28:40827
+distributed.core - INFO - Starting established connection
+distributed.scheduler - INFO - Starting worker compute stream, tcp://10.3.0.28:42140
+distributed.core - INFO - Starting established connection
+distributed.scheduler - INFO - Starting worker compute stream, tcp://10.3.0.28:44512
+distributed.core - INFO - Starting established connection
+distributed.scheduler - INFO - Starting worker compute stream, tcp://10.3.0.28:33640
+distributed.core - INFO - Starting established connection
+distributed.scheduler - INFO - Register tcp://10.3.0.5:46766
+distributed.scheduler - INFO - Starting worker compute stream, tcp://10.3.0.5:46766
+distributed.core - INFO - Starting established connection
+distributed.scheduler - INFO - Register tcp://10.3.0.5:46836
+distributed.scheduler - INFO - Register tcp://10.3.0.5:38307
+distributed.scheduler - INFO - Starting worker compute stream, tcp://10.3.0.5:46836
+distributed.core - INFO - Starting established connection
+distributed.scheduler - INFO - Starting worker compute stream, tcp://10.3.0.5:38307
+distributed.core - INFO - Starting established connection
+distributed.scheduler - INFO - Register tcp://10.3.0.5:44707
+distributed.scheduler - INFO - Starting worker compute stream, tcp://10.3.0.5:44707
+distributed.core - INFO - Starting established connection
+distributed.worker - INFO -          dashboard at:             10.3.0.5:40576
+distributed.worker - INFO - Waiting to connect to:       tcp://10.3.0.40:8786
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO -               Threads:                          1
+distributed.worker - INFO -                Memory:                  405.56 GB
+distributed.worker - INFO -       Local Directory:       /tmp/worker-lfijid_f
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO -         Registered to:       tcp://10.3.0.40:8786
+distributed.worker - INFO - -------------------------------------------------
+distributed.core - INFO - Starting established connection
+distributed.worker - INFO -       Start worker at:       tcp://10.3.0.5:46836
+distributed.worker - INFO -          Listening to:       tcp://10.3.0.5:46836
+distributed.worker - INFO -          dashboard at:             10.3.0.5:40686
+distributed.worker - INFO - Waiting to connect to:       tcp://10.3.0.40:8786
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO -               Threads:                          1
+distributed.worker - INFO -       Start worker at:       tcp://10.3.0.5:38307
+distributed.worker - INFO -                Memory:                  405.56 GB
+distributed.worker - INFO -          Listening to:       tcp://10.3.0.5:38307
+distributed.worker - INFO -       Local Directory:       /tmp/worker-ylzx7m7s
+distributed.worker - INFO -          dashboard at:             10.3.0.5:41693
+distributed.worker - INFO - Waiting to connect to:       tcp://10.3.0.40:8786
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO -               Threads:                          1
+distributed.worker - INFO -                Memory:                  405.56 GB
+distributed.worker - INFO -       Local Directory:       /tmp/worker-449xc34m
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO -       Start worker at:       tcp://10.3.0.5:44707
+distributed.worker - INFO -          Listening to:       tcp://10.3.0.5:44707
+distributed.worker - INFO -          dashboard at:             10.3.0.5:44258
+distributed.worker - INFO - Waiting to connect to:       tcp://10.3.0.40:8786
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO -               Threads:                          1
+distributed.worker - INFO -                Memory:                  405.56 GB
+distributed.worker - INFO -       Local Directory:       /tmp/worker-r2v7docu
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO -         Registered to:       tcp://10.3.0.40:8786
+distributed.worker - INFO - -------------------------------------------------
+distributed.core - INFO - Starting established connection
+distributed.worker - INFO -         Registered to:       tcp://10.3.0.40:8786
+distributed.worker - INFO - -------------------------------------------------
+distributed.core - INFO - Starting established connection
+distributed.worker - INFO -         Registered to:       tcp://10.3.0.40:8786
+distributed.worker - INFO - -------------------------------------------------
+distributed.core - INFO - Starting established connection
+distributed.worker - INFO -       Start worker at:      tcp://10.3.0.10:43085
+distributed.worker - INFO -       Start worker at:      tcp://10.3.0.10:41478
+distributed.scheduler - INFO - Register tcp://10.3.0.10:43704
+distributed.worker - INFO -          Listening to:      tcp://10.3.0.10:43085
+distributed.worker - INFO -       Start worker at:      tcp://10.3.0.10:40540
+distributed.worker - INFO -          Listening to:      tcp://10.3.0.10:41478
+distributed.worker - INFO -       Start worker at:      tcp://10.3.0.10:43704
+distributed.worker - INFO -          dashboard at:            10.3.0.10:45149
+distributed.worker - INFO -          Listening to:      tcp://10.3.0.10:40540
+distributed.worker - INFO - Waiting to connect to:       tcp://10.3.0.40:8786
+distributed.worker - INFO -          dashboard at:            10.3.0.10:37294
+distributed.worker - INFO -          Listening to:      tcp://10.3.0.10:43704
+distributed.worker - INFO -          dashboard at:            10.3.0.10:34822
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO - Waiting to connect to:       tcp://10.3.0.40:8786
+distributed.worker - INFO - Waiting to connect to:       tcp://10.3.0.40:8786
+distributed.worker - INFO -          dashboard at:            10.3.0.10:45643
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO - Waiting to connect to:       tcp://10.3.0.40:8786
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO -               Threads:                          1
+distributed.worker - INFO -               Threads:                          1
+distributed.worker - INFO -               Threads:                          1
+distributed.worker - INFO -                Memory:                  101.18 GB
+distributed.worker - INFO -               Threads:                          1
+distributed.worker - INFO -       Local Directory:       /tmp/worker-p7su_anw
+distributed.worker - INFO -                Memory:                  101.18 GB
+distributed.worker - INFO -                Memory:                  101.18 GB
+distributed.worker - INFO -                Memory:                  101.18 GB
+distributed.worker - INFO -       Local Directory:       /tmp/worker-ztkqr_gl
+distributed.worker - INFO -       Local Directory:       /tmp/worker-byh8ti8y
+distributed.worker - INFO -       Local Directory:       /tmp/worker-4kgs4kjp
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO -         Registered to:       tcp://10.3.0.40:8786
+distributed.worker - INFO - -------------------------------------------------
+distributed.core - INFO - Starting established connection
+distributed.worker - INFO -         Registered to:       tcp://10.3.0.40:8786
+distributed.worker - INFO - -------------------------------------------------
+distributed.core - INFO - Starting established connection
+distributed.scheduler - INFO - Register tcp://10.3.0.10:40540
+distributed.scheduler - INFO - Starting worker compute stream, tcp://10.3.0.10:43704
+distributed.core - INFO - Starting established connection
+distributed.scheduler - INFO - Starting worker compute stream, tcp://10.3.0.10:40540
+distributed.core - INFO - Starting established connection
+distributed.worker - INFO -       Start worker at:       tcp://10.3.0.1:38863
+distributed.worker - INFO -          Listening to:       tcp://10.3.0.1:38863
+distributed.worker - INFO -       Start worker at:       tcp://10.3.0.1:37982
+distributed.worker - INFO -          dashboard at:             10.3.0.1:40460
+distributed.scheduler - INFO - Register tcp://10.3.0.1:35462
+distributed.worker - INFO -       Start worker at:       tcp://10.3.0.1:35462
+distributed.worker - INFO -          Listening to:       tcp://10.3.0.1:37982
+distributed.worker - INFO - Waiting to connect to:       tcp://10.3.0.40:8786
+distributed.worker - INFO -          Listening to:       tcp://10.3.0.1:35462
+distributed.worker - INFO -          dashboard at:             10.3.0.1:44312
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO -       Start worker at:       tcp://10.3.0.1:36710
+distributed.worker - INFO -          dashboard at:             10.3.0.1:33213
+distributed.worker - INFO - Waiting to connect to:       tcp://10.3.0.40:8786
+distributed.worker - INFO -          Listening to:       tcp://10.3.0.1:36710
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO - Waiting to connect to:       tcp://10.3.0.40:8786
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO -          dashboard at:             10.3.0.1:33365
+distributed.worker - INFO - Waiting to connect to:       tcp://10.3.0.40:8786
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO -               Threads:                          1
+distributed.worker - INFO -                Memory:                  101.18 GB
+distributed.worker - INFO -               Threads:                          1
+distributed.worker - INFO -       Local Directory:       /tmp/worker-51cawt54
+distributed.worker - INFO -               Threads:                          1
+distributed.worker - INFO -                Memory:                  101.18 GB
+distributed.worker - INFO -                Memory:                  101.18 GB
+distributed.worker - INFO -       Local Directory:       /tmp/worker-bijjeh8r
+distributed.worker - INFO -       Local Directory:       /tmp/worker-vy5ehx7y
+distributed.worker - INFO -               Threads:                          1
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO -                Memory:                  101.18 GB
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO -       Local Directory:       /tmp/worker-iceb82e7
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO -         Registered to:       tcp://10.3.0.40:8786
+distributed.worker - INFO -         Registered to:       tcp://10.3.0.40:8786
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO - -------------------------------------------------
+distributed.core - INFO - Starting established connection
+distributed.core - INFO - Starting established connection
+distributed.worker - INFO -         Registered to:       tcp://10.3.0.40:8786
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO -         Registered to:       tcp://10.3.0.40:8786
+distributed.worker - INFO - -------------------------------------------------
+distributed.core - INFO - Starting established connection
+distributed.core - INFO - Starting established connection
+distributed.scheduler - INFO - Register tcp://10.3.0.1:36710
+distributed.scheduler - INFO - Starting worker compute stream, tcp://10.3.0.1:35462
+distributed.core - INFO - Starting established connection
+distributed.scheduler - INFO - Starting worker compute stream, tcp://10.3.0.1:36710
+distributed.core - INFO - Starting established connection
+distributed.scheduler - INFO - Register tcp://10.3.0.1:38863
+distributed.scheduler - INFO - Register tcp://10.3.0.1:37982
+distributed.scheduler - INFO - Starting worker compute stream, tcp://10.3.0.1:38863
+distributed.core - INFO - Starting established connection
+distributed.scheduler - INFO - Starting worker compute stream, tcp://10.3.0.1:37982
+distributed.core - INFO - Starting established connection
+distributed.scheduler - INFO - Receive client connection: Client-6c790298-9e3b-11e9-8cfd-246e964885d0
+distributed.core - INFO - Starting established connection
+distributed.worker - INFO - Waiting to connect to:       tcp://10.3.0.40:8786
+distributed.worker - INFO - Waiting to connect to:       tcp://10.3.0.40:8786
+distributed.scheduler - INFO - Register tcp://10.3.0.10:41478
+distributed.worker - INFO -         Registered to:       tcp://10.3.0.40:8786
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO -         Registered to:       tcp://10.3.0.40:8786
+distributed.scheduler - INFO - Register tcp://10.3.0.10:43085
+distributed.scheduler - INFO - Starting worker compute stream, tcp://10.3.0.10:41478
+distributed.core - INFO - Starting established connection
+distributed.scheduler - INFO - Starting worker compute stream, tcp://10.3.0.10:43085
+distributed.core - INFO - Starting established connection
+distributed.worker - INFO - -------------------------------------------------
+distributed.core - INFO - Starting established connection
+distributed.core - INFO - Starting established connection
+distributed.core - INFO - Event loop was unresponsive in Worker for 3.08s.  This is often caused by long-running GIL-holding functions or moving large chunks of data. This can cause timeouts and instability.
+distributed.worker - ERROR - Worker stream died during communication: tcp://10.3.0.10:40540
+Traceback (most recent call last):
+  File "/alaska/tim/alaska-venv/lib/python3.6/site-packages/distributed/comm/core.py", line 218, in connect
+    quiet_exceptions=EnvironmentError,
+  File "/alaska/tim/alaska-venv/lib/python3.6/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+tornado.util.TimeoutError: Timeout
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/alaska/tim/alaska-venv/lib/python3.6/site-packages/distributed/worker.py", line 1841, in gather_dep
+    self.rpc, deps, worker, who=self.address
+  File "/alaska/tim/alaska-venv/lib/python3.6/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/alaska/tim/alaska-venv/lib/python3.6/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/alaska/tim/alaska-venv/lib/python3.6/site-packages/distributed/worker.py", line 3029, in get_data_from_worker
+    comm = yield rpc.connect(worker)
+  File "/alaska/tim/alaska-venv/lib/python3.6/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/alaska/tim/alaska-venv/lib/python3.6/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/alaska/tim/alaska-venv/lib/python3.6/site-packages/distributed/core.py", line 866, in connect
+    connection_args=self.connection_args,
+  File "/alaska/tim/alaska-venv/lib/python3.6/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/alaska/tim/alaska-venv/lib/python3.6/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/alaska/tim/alaska-venv/lib/python3.6/site-packages/distributed/comm/core.py", line 230, in connect
+    _raise(error)
+  File "/alaska/tim/alaska-venv/lib/python3.6/site-packages/distributed/comm/core.py", line 207, in _raise
+    raise IOError(msg)
+OSError: Timed out trying to connect to 'tcp://10.3.0.10:40540' after 10 s: connect() didn't finish in time
+distributed.worker - INFO - Can't find dependencies for key create_image_from_visibility-3768ea3a-5b34-4737-b979-a8046b5c8555
+distributed.worker - INFO - Dependent not found: Visibility-87115cece9db285ee5c4a03bee04112a 0 .  Asking scheduler
+distributed.core - INFO - Event loop was unresponsive in Worker for 3.26s.  This is often caused by long-running GIL-holding functions or moving large chunks of data. This can cause timeouts and instability.
+distributed.core - INFO - Event loop was unresponsive in Worker for 3.26s.  This is often caused by long-running GIL-holding functions or moving large chunks of data. This can cause timeouts and instability.
+distributed.utils_perf - INFO - full garbage collection released 38.97 MB from 512 reference cycles (threshold: 10.00 MB)
+distributed.utils_perf - INFO - full garbage collection released 39.02 MB from 287 reference cycles (threshold: 10.00 MB)
+distributed.utils_perf - INFO - full garbage collection released 83.62 MB from 317 reference cycles (threshold: 10.00 MB)
+distributed.utils_perf - INFO - full garbage collection released 78.01 MB from 1243 reference cycles (threshold: 10.00 MB)
+distributed.worker - ERROR - Worker stream died during communication: tcp://10.3.0.1:36710
+Traceback (most recent call last):
+  File "/alaska/tim/alaska-venv/lib/python3.6/site-packages/distributed/comm/core.py", line 218, in connect
+    quiet_exceptions=EnvironmentError,
+  File "/alaska/tim/alaska-venv/lib/python3.6/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+tornado.util.TimeoutError: Timeout
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/alaska/tim/alaska-venv/lib/python3.6/site-packages/distributed/worker.py", line 1841, in gather_dep
+    self.rpc, deps, worker, who=self.address
+  File "/alaska/tim/alaska-venv/lib/python3.6/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/alaska/tim/alaska-venv/lib/python3.6/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/alaska/tim/alaska-venv/lib/python3.6/site-packages/distributed/worker.py", line 3029, in get_data_from_worker
+    comm = yield rpc.connect(worker)
+  File "/alaska/tim/alaska-venv/lib/python3.6/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/alaska/tim/alaska-venv/lib/python3.6/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/alaska/tim/alaska-venv/lib/python3.6/site-packages/distributed/core.py", line 866, in connect
+    connection_args=self.connection_args,
+  File "/alaska/tim/alaska-venv/lib/python3.6/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/alaska/tim/alaska-venv/lib/python3.6/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/alaska/tim/alaska-venv/lib/python3.6/site-packages/distributed/comm/core.py", line 230, in connect
+    _raise(error)
+  File "/alaska/tim/alaska-venv/lib/python3.6/site-packages/distributed/comm/core.py", line 207, in _raise
+    raise IOError(msg)
+OSError: Timed out trying to connect to 'tcp://10.3.0.1:36710' after 10 s: connect() didn't finish in time
+distributed.worker - INFO - Can't find dependencies for key ft_cal_sm-ad24971b-6e32-4832-86a1-c20d9711936e
+distributed.worker - INFO - Dependent not found: SkyModel-273ed15c-3f4f-47f8-a6c7-dc5e1a61e0b2 0 .  Asking scheduler
+distributed.worker - INFO - Dependent not found: copy_visibility-e9028fe1-77be-448a-a62d-5e6ffabfd7e9 0 .  Asking scheduler
+distributed.worker - INFO - Can't find dependencies for key ft_cal_sm-ad24971b-6e32-4832-86a1-c20d9711936e
+distributed.worker - INFO - Can't find dependencies for key ft_cal_sm-ad24971b-6e32-4832-86a1-c20d9711936e
+distributed.core - INFO - Event loop was unresponsive in Worker for 3.04s.  This is often caused by long-running GIL-holding functions or moving large chunks of data. This can cause timeouts and instability.
+distributed.core - INFO - Event loop was unresponsive in Worker for 3.04s.  This is often caused by long-running GIL-holding functions or moving large chunks of data. This can cause timeouts and instability.
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+distributed.core - INFO - Event loop was unresponsive in Worker for 3.01s.  This is often caused by long-running GIL-holding functions or moving large chunks of data. This can cause timeouts and instability.
+distributed.core - INFO - Event loop was unresponsive in Worker for 3.28s.  This is often caused by long-running GIL-holding functions or moving large chunks of data. This can cause timeouts and instability.
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+distributed.utils_perf - INFO - full garbage collection released 122.80 MB from 1297 reference cycles (threshold: 10.00 MB)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+distributed.utils_perf - INFO - full garbage collection released 39.14 MB from 989 reference cycles (threshold: 10.00 MB)
+distributed.utils_perf - INFO - full garbage collection released 273.51 MB from 1369 reference cycles (threshold: 10.00 MB)
+distributed.utils_perf - INFO - full garbage collection released 391.40 MB from 1635 reference cycles (threshold: 10.00 MB)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+distributed.core - INFO - Event loop was unresponsive in Worker for 3.01s.  This is often caused by long-running GIL-holding functions or moving large chunks of data. This can cause timeouts and instability.
+distributed.core - INFO - Event loop was unresponsive in Worker for 3.82s.  This is often caused by long-running GIL-holding functions or moving large chunks of data. This can cause timeouts and instability.
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+distributed.core - INFO - Event loop was unresponsive in Worker for 3.34s.  This is often caused by long-running GIL-holding functions or moving large chunks of data. This can cause timeouts and instability.
+distributed.utils_perf - INFO - full garbage collection released 122.58 MB from 1407 reference cycles (threshold: 10.00 MB)
+distributed.utils_perf - INFO - full garbage collection released 39.12 MB from 1158 reference cycles (threshold: 10.00 MB)
+distributed.utils_perf - INFO - full garbage collection released 334.53 MB from 1600 reference cycles (threshold: 10.00 MB)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+distributed.utils_perf - INFO - full garbage collection released 39.12 MB from 980 reference cycles (threshold: 10.00 MB)
+distributed.utils_perf - INFO - full garbage collection released 78.24 MB from 1188 reference cycles (threshold: 10.00 MB)
+distributed.utils_perf - INFO - full garbage collection released 39.12 MB from 1385 reference cycles (threshold: 10.00 MB)
+distributed.utils_perf - INFO - full garbage collection released 117.36 MB from 1934 reference cycles (threshold: 10.00 MB)
+distributed.utils_perf - INFO - full garbage collection released 78.24 MB from 1647 reference cycles (threshold: 10.00 MB)
+distributed.utils_perf - INFO - full garbage collection released 83.65 MB from 1338 reference cycles (threshold: 10.00 MB)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+distributed.utils_perf - INFO - full garbage collection released 156.30 MB from 1235 reference cycles (threshold: 10.00 MB)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+/alaska/tim/Code/algorithm-reference-library/processing_components/simulation/testing_support.py:892: RankWarning: Polyfit may be poorly conditioned
+  p_axis_values1 = numpy.polyfit(freq[:axis_values_max_index], axis_values[:axis_values_max_index], 5)
+distributed.utils_perf - INFO - full garbage collection released 161.92 MB from 802 reference cycles (threshold: 10.00 MB)
+distributed.utils_perf - INFO - full garbage collection released 84.63 MB from 1346 reference cycles (threshold: 10.00 MB)
+distributed.scheduler - INFO - Remove client Client-6c790298-9e3b-11e9-8cfd-246e964885d0
+distributed.scheduler - INFO - Remove client Client-6c790298-9e3b-11e9-8cfd-246e964885d0
+distributed.scheduler - INFO - Close client connection: Client-6c790298-9e3b-11e9-8cfd-246e964885d0
