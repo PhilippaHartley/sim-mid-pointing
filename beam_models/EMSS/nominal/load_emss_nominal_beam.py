@@ -25,6 +25,8 @@ JVH = D["Jph"].squeeze()
 
 # keep theta in deg?
 
+print (th.shape,ph.shape)
+
 ph_rad = (ph/360.)*(2*np.pi)
 th_rad = (th/360.)*(2*np.pi)
 
@@ -40,7 +42,17 @@ for counti, i in enumerate(th):
 tharr, pharr = np.meshgrid((th), ph_rad) 
 
 x, y = np.meshgrid(np.linspace(np.min(vflat),np.max(vflat), np.int(beamsize/2)), np.linspace(np.min(uflat),np.max(uflat), beamsize))
+
+plt.imshow(x)
+plt.show()
+plt.imshow(y)
+plt.show()
+
 r, theta = cart2pol(x,y)
+plt.imshow(r)
+plt.show()
+plt.imshow(theta)
+plt.show()
 
 azel = np.zeros((4,np.int(beamsize/2),np.int(beamsize)), dtype = complex)
 
