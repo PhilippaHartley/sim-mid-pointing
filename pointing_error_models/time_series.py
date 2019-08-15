@@ -113,22 +113,22 @@ for i in psds:
 
         # use original frequency break and max frequency to fit function
         # fit polynomial to psd up to max value
-        p_az1 = np.polyfit(freq[:az_max_index], az[:az_max_index], 5)
+        p_az1 = np.polyfit(freq[:az_max_index],
+                                       np.log(az[:az_max_index]), 5)
         f_az1 = np.poly1d(p_az1)
         # fit polynomial to psd beyond max value
-        p_az2 = np.polyfit(freq[az_max_index:freq_max_index], az[az_max_index:freq_max_index], 5)
+        p_az2 = np.polyfit(freq[az_max_index:freq_max_index],
+                                       np.log(az[az_max_index:freq_max_index]), 5)
         f_az2 = np.poly1d(p_az2)
 
         # use new frequency break and max frequency to apply function (ensures equal spacing of frequency intervals)
 
         # resampled to construct regularly-spaced frequencies
-     
-        regular_az1 = f_az1(regular_freq[:regular_az_max_index])
-
-        regular_az2 = f_az2(regular_freq[regular_az_max_index:])
+        regular_az1 = np.exp(f_az1(regular_freq[:regular_az_max_index]))
+        regular_az2 = np.exp(f_az2(regular_freq[regular_az_max_index:]))
 
         # join
-        regular_az = np.append(regular_az1,regular_az2)
+        regular_az = np.append(regular_az1, regular_az2)
 
         M0 = len(regular_az)
        # print (len(regular_az))

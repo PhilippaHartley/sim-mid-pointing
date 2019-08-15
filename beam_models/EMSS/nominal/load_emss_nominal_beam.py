@@ -25,6 +25,8 @@ JVH = D["Jph"].squeeze()
 
 # keep theta in deg?
 
+print (th.shape,ph.shape)
+
 ph_rad = (ph/360.)*(2*np.pi)
 th_rad = (th/360.)*(2*np.pi)
 
@@ -40,7 +42,17 @@ for counti, i in enumerate(th):
 tharr, pharr = np.meshgrid((th), ph_rad) 
 
 x, y = np.meshgrid(np.linspace(np.min(vflat),np.max(vflat), np.int(beamsize/2)), np.linspace(np.min(uflat),np.max(uflat), beamsize))
+
+plt.imshow(x)
+plt.show()
+plt.imshow(y)
+plt.show()
+
 r, theta = cart2pol(x,y)
+plt.imshow(r)
+plt.show()
+plt.imshow(theta)
+plt.show()
 
 azel = np.zeros((4,np.int(beamsize/2),np.int(beamsize)), dtype = complex)
 
@@ -53,7 +65,6 @@ poldict =    {
     
     
 polarr = np.dstack((JHH, JVV,JHV,JVH))
-    
 
 pols = ["JHH","JVV","JHV", "JVH"]
 
@@ -87,9 +98,9 @@ for count, ax in enumerate(axes.flat):
     polarrabs[:,:,count] = 10*np.log((polarrabs[:,:,count])/np.max(polarrabs[:,:,count])) # pow
     im = ax.imshow((polarrabs[:,:,count]), vmin = -70, vmax = 0, origin = 'lower', extent = [0,180, 0, 6], aspect = (30*501)/73)
     #if (count==2) or (count==3):
-    ax.set_xlabel(r'$\theta$ [deg]')
+    ax.set_xlabel(r'$\phi$ [deg]')
     if (count==0):# or (count==2):
-        ax.set_ylabel(r'$\phi$ [deg]')
+        ax.set_ylabel(r'$\theta$ [deg]')
     ax.set_title(pols[count])    
 
 plt.tight_layout()
@@ -104,9 +115,9 @@ for count, ax in enumerate(axes.flat):
     # db = 10*np.log((amp_azel)/np.max(amp_azel)) # power dB not field
     im = ax.imshow(np.angle(polarr[:,:,count]), vmin = -np.pi, vmax = np.pi, origin = 'lower', extent = [0,180, 0, 6], aspect = (30*501)/73)
     #if (count==2) or (count==3):
-    ax.set_xlabel(r'$\theta$ [deg]')
+    ax.set_xlabel(r'$\phi$ [deg]')
     if (count==0):# or (count==2):
-        ax.set_ylabel(r'$\phi$ [deg]')
+        ax.set_ylabel(r'$\theta$ [deg]')
     ax.set_title(pols[count])    
 
 plt.tight_layout()
