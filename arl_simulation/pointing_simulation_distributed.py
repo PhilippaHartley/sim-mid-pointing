@@ -40,6 +40,8 @@ from wrappers.serial.imaging.primary_beams import create_vp, create_pb
 from wrappers.serial.imaging.base import create_image_from_visibility, advise_wide_field
 from wrappers.serial.calibration.pointing import create_pointingtable_from_blockvisibility
 from wrappers.serial.simulation.pointing import simulate_gaintable_from_pointingtable
+from wrappers.serial.skycomponent.operations import apply_beam_to_skycomponent
+from wrappers.serial.skycomponent.base import copy_skycomponent
 from processing_library.util.coordinate_support import hadec_to_azel
 from wrappers.arlexecute.visibility.base import copy_visibility
 from wrappers.arlexecute.visibility.coalesce import convert_blockvisibility_to_visibility, \
@@ -98,13 +100,28 @@ def create_vis_list_with_errors(sub_bvis_list, sub_components, sub_model_list, s
         tmp_error_pt_list = arlexecute.compute(error_pt_list, sync=True)
         plt.clf()
         r2a = 180.0 * 3600.0 / numpy.pi
+        rms_az = 0.0
+        rms_el = 0.0
+        num = 0
         for pt in tmp_error_pt_list:
+            num += len(pt.pointing[:, 0, 0, 0, 0])
+            rms_az += numpy.sum((r2a * pt.pointing[:, 0, 0, 0, 0])**2)
+            rms_el += numpy.sum((r2a * pt.pointing[:, 0, 0, 0, 1])**2)
             plt.plot(pt.time, r2a * pt.pointing[:, 0, 0, 0, 0], '.', color='r')
             plt.plot(pt.time, r2a * pt.pointing[:, 0, 0, 0, 1], '.', color='b')
-        plt.title("%s: dish 0 pointing" % basename)
+            
+        rms_az = numpy.sqrt(rms_az/num)
+        rms_el = numpy.sqrt(rms_el/num)
+        plt.title("%s: dish 0, %s, az, el rms %.2f %.2f (arcsec)" % (basename, time_series_type, rms_az, rms_el))
         plt.xlabel('Time (s)')
         plt.ylabel('Offset (arcsec)')
-        plt.savefig('pointing_error.png')
+        if time_series != "":
+            plt.savefig('pointing_error_%s.png' % (time_series_type))
+        else:
+            r2s = 180*3600.0/numpy.pi
+            plt.savefig('pointing_error_dynamic_%.2f_static_(%.2f,%.2f)_global_(%.2f,%.2f).png' %
+                        (r2s * pointing_error, r2s * static_pointing_error[0], r2s * static_pointing_error[1],
+                         r2s * global_pointing_error[0], r2s * global_pointing_error[1]))
         plt.show(block=False)
     
     # Create the gain tables, one per Visibility and per component
@@ -120,10 +137,15 @@ def create_vis_list_with_errors(sub_bvis_list, sub_components, sub_model_list, s
         for gt in tmp_gt_list:
             amp = numpy.abs(gt[0].gain[:, 0, 0, 0, 0])
             plt.plot(gt[0].time[amp > 0.0], 1.0 / amp[amp > 0.0], '.')
-        plt.ylim([1e-1, 1.1])
-        plt.title("%s: dish 0 amplitude gain" % basename)
+        plt.title("%s: dish 0 amplitude gain, %s" % (basename, time_series_type))
         plt.xlabel('Time (s)')
-        plt.savefig('gaintable.png')
+        if time_series_type!="":
+            plt.savefig('gaintable_%s.png' % time_series_type)
+        else:
+            r2s = 180*3600.0/numpy.pi
+            plt.savefig('gaintable_dynamic_%.2f_static_(%.2f,%.2f)_global_(%.2f,%.2f).png' %
+                        (r2s * pointing_error, r2s * static_pointing_error[0], r2s * static_pointing_error[1],
+                         r2s * global_pointing_error[0], r2s * global_pointing_error[1]))
         plt.show(block=False)
     
     # Each component in original components becomes a separate skymodel
@@ -204,16 +226,18 @@ if __name__ == '__main__':
     parser.add_argument('--nworkers', type=int, default=8, help='Number of workers')
     parser.add_argument('--flux_limit', type=float, default=1.0, help='Flux limit (Jy)')
     parser.add_argument('--show', type=str, default='False', help='Show images?')
-    parser.add_argument('--ngroup', type=int, default=8, help='Process in groups this large')
+    parser.add_argument('--export_images', type=str, default='False', help='Export images in fits format?')
+    parser.add_argument('--ngroup_visibility', type=int, default=8, help='Process in visibility groups this large')
+    parser.add_argument('--ngroup_components', type=int, default=8, help='Process in component groups this large')
     parser.add_argument('--npixel', type=int, default=512, help='Number of pixels in image')
     parser.add_argument('--seed', type=int, default=18051955, help='Random number seed')
     parser.add_argument('--snapshot', type=str, default='False', help='Do snapshot only?')
     parser.add_argument('--opposite', type=str, default='False',
                         help='Move source to opposite side of pointing centre')
-    parser.add_argument('--pbradius', type=float, default=4.0, help='Radius of sources to include (in HWHM)')
+    parser.add_argument('--pbradius', type=float, default=2.0, help='Radius of sources to include (in HWHM)')
     parser.add_argument('--pbtype', type=str, default='MID', help='Primary beam model: MID or MID_GAUSS')
     parser.add_argument('--use_agg', type=str, default="True", help='Use Agg matplotlib backend?')
-    parser.add_argument('--declination', type=float, default=45.0, help='Declination (degrees)')
+    parser.add_argument('--declination', type=float, default=-45.0, help='Declination (degrees)')
     parser.add_argument('--tsys', type=float, default=0.0, help='System temperature: standard 20K')
     parser.add_argument('--scale', type=float, nargs=2, default=[1.0, 1.0], help='Scale errors by this amount')
     parser.add_argument('--use_radec', type=str, default="False", help='Calculate in RADEC (false)?')
@@ -241,6 +265,7 @@ if __name__ == '__main__':
     declination = args.declination
     use_radec = args.use_radec == "True"
     use_natural = args.use_natural == "True"
+    export_images = args.export_images == "True"
     time_series = args.time_series
     pointing_file = args.pointing_file
     scale = numpy.array(args.scale)
@@ -267,7 +292,8 @@ if __name__ == '__main__':
     nnodes = args.nnodes
     threads_per_worker = args.nthreads
     memory = args.memory
-    ngroup = args.ngroup
+    ngroup_visibility = args.ngroup_visibility
+    ngroup_components = args.ngroup_components
     
     basename = os.path.basename(os.getcwd())
     
@@ -343,7 +369,7 @@ if __name__ == '__main__':
     
     HWHM = HWHM_deg * numpy.pi / 180.0
     
-    FOV_deg = 10.0 * HWHM_deg
+    FOV_deg = 5.0 * HWHM_deg
     print('%s: HWHM beam = %g deg' % (pbtype, HWHM_deg))
     
     advice_list = arlexecute.execute(advise_wide_field)(future_vis_list[0], guard_band_image=1.0,
@@ -369,6 +395,7 @@ if __name__ == '__main__':
         future_vis_list = arlexecute.scatter(future_vis_list)
         
         plt.clf()
+        r2d = 180.0/numpy.pi
         future_bvis_list = arlexecute.compute(future_bvis_list, sync=True)
         for ivis in range(nchunks):
             bvis = future_bvis_list[ivis]
@@ -376,9 +403,16 @@ if __name__ == '__main__':
             dec = phasecentre.dec.rad
             latitude = bvis.configuration.location.lat.rad
             az, el = hadec_to_azel(ha, dec, latitude)
-            plt.plot(ha, az, '.', color='r', label='Azimuth (rad)')
-            plt.plot(ha, el, '.', color='b', label='Elevation (rad)')
-        plt.xlabel('HA (rad)')
+            if ivis == 0:
+                plt.plot(ha, r2d * az, '.', color='r', label='Azimuth (deg)')
+                plt.plot(ha, r2d * el, '.', color='b', label='Elevation (deg)')
+            else:
+                plt.plot(ha, r2d * az, '.', color='r')
+                plt.plot(ha, r2d * el, '.', color='b')
+        plt.xlabel('HA (s)')
+        plt.ylabel('Angle')
+        plt.legend()
+        plt.title('Azimuth and elevation vs hour angle')
         plt.savefig('azel.png')
         plt.show(block=False)
         future_bvis_list = arlexecute.scatter(future_bvis_list)
@@ -393,7 +427,7 @@ if __name__ == '__main__':
     
         # The point source is offset to approximately the halfpower point
         offset_direction = SkyCoord(ra=(+15.0 + offset[0]) * u.deg,
-                                    dec=(-45.0 + offset[1]) * u.deg,
+                                    dec=(declination + offset[1]) * u.deg,
                                     frame='icrs', equinox='J2000')
     
         original_components = [Skycomponent(flux=[[1.0]], direction=offset_direction, frequency=frequency,
@@ -404,17 +438,17 @@ if __name__ == '__main__':
         print("Constructing single component at the null")
 
         if pbtype == 'MID':
-            null_deg = 2.0 * HWHM_deg
+            null_deg = 3.0 * HWHM_deg
         elif pbtype == 'MID_GRASP':
-            null_deg = 2.0 * HWHM_deg
+            null_deg = (90.0 / 25.5) * HWHM_deg
         elif pbtype == 'MID_GAUSS':
-            null_deg = 2.0 * HWHM_deg
+            null_deg = 3.0 * HWHM_deg
         else:
-            null_deg = 2.0 * HWHM_deg
+            null_deg = 3.0 * HWHM_deg
 
         HWHM = HWHM_deg * numpy.pi / 180.0
 
-        offset = [HWHM_deg, 0.0]
+        offset = [null_deg, 0.0]
         if opposite:
             offset = [-1.0 * offset[0], -1.0 * offset[1]]
         print("Offset from pointing centre = %.3f, %.3f deg" % (offset[0], offset[1]))
@@ -431,17 +465,52 @@ if __name__ == '__main__':
 
     else:
         # Make a skymodel from S3
+        max_flux = 0.0
+        total_flux = 0.0
         print("Constructing s3sky components")
         from wrappers.serial.simulation.testing_support import create_test_skycomponents_from_s3
         
-        original_components = create_test_skycomponents_from_s3(flux_limit=flux_limit,
+        original_components = create_test_skycomponents_from_s3(flux_limit=flux_limit / 100.0,
                                                                 phasecentre=phasecentre,
                                                                 polarisation_frame=PolarisationFrame("stokesI"),
                                                                 frequency=numpy.array(frequency),
                                                                 radius=pbradius * HWHM)
-        print("Created %d original components" % len(original_components))
+        print("%d components before application of primary beam" %
+              (len(original_components)))
+        
+        pbmodel = arlexecute.execute(create_image_from_visibility)(future_vis_list[0], npixel=pb_npixel,
+                                                                   cellsize = pb_cellsize,
+                                                                   override_cellsize = False,
+                                                                   phasecentre=phasecentre,
+                                                                   frequency=frequency,
+                                                                   nchan=nfreqwin,
+                                                                   polarisation_frame=PolarisationFrame(
+                                                                       "stokesI"))
+        pbmodel = arlexecute.compute(pbmodel, sync=True)
+        # Use MID_GAUSS to filter the components since MID_GRASP is in local coordinates
+        pb = create_pb(pbmodel, "MID_GAUSS", pointingcentre=phasecentre, use_local=False)
+        pb_applied_components = [copy_skycomponent(c) for c in original_components]
+        pb_applied_components = apply_beam_to_skycomponent(pb_applied_components, pb)
+        filtered_components = []
+        for icomp, comp in enumerate(pb_applied_components):
+            if comp.flux[0, 0] > flux_limit:
+                total_flux += comp.flux[0,0]
+                if abs(comp.flux[0,0]) > max_flux:
+                    max_flux = abs(comp.flux[0,0])
+                filtered_components.append(original_components[icomp])
+        print("%d components > %.3f Jy after application of primary beam" %
+              (len(filtered_components), flux_limit))
+        print ("Strongest components is %g (Jy)" % max_flux)
+        print ("Total flux in components is %g (Jy)" % total_flux)
+        original_components = [copy_skycomponent(c) for c in filtered_components]
+        plt.clf()
+        show_image(pb, components=original_components)
+        plt.show(block=False)
+
+
+        print("Created %d components" % len(original_components))
         # Primary beam points to the phasecentre
-        offset_direction = SkyCoord(ra=+15.0 * u.deg, dec=-45.0 * u.deg, frame='icrs', equinox='J2000')
+        offset_direction = SkyCoord(ra=+15.0 * u.deg, dec=declination * u.deg, frame='icrs', equinox='J2000')
     
     if time_series == '':
         pes = [1.0, 2.0, 4.0, 8.0, 16.0, 32.0, 64.0, 128.0, 256.0]
@@ -468,6 +537,9 @@ if __name__ == '__main__':
     ntotal = ntimes * nbaselines * len(original_components) * len(pes)
     print("    Total processing %g times-baselines-components-scenarios" % ntotal)
     print("    Approximate total memory use for data = %.3f GB" % total_memory_use)
+    nworkers = len(arlexecute.client.scheduler_info()['workers'])
+    print("    Using %s Dask workers" % nworkers)
+
     
     # Uniform weighting
     future_model_list = [arlexecute.execute(create_image_from_visibility)(future_vis_list[0], npixel=npixel,
@@ -508,7 +580,8 @@ if __name__ == '__main__':
     psf_list = arlexecute.compute(psf_list, sync=True)
     psf, sumwt = sum_invert_results(psf_list)
     print("PSF sumwt ", sumwt)
-    export_image_to_fits(psf, 'PSF_arl.fits')
+    if export_images:
+        export_image_to_fits(psf, 'PSF_arl.fits')
     if show:
         show_image(psf, cm='gray_r', title='%s PSF' % basename, vmin=-0.01, vmax=0.1)
         plt.savefig('PSF_arl.png')
@@ -526,17 +599,19 @@ if __name__ == '__main__':
     # Optionally show the primary beam, with components if the image is in RADEC coords
     if show:
         if pbtype == "MID_GRASP":
+            pb = arlexecute.execute(create_pb)(future_vp_list[0], "MID_GAUSS", pointingcentre=phasecentre,
+                                            use_local=False)
+        else:
             pb = arlexecute.execute(create_pb)(future_vp_list[0], pbtype, pointingcentre=phasecentre,
                                                use_local=False)
-            pb = arlexecute.compute(pb, sync=True)
-            print("Coercing AZELGEO WCS of GRASP beam to RADEC to show components")
-            pb.wcs = psf.wcs.deepcopy()
-            
+        pb = arlexecute.compute(pb, sync=True)
         print("Primary beam:", pb)
         show_image(pb, title='%s: primary beam' % basename, components=original_components, vmax=1.0, vmin=0.0)
-        
+    
         plt.savefig('PB_arl.png')
-        export_image_to_fits(pb, 'PB_arl.fits')
+        plt.show(block=False)
+        if export_images:
+            export_image_to_fits(pb, 'PB_arl.fits')
         plt.show(block=False)
     
     # Construct the voltage patterns
@@ -579,7 +654,8 @@ if __name__ == '__main__':
         result['epoch'] = epoch
         result['basename'] = basename
         result['nworkers'] = nworkers
-        result['ngroup'] = ngroup
+        result['ngroup_visibity'] = ngroup_visibility
+        result['ngroup_components'] = ngroup_components
         
         result['npixel'] = npixel
         result['pb_npixel'] = pb_npixel
@@ -605,10 +681,14 @@ if __name__ == '__main__':
         
         # The strategy for distribution is to iterate through big cells in (bvis, components). Within each
         # cell we do distribution over the each bvis, component using create_bics_with_error
-        chunk_components = [original_components[i:i + ngroup] for i in range(0, len(original_components), ngroup)]
-        chunk_bvis = [future_bvis_list[i:i + ngroup] for i in range(0, len(future_bvis_list), ngroup)]
-        chunk_vp_list = [future_vp_list[i:i + ngroup] for i in range(0, len(future_vp_list), ngroup)]
-        chunk_seeds = [seeds[i:i + ngroup] for i in range(0, len(future_bvis_list), ngroup)]
+        chunk_components = [original_components[i:i + ngroup_components]
+                            for i in range(0, len(original_components), ngroup_components)]
+        chunk_bvis = [future_bvis_list[i:i + ngroup_visibility]
+                      for i in range(0, len(future_bvis_list), ngroup_visibility)]
+        chunk_vp_list = [future_vp_list[i:i + ngroup_visibility]
+                         for i in range(0, len(future_vp_list), ngroup_visibility)]
+        chunk_seeds = [seeds[i:i + ngroup_visibility]
+                       for i in range(0, len(future_bvis_list), ngroup_visibility)]
         
         if time_series == '':
             global_pointing_error = global_pe
@@ -700,12 +780,14 @@ if __name__ == '__main__':
     #
     print("Processing rate of time-baseline-component-scenario = %g per worker-second" % processing_rate)
     
+    for result in results:
+        result["processing_rate"] = processing_rate
+    
     with open(filename, 'a') as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=results[0].keys(), delimiter=',', quotechar='|',
                                 quoting=csv.QUOTE_MINIMAL)
         writer.writeheader()
         for result in results:
-            result["processing_rate"] = processing_rate
             writer.writerow(result)
         csvfile.close()
     
@@ -718,7 +800,7 @@ if __name__ == '__main__':
         for ifield, field in enumerate(['onsource_maxabs', 'onsource_rms', 'onsource_medianabs']):
             plt.loglog(pes, [1e6 * result[field] for result in results], '-', label=field, color=colors[ifield])
         
-        plt.xlabel('Pointing error (arcsec)')
+        plt.xlabel('Pointing multiplier')
         plt.ylabel('Error (uJy)')
         
         plt.title(title)
