@@ -190,7 +190,7 @@ if __name__ == '__main__':
     
     parser = argparse.ArgumentParser(description='Simulate pointing errors')
     parser.add_argument('--context', type=str, default='singlesource',
-                        help='s3sky or singlesource')
+                        help='s3sky or singlesource or null')
     
     parser.add_argument('--rmax', type=float, default=1e5,
                         help='Maximum distance of station from centre (m)')
@@ -390,6 +390,34 @@ if __name__ == '__main__':
         if opposite:
             offset = [-1.0 * offset[0], -1.0 * offset[1]]
         print("Offset from pointing centre = %.3f, %.3f deg" % (offset[0], offset[1]))
+    
+        # The point source is offset to approximately the halfpower point
+        offset_direction = SkyCoord(ra=(+15.0 + offset[0]) * u.deg,
+                                    dec=(-45.0 + offset[1]) * u.deg,
+                                    frame='icrs', equinox='J2000')
+    
+        original_components = [Skycomponent(flux=[[1.0]], direction=offset_direction, frequency=frequency,
+                                            polarisation_frame=PolarisationFrame('stokesI'))]
+        print(original_components[0])
+
+    elif context == 'null':
+        print("Constructing single component at the null")
+
+        if pbtype == 'MID':
+            null_deg = 2.0 * HWHM_deg
+        elif pbtype == 'MID_GRASP':
+            null_deg = 2.0 * HWHM_deg
+        elif pbtype == 'MID_GAUSS':
+            null_deg = 2.0 * HWHM_deg
+        else:
+            null_deg = 2.0 * HWHM_deg
+
+        HWHM = HWHM_deg * numpy.pi / 180.0
+
+        offset = [HWHM_deg, 0.0]
+        if opposite:
+            offset = [-1.0 * offset[0], -1.0 * offset[1]]
+        print("Offset from pointing centre = %.3f, %.3f deg" % (offset[0], offset[1]))
         
         # The point source is offset to approximately the halfpower point
         offset_direction = SkyCoord(ra=(+15.0 + offset[0]) * u.deg,
@@ -400,6 +428,7 @@ if __name__ == '__main__':
                                             polarisation_frame=PolarisationFrame('stokesI'))]
         print(original_components[0])
     
+
     else:
         # Make a skymodel from S3
         print("Constructing s3sky components")

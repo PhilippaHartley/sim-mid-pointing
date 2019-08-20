@@ -17,3 +17,11 @@ dask-worker-space
 *.fits
 *.dirlock
 .vagrant
+/arl_simulation/palladium_simulations
+*.png
+*.jpg
+*.out
+hostfile.*
+*.mat
+*.zip
+.DS_Store
