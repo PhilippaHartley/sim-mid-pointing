@@ -440,13 +440,13 @@ if __name__ == '__main__':
         print("Constructing single component at the null")
         
         if pbtype == 'MID':
-            null_deg = 3.0 * HWHM_deg
+            null_deg = 2.0 * HWHM_deg
         elif pbtype == 'MID_GRASP':
-            null_deg = (90.0 / 25.5) * HWHM_deg
+            null_deg = 1.517 * 1.35e9 / frequency[0]
         elif pbtype == 'MID_GAUSS':
-            null_deg = 3.0 * HWHM_deg
+            null_deg = 2.0 * HWHM_deg
         else:
-            null_deg = 3.0 * HWHM_deg
+            null_deg = 2.0 * HWHM_deg
         
         HWHM = HWHM_deg * numpy.pi / 180.0
         
