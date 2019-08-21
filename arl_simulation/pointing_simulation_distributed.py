@@ -105,20 +105,20 @@ def create_vis_list_with_errors(sub_bvis_list, sub_components, sub_model_list, s
         num = 0
         for pt in tmp_error_pt_list:
             num += len(pt.pointing[:, 0, 0, 0, 0])
-            rms_az += numpy.sum((r2a * pt.pointing[:, 0, 0, 0, 0])**2)
-            rms_el += numpy.sum((r2a * pt.pointing[:, 0, 0, 0, 1])**2)
+            rms_az += numpy.sum((r2a * pt.pointing[:, 0, 0, 0, 0]) ** 2)
+            rms_el += numpy.sum((r2a * pt.pointing[:, 0, 0, 0, 1]) ** 2)
             plt.plot(pt.time, r2a * pt.pointing[:, 0, 0, 0, 0], '.', color='r')
             plt.plot(pt.time, r2a * pt.pointing[:, 0, 0, 0, 1], '.', color='b')
-            
-        rms_az = numpy.sqrt(rms_az/num)
-        rms_el = numpy.sqrt(rms_el/num)
+        
+        rms_az = numpy.sqrt(rms_az / num)
+        rms_el = numpy.sqrt(rms_el / num)
         plt.title("%s: dish 0, %s, az, el rms %.2f %.2f (arcsec)" % (basename, time_series_type, rms_az, rms_el))
         plt.xlabel('Time (s)')
         plt.ylabel('Offset (arcsec)')
         if time_series != "":
             plt.savefig('pointing_error_%s.png' % (time_series_type))
         else:
-            r2s = 180*3600.0/numpy.pi
+            r2s = 180 * 3600.0 / numpy.pi
             plt.savefig('pointing_error_dynamic_%.2f_static_(%.2f,%.2f)_global_(%.2f,%.2f).png' %
                         (r2s * pointing_error, r2s * static_pointing_error[0], r2s * static_pointing_error[1],
                          r2s * global_pointing_error[0], r2s * global_pointing_error[1]))
@@ -139,10 +139,10 @@ def create_vis_list_with_errors(sub_bvis_list, sub_components, sub_model_list, s
             plt.plot(gt[0].time[amp > 0.0], 1.0 / amp[amp > 0.0], '.')
         plt.title("%s: dish 0 amplitude gain, %s" % (basename, time_series_type))
         plt.xlabel('Time (s)')
-        if time_series_type!="":
+        if time_series_type != "":
             plt.savefig('gaintable_%s.png' % time_series_type)
         else:
-            r2s = 180*3600.0/numpy.pi
+            r2s = 180 * 3600.0 / numpy.pi
             plt.savefig('gaintable_dynamic_%.2f_static_(%.2f,%.2f)_global_(%.2f,%.2f).png' %
                         (r2s * pointing_error, r2s * static_pointing_error[0], r2s * static_pointing_error[1],
                          r2s * global_pointing_error[0], r2s * global_pointing_error[1]))
@@ -234,6 +234,7 @@ if __name__ == '__main__':
     parser.add_argument('--snapshot', type=str, default='False', help='Do snapshot only?')
     parser.add_argument('--opposite', type=str, default='False',
                         help='Move source to opposite side of pointing centre')
+    parser.add_argument('--offset_dir', type=float, nargs=2, default=[0.0, 0.0], help='Multipliers for null offset')
     parser.add_argument('--pbradius', type=float, default=2.0, help='Radius of sources to include (in HWHM)')
     parser.add_argument('--pbtype', type=str, default='MID', help='Primary beam model: MID or MID_GAUSS')
     parser.add_argument('--use_agg', type=str, default="True", help='Use Agg matplotlib backend?')
@@ -252,7 +253,7 @@ if __name__ == '__main__':
                         help='Location of pointing files')
     parser.add_argument('--shared_directory', type=str, default='../../shared/',
                         help='Location of pointing files')
-
+    
     args = parser.parse_args()
     
     use_agg = args.use_agg == "True"
@@ -275,6 +276,7 @@ if __name__ == '__main__':
     time_chunk = args.time_chunk
     snapshot = args.snapshot == 'True'
     opposite = args.opposite == 'True'
+    offset_dir = args.offset_dir
     pbtype = args.pbtype
     pbradius = args.pbradius
     reference_pointing = args.reference_pointing == "True"
@@ -283,7 +285,7 @@ if __name__ == '__main__':
     flux_limit = args.flux_limit
     npixel = args.npixel
     shared_directory = args.shared_directory
-
+    
     seed = args.seed
     print("Random number seed is", seed)
     show = args.show == 'True'
@@ -395,7 +397,7 @@ if __name__ == '__main__':
         future_vis_list = arlexecute.scatter(future_vis_list)
         
         plt.clf()
-        r2d = 180.0/numpy.pi
+        r2d = 180.0 / numpy.pi
         future_bvis_list = arlexecute.compute(future_bvis_list, sync=True)
         for ivis in range(nchunks):
             bvis = future_bvis_list[ivis]
@@ -424,19 +426,19 @@ if __name__ == '__main__':
         if opposite:
             offset = [-1.0 * offset[0], -1.0 * offset[1]]
         print("Offset from pointing centre = %.3f, %.3f deg" % (offset[0], offset[1]))
-    
+        
         # The point source is offset to approximately the halfpower point
         offset_direction = SkyCoord(ra=(+15.0 + offset[0]) * u.deg,
                                     dec=(declination + offset[1]) * u.deg,
                                     frame='icrs', equinox='J2000')
-    
+        
         original_components = [Skycomponent(flux=[[1.0]], direction=offset_direction, frequency=frequency,
                                             polarisation_frame=PolarisationFrame('stokesI'))]
         print(original_components[0])
-
+    
     elif context == 'null':
         print("Constructing single component at the null")
-
+        
         if pbtype == 'MID':
             null_deg = 3.0 * HWHM_deg
         elif pbtype == 'MID_GRASP':
@@ -445,12 +447,11 @@ if __name__ == '__main__':
             null_deg = 3.0 * HWHM_deg
         else:
             null_deg = 3.0 * HWHM_deg
-
+        
         HWHM = HWHM_deg * numpy.pi / 180.0
+        
+        offset = [null_deg * offset_dir[0], null_deg * offset_dir[1]]
 
-        offset = [null_deg, 0.0]
-        if opposite:
-            offset = [-1.0 * offset[0], -1.0 * offset[1]]
         print("Offset from pointing centre = %.3f, %.3f deg" % (offset[0], offset[1]))
         
         # The point source is offset to approximately the halfpower point
@@ -462,7 +463,7 @@ if __name__ == '__main__':
                                             polarisation_frame=PolarisationFrame('stokesI'))]
         print(original_components[0])
     
-
+    
     else:
         # Make a skymodel from S3
         max_flux = 0.0
@@ -479,8 +480,8 @@ if __name__ == '__main__':
               (len(original_components)))
         
         pbmodel = arlexecute.execute(create_image_from_visibility)(future_vis_list[0], npixel=pb_npixel,
-                                                                   cellsize = pb_cellsize,
-                                                                   override_cellsize = False,
+                                                                   cellsize=pb_cellsize,
+                                                                   override_cellsize=False,
                                                                    phasecentre=phasecentre,
                                                                    frequency=frequency,
                                                                    nchan=nfreqwin,
@@ -494,20 +495,19 @@ if __name__ == '__main__':
         filtered_components = []
         for icomp, comp in enumerate(pb_applied_components):
             if comp.flux[0, 0] > flux_limit:
-                total_flux += comp.flux[0,0]
-                if abs(comp.flux[0,0]) > max_flux:
-                    max_flux = abs(comp.flux[0,0])
+                total_flux += comp.flux[0, 0]
+                if abs(comp.flux[0, 0]) > max_flux:
+                    max_flux = abs(comp.flux[0, 0])
                 filtered_components.append(original_components[icomp])
         print("%d components > %.3f Jy after application of primary beam" %
               (len(filtered_components), flux_limit))
-        print ("Strongest components is %g (Jy)" % max_flux)
-        print ("Total flux in components is %g (Jy)" % total_flux)
+        print("Strongest components is %g (Jy)" % max_flux)
+        print("Total flux in components is %g (Jy)" % total_flux)
         original_components = [copy_skycomponent(c) for c in filtered_components]
         plt.clf()
         show_image(pb, components=original_components)
         plt.show(block=False)
-
-
+        
         print("Created %d components" % len(original_components))
         # Primary beam points to the phasecentre
         offset_direction = SkyCoord(ra=+15.0 * u.deg, dec=declination * u.deg, frame='icrs', equinox='J2000')
@@ -539,7 +539,6 @@ if __name__ == '__main__':
     print("    Approximate total memory use for data = %.3f GB" % total_memory_use)
     nworkers = len(arlexecute.client.scheduler_info()['workers'])
     print("    Using %s Dask workers" % nworkers)
-
     
     # Uniform weighting
     future_model_list = [arlexecute.execute(create_image_from_visibility)(future_vis_list[0], npixel=npixel,
@@ -600,14 +599,14 @@ if __name__ == '__main__':
     if show:
         if pbtype == "MID_GRASP":
             pb = arlexecute.execute(create_pb)(future_vp_list[0], "MID_GAUSS", pointingcentre=phasecentre,
-                                            use_local=False)
+                                               use_local=False)
         else:
             pb = arlexecute.execute(create_pb)(future_vp_list[0], pbtype, pointingcentre=phasecentre,
                                                use_local=False)
         pb = arlexecute.compute(pb, sync=True)
         print("Primary beam:", pb)
         show_image(pb, title='%s: primary beam' % basename, components=original_components, vmax=1.0, vmin=0.0)
-    
+        
         plt.savefig('PB_arl.png')
         plt.show(block=False)
         if export_images:
@@ -793,7 +792,8 @@ if __name__ == '__main__':
     
     if time_series == '':
         title = '%s, %.3f GHz, %d times: dynamic %g, static %g, %g \n%s %s %s' % \
-                (context, frequency[0] * 1e-9, ntimes, dynamic_pe, static_pe[0], static_pe[1], socket.gethostname(), epoch,
+                (context, frequency[0] * 1e-9, ntimes, dynamic_pe, static_pe[0], static_pe[1], socket.gethostname(),
+                 epoch,
                  basename)
         plt.clf()
         colors = ['b', 'r', 'g', 'y']
