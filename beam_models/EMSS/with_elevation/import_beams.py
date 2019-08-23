@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import matplotlib as mpl
+import astropy.constants as constants
 import numpy as np
 import scipy.interpolate
 import numpy.fft
@@ -19,7 +20,7 @@ from processing_library.image.operations import create_image_from_array
 from processing_components.image.operations import export_image_to_fits
 
 
-def create_arl_image(pol_planes, cellsize, frequency, channel_bandwidth=1e6, shift_peak=True):
+def create_arl_image(pol_planes, cellsize, frequency, channel_bandwidth=1e6, shift_peak=False):
     ny, nx = pol_planes[0].shape
     
     assert len(pol_planes) == 4
@@ -48,6 +49,8 @@ def create_arl_image(pol_planes, cellsize, frequency, channel_bandwidth=1e6, shi
     # 3. Remove phase gradient in image plane
     dy = numpy.mod(numpy.angle(beam_out[0, 0, ny//2 + 1, nx // 2]) -
                    numpy.angle(beam_out[0, 0, ny//2 - 1, nx // 2]), numpy.pi) / 2.0
+    wave = frequency/constants.c.value
+    print(dy / wave)
     rotator = numpy.exp(-1.0j * dy * (numpy.arange(ny) - ny / 2.0))
     beam_out *= rotator[numpy.newaxis, numpy.newaxis, :, numpy.newaxis]
     for pol in [1, 3]:
@@ -97,8 +100,8 @@ def interpolate_beam(th, ph, beam_inp, n, extent):
     
     # Interpolate real and imaginary parts separately then combine.
     
-    tmp_real = scipy.interpolate.interpn((th, ph), beam_inp.real, xi)
-    tmp_imag = scipy.interpolate.interpn((th, ph), beam_inp.imag, xi)
+    tmp_real = scipy.interpolate.interpn((th, ph), beam_inp.real, xi, method="splinef2d")
+    tmp_imag = scipy.interpolate.interpn((th, ph), beam_inp.imag, xi, method="splinef2d")
     beam_out = tmp_real + 1j * tmp_imag
     
     # Reshape output into 2D image.
@@ -140,13 +143,12 @@ def plot_beam(beam, title, extent):
 iform = '{b}_{e}_{f}.mat'
 oform = '{b}_{e}_{f:04d}_{j}.png'
 tform = 'band = {b}, elev = {e} deg, freq = {f} MHz, jones = {j}'
-fitsform = '{b}_{e}_{f:04d}_{t}_shift.fits'
+fitsform = '{b}_{e}_{f:04d}_{t}.fits'
 
 # n = nx, ny
 # extent = xmin, xmax, ymin, ymax
 
-n = 1001, 1001
-n = 281, 281
+n = 1024, 1024
 extent = -4.0, 4.0, -4.0, 4.0
 cellsize = 8 / n[0]
 
@@ -159,7 +161,7 @@ cellsize = 8 / n[0]
 
 band = [('B2', [965, 1000, 1060, 1100, 1160, 1220, 1252, 1310, 1360,
                 1410, 1460, 1510, 1610, 1660, 1710, 1760])]
-band = [('B2', [1360])]
+#band = [('B2', [1360])]
 
 elev = [15, 45, 90]
 jones = ['Jpv', 'Jqh', 'Jph', 'Jqv']
@@ -186,7 +188,7 @@ for b, freq in band:
                 plt.savefig(ofile)
                 plt.close()
             
-            vp_real, vp_imag, vp_amp, vp_phase = create_arl_image(pol_planes, cellsize, f, shift_peak=True)
+            vp_real, vp_imag, vp_amp, vp_phase = create_arl_image(pol_planes, cellsize, f*1e6, shift_peak=False)
             export_image_to_fits(vp_real, fitsform.format(b=b, e=e, f=f, t='real'))
             export_image_to_fits(vp_imag, fitsform.format(b=b, e=e, f=f, t='imag'))
             export_image_to_fits(vp_amp, fitsform.format(b=b, e=e, f=f, t='amp'))
