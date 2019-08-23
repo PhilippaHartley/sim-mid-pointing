@@ -315,7 +315,7 @@ if __name__ == '__main__':
     # Set up details of simulated observation
     nfreqwin = 1
     diameter = 15.0
-    frequency = [1.4e9]
+    frequency = [1.35e9]
     channel_bandwidth = [1e7]
     
     # Do each 30 minutes in parallel
@@ -359,15 +359,11 @@ if __name__ == '__main__':
     memory_use['vis_list'] = nchunks * vis_list0.size()
     del vis_list0
     
-    # We need the HWHM of the primary beam. Got this by trial and error
+    # We need the HWHM of the primary beam
     if pbtype == 'MID':
-        HWHM_deg = 0.596 * 1.4e9 / frequency[0]
-    elif pbtype == 'MID_GRASP':
-        HWHM_deg = 0.751 * 1.4e9 / frequency[0]
-    elif pbtype == 'MID_GAUSS':
-        HWHM_deg = 0.766 * 1.4e9 / frequency[0]
+        HWHM_deg = 0.596 * 1.35e9 / frequency[0]
     else:
-        HWHM_deg = 0.596 * 1.4e9 / frequency[0]
+        HWHM_deg = 0.635 * 1.35e9 / frequency[0]
     
     HWHM = HWHM_deg * numpy.pi / 180.0
     
@@ -422,7 +418,7 @@ if __name__ == '__main__':
     # Construct the skycomponents
     if context == 'singlesource':
         print("Constructing single component")
-        offset = [HWHM_deg, 0.0]
+        offset = [HWHM_deg * offset_dir[0], HWHM_deg * offset_dir[1]]
         if opposite:
             offset = [-1.0 * offset[0], -1.0 * offset[1]]
         print("Offset from pointing centre = %.3f, %.3f deg" % (offset[0], offset[1]))
@@ -441,12 +437,12 @@ if __name__ == '__main__':
         
         if pbtype == 'MID':
             null_deg = 2.0 * HWHM_deg
-        elif pbtype == 'MID_GRASP':
-            null_deg = 1.517 * 1.35e9 / frequency[0]
+        elif pbtype == 'MID_FEKO':
+            null_deg = 1.045 * 1.35e9 / frequency[0]
         elif pbtype == 'MID_GAUSS':
-            null_deg = 2.0 * HWHM_deg
+            null_deg = 1.045 * 1.35e9 / frequency[0]
         else:
-            null_deg = 2.0 * HWHM_deg
+            null_deg = 1.045 * 1.35e9 / frequency[0]
         
         HWHM = HWHM_deg * numpy.pi / 180.0
         
@@ -597,16 +593,17 @@ if __name__ == '__main__':
     
     # Optionally show the primary beam, with components if the image is in RADEC coords
     if show:
-        if pbtype == "MID_GRASP":
+        if pbtype == "MID_FEKO":
             pb = arlexecute.execute(create_pb)(future_vp_list[0], "MID_GAUSS", pointingcentre=phasecentre,
                                                use_local=False)
         else:
             pb = arlexecute.execute(create_pb)(future_vp_list[0], pbtype, pointingcentre=phasecentre,
                                                use_local=False)
+        
         pb = arlexecute.compute(pb, sync=True)
         print("Primary beam:", pb)
         show_image(pb, title='%s: primary beam' % basename, components=original_components, vmax=1.0, vmin=0.0)
-        
+
         plt.savefig('PB_arl.png')
         plt.show(block=False)
         if export_images:
