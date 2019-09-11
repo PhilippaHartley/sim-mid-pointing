@@ -315,28 +315,51 @@ if __name__ == '__main__':
     # Set up details of simulated observation
     nfreqwin = 1
     diameter = 15.0
-    frequency = [1.35e9]
+    frequency = [1.36e9]
     channel_bandwidth = [1e7]
     
+    phasecentre = SkyCoord(ra=+15.0 * u.deg, dec=declination * u.deg, frame='icrs', equinox='J2000')
+    location = EarthLocation(lon="21.443803", lat="-30.712925", height=0.0)
+
     # Do each 30 minutes in parallel
     start_times = numpy.arange(time_range[0] * 3600, time_range[1] * 3600, time_chunk)
     end_times = start_times + time_chunk
     print("Start times for chunks:")
     pp.pprint(start_times)
     
+    def valid_elevation(time, location, phasecentre):
+        ha = numpy.pi * time / 43200.0
+        dec = phasecentre.dec.rad
+        az, el = hadec_to_azel(ha, dec, location.lat.rad)
+        return el > 15.0 * numpy.pi / 180.0
+    
+    number_valid_times = 0
+    valid_start_times = []
+    for t in start_times:
+        if valid_elevation(t, location, phasecentre) or valid_elevation(t+time_chunk, location, phasecentre):
+            valid_start_times.append(t)
+            number_valid_times += 1
+            
+    assert number_valid_times > 0, "No data above elevation limit"
+
+    print("Start times for chunks above elevation limit:")
+    start_times = valid_start_times
+    pp.pprint(start_times)
+    
     times = [numpy.arange(start_times[itime], end_times[itime], integration_time) for itime in
              range(len(start_times))]
     print("Observation times:")
     pp.pprint(times)
+    
     s2r = numpy.pi / (12.0 * 3600)
     rtimes = s2r * numpy.array(times)
     ntimes = len(rtimes.flat)
     nchunks = len(start_times)
-    
+
+    assert ntimes > 0, "No data above elevation limit"
+
     print('%d integrations of duration %.1f s processed in %d chunks' % (ntimes, integration_time, nchunks))
     
-    phasecentre = SkyCoord(ra=+15.0 * u.deg, dec=declination * u.deg, frame='icrs', equinox='J2000')
-    location = EarthLocation(lon="21.443803", lat="-30.712925", height=0.0)
     mid = create_configuration_from_MIDfile('%s/ska1mid_local.cfg' % shared_directory, rmax=rmax,
                                             location=location)
     
@@ -361,13 +384,13 @@ if __name__ == '__main__':
     
     # We need the HWHM of the primary beam
     if pbtype == 'MID':
-        HWHM_deg = 0.596 * 1.35e9 / frequency[0]
+        HWHM_deg = 0.596 * 1.36e9 / frequency[0]
     else:
-        HWHM_deg = 0.635 * 1.35e9 / frequency[0]
+        HWHM_deg = 0.447 * 1.36e9 / frequency[0]
     
     HWHM = HWHM_deg * numpy.pi / 180.0
     
-    FOV_deg = 5.0 * HWHM_deg
+    FOV_deg = 8.0
     print('%s: HWHM beam = %g deg' % (pbtype, HWHM_deg))
     
     advice_list = arlexecute.execute(advise_wide_field)(future_vis_list[0], guard_band_image=1.0,
@@ -383,6 +406,7 @@ if __name__ == '__main__':
         plt.clf()
         for ivis in range(nchunks):
             vis = future_vis_list[ivis]
+            print(numpy.unique(vis.time))
             plt.plot(-vis.u, -vis.v, '.', color='b', markersize=0.2)
             plt.plot(vis.u, vis.v, '.', color='b', markersize=0.2)
         plt.xlabel('U (wavelengths)')
@@ -402,11 +426,11 @@ if __name__ == '__main__':
             latitude = bvis.configuration.location.lat.rad
             az, el = hadec_to_azel(ha, dec, latitude)
             if ivis == 0:
-                plt.plot(ha, r2d * az, '.', color='r', label='Azimuth (deg)')
-                plt.plot(ha, r2d * el, '.', color='b', label='Elevation (deg)')
+                plt.plot(bvis.time, r2d * az, '.', color='r', label='Azimuth (deg)')
+                plt.plot(bvis.time, r2d * el, '.', color='b', label='Elevation (deg)')
             else:
-                plt.plot(ha, r2d * az, '.', color='r')
-                plt.plot(ha, r2d * el, '.', color='b')
+                plt.plot(bvis.time, r2d * az, '.', color='r')
+                plt.plot(bvis.time, r2d * el, '.', color='b')
         plt.xlabel('HA (s)')
         plt.ylabel('Angle')
         plt.legend()
@@ -415,6 +439,7 @@ if __name__ == '__main__':
         plt.show(block=False)
         future_bvis_list = arlexecute.scatter(future_bvis_list)
     
+    print("Context is ", context)
     # Construct the skycomponents
     if context == 'singlesource':
         print("Constructing single component")
@@ -424,8 +449,8 @@ if __name__ == '__main__':
         print("Offset from pointing centre = %.3f, %.3f deg" % (offset[0], offset[1]))
         
         # The point source is offset to approximately the halfpower point
-        offset_direction = SkyCoord(ra=(+15.0 + offset[0]) * u.deg,
-                                    dec=(declination + offset[1]) * u.deg,
+        offset_direction = SkyCoord(ra=(+15.0 + offset[0]/numpy.cos(numpy.pi*45.0/180.0)) * u.deg,
+                                    dec=(-45.0 + offset[1]) * u.deg,
                                     frame='icrs', equinox='J2000')
         
         original_components = [Skycomponent(flux=[[1.0]], direction=offset_direction, frequency=frequency,
@@ -437,21 +462,25 @@ if __name__ == '__main__':
         
         if pbtype == 'MID':
             null_deg = 2.0 * HWHM_deg
+            offset = [null_deg * offset_dir[0], null_deg * offset_dir[1]]
         elif pbtype == 'MID_FEKO':
-            null_deg = 1.045 * 1.35e9 / frequency[0]
+            null_az_deg = 1.0779 * 1.36e9 / frequency[0]
+            null_el_deg = 1.149 * 1.36e9 / frequency[0]
+            offset = [null_az_deg * offset_dir[0], null_el_deg * offset_dir[1]]
         elif pbtype == 'MID_GAUSS':
-            null_deg = 1.045 * 1.35e9 / frequency[0]
+            null_deg = 1.145 * 1.36e9 / frequency[0]
+            offset = [null_deg * offset_dir[0], null_deg * offset_dir[1]]
         else:
-            null_deg = 1.045 * 1.35e9 / frequency[0]
-        
+            null_deg = 1.145 * 1.36e9 / frequency[0]
+            offset = [null_deg * offset_dir[0], null_deg * offset_dir[1]]
+
         HWHM = HWHM_deg * numpy.pi / 180.0
         
-        offset = [null_deg * offset_dir[0], null_deg * offset_dir[1]]
 
         print("Offset from pointing centre = %.3f, %.3f deg" % (offset[0], offset[1]))
         
-        # The point source is offset to approximately the halfpower point
-        offset_direction = SkyCoord(ra=(+15.0 + offset[0]) * u.deg,
+        # The point source is offset to approximately the null point
+        offset_direction = SkyCoord(ra=(+15.0 + offset[0]/numpy.cos(numpy.pi*45.0/180.0)) * u.deg,
                                     dec=(-45.0 + offset[1]) * u.deg,
                                     frame='icrs', equinox='J2000')
         
@@ -461,6 +490,7 @@ if __name__ == '__main__':
     
     
     else:
+        offset = [0.0, 0.0]
         # Make a skymodel from S3
         max_flux = 0.0
         total_flux = 0.0
@@ -484,8 +514,9 @@ if __name__ == '__main__':
                                                                    polarisation_frame=PolarisationFrame(
                                                                        "stokesI"))
         pbmodel = arlexecute.compute(pbmodel, sync=True)
-        # Use MID_GAUSS to filter the components since MID_GRASP is in local coordinates
         pb = create_pb(pbmodel, "MID_GAUSS", pointingcentre=phasecentre, use_local=False)
+        pb_feko = create_pb(pbmodel, "MID_FEKO", pointingcentre=phasecentre, use_local=False)
+        pb.data = pb_feko.data[:,0,...][:,numpy.newaxis,...]
         pb_applied_components = [copy_skycomponent(c) for c in original_components]
         pb_applied_components = apply_beam_to_skycomponent(pb_applied_components, pb)
         filtered_components = []
@@ -718,7 +749,10 @@ if __name__ == '__main__':
                         error_dirty_list.append(r)
         
         else:
-            
+            result['static_pointing_error'] = [0.0, 0.0]
+            result['dynamic_pointing_error'] = [0.0]
+            result['global_pointing_error'] = [0.0, 0.0]
+
             file_name = 'PE_%s_%s_arl' % (time_series, pe)
             # Chunk up bvis and components
             error_dirty_list = list()

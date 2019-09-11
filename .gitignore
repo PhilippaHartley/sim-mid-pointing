@@ -25,3 +25,4 @@ hostfile.*
 *.mat
 *.zip
 .DS_Store
+*.csv

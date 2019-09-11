@@ -49,8 +49,8 @@ def create_arl_image(pol_planes, cellsize, frequency, channel_bandwidth=1e6, shi
     # 3. Remove phase gradient in image plane
     dy = numpy.mod(numpy.angle(beam_out[0, 0, ny//2 + 1, nx // 2]) -
                    numpy.angle(beam_out[0, 0, ny//2 - 1, nx // 2]), numpy.pi) / 2.0
-    wave = frequency/constants.c.value
-    print(dy / wave)
+    wave = constants.c.value/frequency
+    print(dy * wave / cellsize)
     rotator = numpy.exp(-1.0j * dy * (numpy.arange(ny) - ny / 2.0))
     beam_out *= rotator[numpy.newaxis, numpy.newaxis, :, numpy.newaxis]
     for pol in [1, 3]:
@@ -58,13 +58,21 @@ def create_arl_image(pol_planes, cellsize, frequency, channel_bandwidth=1e6, shi
         
     # FFT interpolate to get peak on nx//2, ny//2
     if shift_peak:
-        beam_xfr = numpy.fft.fft2(beam_out, axes=(0,1))
-        print(numpy.angle(beam_xfr[0, 0, ny//2 + 1, nx // 2]), numpy.angle(beam_xfr[0, 0, ny//2 - 1, nx // 2]))
-        dv = (numpy.angle(beam_xfr[0, 0, ny//2 + 1, nx // 2]) - numpy.angle(beam_xfr[0, 0, ny//2 - 1, nx // 2])) / 2.0
-        print(dv)
-        rotator = numpy.exp(1.0j * dv * (numpy.arange(ny) - ny // 2))
-        beam_xfr *= rotator[numpy.newaxis, numpy.newaxis, :, numpy.newaxis]
-        beam_out = numpy.fft.ifft2(beam_xfr, axes=(0,1))
+        power_beam = beam_out * numpy.conjugate(beam_out)
+        peak_ind = numpy.argmax(power_beam)
+        peak_loc = numpy.unravel_index(peak_ind, power_beam.shape)
+        shifty = peak_loc[2]-ny//2+1
+        print("Shift in y is", shifty)
+        
+        beam_out = numpy.roll(beam_out, -shifty, axis=2)
+
+        power_beam = beam_out * numpy.conjugate(beam_out)
+        peak_ind = numpy.argmax(power_beam)
+        peak_loc = numpy.unravel_index(peak_ind, power_beam.shape)
+        shifty = peak_loc[2]-ny//2+1
+        assert shifty == 0
+
+
 
     vp_real = create_image_from_array(beam_out.real, w, polarisation_frame=PolarisationFrame("linear"))
     vp_imag = create_image_from_array(beam_out.imag, w, polarisation_frame=PolarisationFrame("linear"))
@@ -188,8 +196,8 @@ for b, freq in band:
                 plt.savefig(ofile)
                 plt.close()
             
-            vp_real, vp_imag, vp_amp, vp_phase = create_arl_image(pol_planes, cellsize, f*1e6, shift_peak=False)
+            vp_real, vp_imag, vp_amp, vp_phase = create_arl_image(pol_planes, cellsize, f*1e6, shift_peak=True)
             export_image_to_fits(vp_real, fitsform.format(b=b, e=e, f=f, t='real'))
             export_image_to_fits(vp_imag, fitsform.format(b=b, e=e, f=f, t='imag'))
-            export_image_to_fits(vp_amp, fitsform.format(b=b, e=e, f=f, t='amp'))
-            export_image_to_fits(vp_phase, fitsform.format(b=b, e=e, f=f, t='phase'))
+ #           export_image_to_fits(vp_amp, fitsform.format(b=b, e=e, f=f, t='amp'))
+ #           export_image_to_fits(vp_phase, fitsform.format(b=b, e=e, f=f, t='phase'))
