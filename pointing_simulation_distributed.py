@@ -217,6 +217,8 @@ if __name__ == '__main__':
     parser.add_argument('--rmax', type=float, default=1e5,
                         help='Maximum distance of station from centre (m)')
     
+    parser.add_argument('--frequency', type=float, default=1.36e9, help='Frequency')
+    
     parser.add_argument('--global_pe', type=float, nargs=2, default=[0.0, 0.0], help='Global pointing error')
     parser.add_argument('--static_pe', type=float, nargs=2, default=[0.0, 0.0], help='Multipliers for static errors')
     parser.add_argument('--dynamic_pe', type=float, default=1.0, help='Multiplier for dynamic errors')
@@ -315,7 +317,7 @@ if __name__ == '__main__':
     # Set up details of simulated observation
     nfreqwin = 1
     diameter = 15.0
-    frequency = [1.36e9]
+    frequency = [args.frequency]
     channel_bandwidth = [1e7]
     
     phasecentre = SkyCoord(ra=+15.0 * u.deg, dec=declination * u.deg, frame='icrs', equinox='J2000')
@@ -463,7 +465,7 @@ if __name__ == '__main__':
         if pbtype == 'MID':
             null_deg = 2.0 * HWHM_deg
             offset = [null_deg * offset_dir[0], null_deg * offset_dir[1]]
-        elif pbtype == 'MID_FEKO_B1':
+        elif pbtype == 'MID_FEKO_Ku':
             null_az_deg = 1.0779 * 1.36e9 / frequency[0]
             null_el_deg = 1.149 * 1.36e9 / frequency[0]
             offset = [null_az_deg * offset_dir[0], null_el_deg * offset_dir[1]]
@@ -515,7 +517,7 @@ if __name__ == '__main__':
                                                                        "stokesI"))
         pbmodel = arlexecute.compute(pbmodel, sync=True)
         pb = create_pb(pbmodel, "MID_GAUSS", pointingcentre=phasecentre, use_local=False)
-        pb_feko = create_pb(pbmodel, "MID_FEKO_B1", pointingcentre=phasecentre, use_local=False)
+        pb_feko = create_pb(pbmodel, "MID_FEKO_Ku", pointingcentre=phasecentre, use_local=False)
         pb.data = pb_feko.data[:,0,...][:,numpy.newaxis,...]
         pb_applied_components = [copy_skycomponent(c) for c in original_components]
         pb_applied_components = apply_beam_to_skycomponent(pb_applied_components, pb)
@@ -624,7 +626,7 @@ if __name__ == '__main__':
     
     # Optionally show the primary beam, with components if the image is in RADEC coords
     if show:
-        if pbtype == "MID_FEKO_B1":
+        if pbtype == "MID_FEKO_Ku":
             pb = arlexecute.execute(create_pb)(future_vp_list[0], "MID_GAUSS", pointingcentre=phasecentre,
                                                use_local=False)
         else:
