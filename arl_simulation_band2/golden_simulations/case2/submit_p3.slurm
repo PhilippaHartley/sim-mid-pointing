@@ -84,7 +84,7 @@ CMD="python ../../pointing_simulation_distributed.py --context s3sky --rmax 1e5 
 \
 --seed 18051955  --pbtype MID_GRASP --memory 32  --integration_time 10 --use_agg True \
 --static_pe 0.5 0.05 --time_chunk \
-1800 --reference_pointing True --shared_directory ../../../shared | tee pointing_simulation.log"
+1800 --reference_pointing True --shared_directory ../../../../shared | tee pointing_simulation.log"
 echo "About to execute $CMD"
 
 eval $CMD

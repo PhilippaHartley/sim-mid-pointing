@@ -17,7 +17,7 @@ dask-worker-space
 *.fits
 *.dirlock
 .vagrant
-/arl_simulation/palladium_simulations
+/arl_simulation_band2/palladium_simulations
 *.png
 *.jpg
 *.out
