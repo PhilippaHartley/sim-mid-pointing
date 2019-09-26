@@ -1,0 +1,10 @@
+cp case3/azel.png figures/case3_azel.png
+cp case5/100s/azel.png figures/case5_100s_azel.png
+cp case5/10s/azel.png figures/case5_10s_azel.png
+cp case5/30s/azel.png figures/case5_30s_azel.png
+cp case6/0/azel.png figures/case6_0_azel.png
+cp case6/p15/azel.png figures/case6_p15_azel.png
+cp case6/m75/azel.png figures/case6_m75_azel.png
+cp case7/azel.png figures/case7_azel.png
+cp case10/delta-ra/azel.png figures/case10_delta-ra_azel.png
+cp case10/delta-dec/azel.png figures/case10_delta-dec_azel.png
