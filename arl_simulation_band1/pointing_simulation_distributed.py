@@ -463,7 +463,7 @@ if __name__ == '__main__':
         if pbtype == 'MID':
             null_deg = 2.0 * HWHM_deg
             offset = [null_deg * offset_dir[0], null_deg * offset_dir[1]]
-        elif pbtype == 'MID_FEKO':
+        elif pbtype == 'MID_FEKO_B1':
             null_az_deg = 1.0779 * 1.36e9 / frequency[0]
             null_el_deg = 1.149 * 1.36e9 / frequency[0]
             offset = [null_az_deg * offset_dir[0], null_el_deg * offset_dir[1]]
@@ -515,7 +515,7 @@ if __name__ == '__main__':
                                                                        "stokesI"))
         pbmodel = arlexecute.compute(pbmodel, sync=True)
         pb = create_pb(pbmodel, "MID_GAUSS", pointingcentre=phasecentre, use_local=False)
-        pb_feko = create_pb(pbmodel, "MID_FEKO", pointingcentre=phasecentre, use_local=False)
+        pb_feko = create_pb(pbmodel, "MID_FEKO_B1", pointingcentre=phasecentre, use_local=False)
         pb.data = pb_feko.data[:,0,...][:,numpy.newaxis,...]
         pb_applied_components = [copy_skycomponent(c) for c in original_components]
         pb_applied_components = apply_beam_to_skycomponent(pb_applied_components, pb)
@@ -624,7 +624,7 @@ if __name__ == '__main__':
     
     # Optionally show the primary beam, with components if the image is in RADEC coords
     if show:
-        if pbtype == "MID_FEKO":
+        if pbtype == "MID_FEKO_B1":
             pb = arlexecute.execute(create_pb)(future_vp_list[0], "MID_GAUSS", pointingcentre=phasecentre,
                                                use_local=False)
         else:

@@ -4,7 +4,7 @@ From https://confluence.skatelescope.org/display/SE/SIM+Team%3A++Agree+pointing+
 
 Summary:
  - 1.4GHz, full track 45 degree declination, +/- 6 hours
- - All cases use MID_FEKO beam at current FOV.
+ - All cases use MID_FEKO_B1 beam at current FOV.
  - Wind heading tracked throughout simulation, using nearest (in az, el) PSD
  - No Reference pointing
 
