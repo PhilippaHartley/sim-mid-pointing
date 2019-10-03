@@ -3,9 +3,9 @@ cp case3/pointingsimulation_openhpc-compute-0.novalocal_0.jpg figures/case3.jpg
 cp case5/100s/pointingsimulation_openhpc-compute-0.novalocal_0.jpg figures/case5_100s.jpg
 cp case5/10s/pointingsimulation_openhpc-compute-0.novalocal_0.jpg figures/case5_10s.jpg
 cp case5/30s/pointingsimulation_openhpc-compute-0.novalocal_0.jpg figures/case5_30s.jpg
-cp case6/0/pointingsimulation_openhpc-compute-0.novalocal_2.jpg figures/case6_0.jpg
+cp case6/0/pointingsimulation_openhpc-compute-0.novalocal_0.jpg figures/case6_0.jpg
 cp case6/m75/pointingsimulation_openhpc-compute-0.novalocal_0.jpg figures/case6_m75.jpg
-cp case6/p15/pointingsimulation_openhpc-compute-0.novalocal_1.jpg figures/case6_p15.jpg
+cp case6/p15/pointingsimulation_openhpc-compute-0.novalocal_0.jpg figures/case6_p15.jpg
 cp case7/pointingsimulation_openhpc-compute-0.novalocal_0.jpg figures/case7.jpg
 cp case10/delta-ra/pointingsimulation_openhpc-compute-0.novalocal_0.jpg figures/case10_delta-ra.jpg
 cp case10/delta-dec/pointingsimulation_openhpc-compute-0.novalocal_0.jpg figures/case10_delta-dec.jpg
