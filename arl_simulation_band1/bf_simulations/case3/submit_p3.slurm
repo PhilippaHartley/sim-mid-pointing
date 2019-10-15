@@ -70,7 +70,7 @@ for host in `cat hostfile.$JOBID`; do
     fi
     echo "run dask-worker"
     ssh $host dask-worker --host ${host} --nprocs 2 --nthreads 1  \
-    --memory-limit 0.75 --local-directory /tmp $scheduler:8786  &
+    --memory-limit 16GB --local-directory /mnt/storage-ssd/tim/dask-workspace/${host} $scheduler:8786  &
         sleep 1
     hostIndex="1"
 done
@@ -83,7 +83,7 @@ echo "Scheduler is running at ${scheduler}"
 CMD="python ../../../pointing_simulation_distributed.py --context s3sky --frequency 0.765e9 --rmax 1e5 --flux_limit 0.003 \
 --ngroup_visibility 24 --ngroup_components 100 --show True \
 --seed 18051955  --pbtype MID_FEKO_B1 --memory 32  --integration_time 10 --use_agg True --time_series wind --time_chunk \
-180 --time_range -0.05 0.05 --shared_directory ../../../../shared | tee pointing_simulation.log"
+180 --time_range -0.05 0.05 --shared_directory ../../../shared | tee pointing_simulation.log"
 echo "About to execute $CMD"
 
 eval $CMD
