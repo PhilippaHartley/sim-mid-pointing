@@ -58,19 +58,19 @@ echo ${SLURM_JOB_NODELIST}
 #! Create a hostfile:
 scontrol show hostnames $SLURM_JOB_NODELIST | uniq > hostfile.$JOBID
 
-
 scheduler=$(head -1 hostfile.$JOBID)
+
 hostIndex=0
 for host in `cat hostfile.$JOBID`; do
     echo "Working on $host ...."
     if [ "$hostIndex" = "0" ]; then
         echo "run dask-scheduler"
-        ssh $host dask-scheduler --port=8786 &
+        ssh $host --interface ib0 dask-scheduler --port=8786 &
         sleep 5
     fi
     echo "run dask-worker"
     ssh $host dask-worker --host ${host} --nprocs 2 --nthreads 1  \
-    --memory-limit 0.75 --local-directory /tmp $scheduler:8786  &
+    --memory 16GB --local-directory /mnt/storage-ssd/tim/dask-workspace/${host} $scheduler:8786  &
         sleep 1
     hostIndex="1"
 done
