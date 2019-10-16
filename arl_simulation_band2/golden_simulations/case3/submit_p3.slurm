@@ -45,7 +45,7 @@
 module purge                               # Removes all modules still loaded
 
 #! Set up python
-. $HOME/alaska-venv/bin/activate
+# . $HOME/alaska-venv/bin/activate
 export PYTHONPATH=$PYTHONPATH:$ARL
 echo "PYTHONPATH is ${PYTHONPATH}"
 
