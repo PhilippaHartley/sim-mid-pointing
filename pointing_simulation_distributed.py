@@ -1,9 +1,9 @@
-"""Simulation of the effect of pointing errors on MID observations
+"""Simulation of the effect of errors on MID observations
 
-This measures the effect of pointing errors on the change in a dirty image induced by pointing errors:
-    - The pointing errors can be random per integration, static, or global, or drawn from power spectra
+This measures the change in a dirty imagethe induced by various errors:
     - The sky can be a point source at the half power point or a realistic sky constructed from S3-SEX catalog.
     - The observation is by MID over a range of hour angles
+    - Processing can be divided into chunks of time (default 1800s)
     - Dask is used to distribute the processing over a number of workers.
     - Various plots are produced, The primary output is a csv file containing information about the statistics of
     the residual images.
@@ -42,7 +42,7 @@ from workflows.arlexecute.imaging.imaging_arlexecute import invert_list_arlexecu
     sum_invert_results_arlexecute
 from workflows.arlexecute.imaging.imaging_arlexecute import weight_list_arlexecute_workflow
 from workflows.arlexecute.simulation.simulation_arlexecute import calculate_residual_from_gaintables, \
-    create_pointingerrors_gaintable
+    create_pointing_errors_gaintable, create_surface_errors_gaintable
 from workflows.shared.imaging.imaging_shared import sum_invert_results
 
 from wrappers.arlexecute.execution_support.arlexecute import arlexecute
@@ -63,8 +63,8 @@ pp = pprint.PrettyPrinter()
 if __name__ == '__main__':
     
     print(" ")
-    print("Distributed simulation of pointing errors for SKA-MID")
-    print("-----------------------------------------------------")
+    print("Distributed simulation of errors for SKA-MID")
+    print("--------------------------------------------")
     print(" ")
     
     memory_use = dict()
@@ -82,47 +82,41 @@ if __name__ == '__main__':
     parser.add_argument('--frequency', type=float, default=1.36e9, help='Frequency')
     parser.add_argument('--rmax', type=float, default=1e5,
                         help='Maximum distance of station from centre (m)')
+    parser.add_argument('--band', type=str, default='B2', help="Band")
+    
+    parser.add_argument('--flux_limit', type=float, default=1.0, help='Flux limit (Jy)')
+    parser.add_argument('--npixel', type=int, default=512, help='Number of pixels in image')
+    parser.add_argument('--seed', type=int, default=18051955, help='Random number seed')
     parser.add_argument('--snapshot', type=str, default='False', help='Do snapshot only?')
     parser.add_argument('--opposite', type=str, default='False',
                         help='Move source to opposite side of pointing centre')
-    parser.add_argument('--offset_dir', type=float, nargs=2, default=[0.0, 0.0], help='Multipliers for null offset')
-    parser.add_argument('--integration_time', type=float, default=600.0, help="Integration time (s)")
-    parser.add_argument('--time_range', type=float, nargs=2, default=[-6.0, 6.0], help="Hourangle range (hours")
-    parser.add_argument('--time_series', type=str, default='', help="'wind' or 'tracking' or ''")
-    
-    # Imaging parameters
-    parser.add_argument('--use_natural', type=str, default="False", help='Use natural weighting?')
-    parser.add_argument('--npixel', type=int, default=512, help='Number of pixels in image')
-    
-    # Components parameters
+    parser.add_argument('--offset_dir', type=float, nargs=2, default=[1.0, 0.0], help='Multipliers for null offset')
     parser.add_argument('--pbradius', type=float, default=2.0, help='Radius of sources to include (in HWHM)')
     parser.add_argument('--pbtype', type=str, default='MID', help='Primary beam model: MID or MID_GAUSS')
     parser.add_argument('--seed', type=int, default=18051955, help='Random number seed')
     parser.add_argument('--flux_limit', type=float, default=1.0, help='Flux limit (Jy)')
-    
-    # Simulation parameters
-    parser.add_argument('--global_pe', type=float, nargs=2, default=[0.0, 0.0], help='Global pointing error')
-    parser.add_argument('--static_pe', type=float, nargs=2, default=[0.0, 0.0], help='Multipliers for static errors')
-    parser.add_argument('--dynamic_pe', type=float, default=1.0, help='Multiplier for dynamic errors')
-    parser.add_argument('--pointing_file', type=str, default=None, help="Pointing file")
-    parser.add_argument('--time_chunk', type=float, default=1800.0, help="Time for a chunk (s)")
-    parser.add_argument('--pointing_directory', type=str, default='../../pointing_error_models/PSD_data/',
-                        help='Location of pointing files')
-    parser.add_argument('--ngroup_visibility', type=int, default=8, help='Process in visibility groups this large')
-    parser.add_argument('--ngroup_components', type=int, default=8, help='Process in component groups this large')
-    
-    # Dask parameters
-    parser.add_argument('--nnodes', type=int, default=1, help='Number of nodes')
-    parser.add_argument('--nthreads', type=int, default=1, help='Number of threads')
-    parser.add_argument('--memory', type=int, default=8, help='Memory per worker (GB)')
-    parser.add_argument('--nworkers', type=int, default=8, help='Number of workers')
-    
+
     # Control parameters
     parser.add_argument('--show', type=str, default='False', help='Show images?')
     parser.add_argument('--export_images', type=str, default='False', help='Export images in fits format?')
     parser.add_argument('--use_agg', type=str, default="True", help='Use Agg matplotlib backend?')
     parser.add_argument('--use_radec', type=str, default="False", help='Calculate in RADEC (false)?')
     parser.add_argument('--shared_directory', type=str, default='../../shared/', help='Location of configuration files')
+
+    # Dask parameters
+    parser.add_argument('--nnodes', type=int, default=1, help='Number of nodes')
+    parser.add_argument('--nthreads', type=int, default=1, help='Number of threads')
+    parser.add_argument('--memory', type=int, default=8, help='Memory per worker (GB)')
+    parser.add_argument('--nworkers', type=int, default=8, help='Number of workers')
+
+    # Simulation parameters
+    parser.add_argument('--time_chunk', type=float, default=1800.0, help="Time for a chunk (s)")
+    parser.add_argument('--global_pe', type=float, nargs=2, default=[0.0, 0.0], help='Global pointing error')
+    parser.add_argument('--static_pe', type=float, nargs=2, default=[0.0, 0.0], help='Multipliers for static errors')
+    parser.add_argument('--dynamic_pe', type=float, default=1.0, help='Multiplier for dynamic errors')
+    parser.add_argument('--pointing_file', type=str, default=None, help="Pointing file")
+    parser.add_argument('--pointing_directory', type=str, default='../../pointing_error_models/PSD_data/',
+                        help='Location of pointing files')
     
     args = parser.parse_args()
     pp.pprint(vars(args))
@@ -139,8 +133,6 @@ if __name__ == '__main__':
     use_radec = args.use_radec == "True"
     use_natural = args.use_natural == "True"
     export_images = args.export_images == "True"
-    time_series = args.time_series
-    pointing_file = args.pointing_file
     integration_time = args.integration_time
     time_range = args.time_range
     time_chunk = args.time_chunk
@@ -155,6 +147,9 @@ if __name__ == '__main__':
     npixel = args.npixel
     shared_directory = args.shared_directory
     
+    # Simulation specific parameters
+    time_series = args.time_series
+    pointing_file = args.pointing_file
     global_pe = numpy.array(args.global_pe)
     static_pe = numpy.array(args.static_pe)
     dynamic_pe = args.dynamic_pe
@@ -184,9 +179,18 @@ if __name__ == '__main__':
     time_started = time.time()
     
     # Set up details of simulated observation
+    band = args.band
     nfreqwin = 1
     diameter = 15.0
-    frequency = [args.frequency]
+    if band == 'B1':
+        frequency = [0.765e9]
+    elif band == 'B2':
+        frequency = [1.36e9]
+    elif band == 'Ku':
+        frequency = [12.179e9]
+    else:
+        raise ValueError("Unknown band %s" % band)
+
     channel_bandwidth = [1e7]
     phasecentre = SkyCoord(ra=ra * u.deg, dec=declination * u.deg, frame='icrs', equinox='J2000')
     mid_location = EarthLocation(lon="21.443803", lat="-30.712925", height=0.0)
@@ -328,6 +332,7 @@ if __name__ == '__main__':
         plt.savefig('PSF_arl.png')
         plt.show(block=False)
     del psf_list
+    del future_psf_list
     
     # ### Calculate the voltage pattern without errors
     vp_list = [arlexecute.execute(create_image_from_visibility)(bv, npixel=pb_npixel, frequency=frequency,
@@ -354,9 +359,9 @@ if __name__ == '__main__':
     print("Seeds per chunk:")
     pp.pprint(seeds)
     
-    filename = seqfile.findNextFile(prefix='pointingsimulation_%s_' % socket.gethostname(), suffix='.csv')
+    filename = seqfile.findNextFile(prefix='pointing_simulation_%s_' % socket.gethostname(), suffix='.csv')
     print('Saving results to %s' % filename)
-    plotfile = seqfile.findNextFile(prefix='pointingsimulation_%s_' % socket.gethostname(), suffix='.jpg')
+    plotfile = seqfile.findNextFile(prefix='pointing_simulation_%s_' % socket.gethostname(), suffix='.jpg')
     
     epoch = time.strftime("%Y-%m-%d %H:%M:%S")
     
@@ -382,24 +387,26 @@ if __name__ == '__main__':
         result['pb_npixel'] = pb_npixel
         result['flux_limit'] = flux_limit
         result['pbtype'] = pbtype
-        result['global_pe'] = global_pe
-        result['static_pe'] = static_pe
-        result['dynamic_pe'] = dynamic_pe
         result['snapshot'] = snapshot
+        result['offset_dir'] = offset_dir
         result['opposite'] = opposite
         result['ra'] = ra
         result['declination'] = declination
         result['use_radec'] = use_radec
         result['use_natural'] = use_natural
-        result['time_series'] = time_series
         result['integration_time'] = integration_time
         result['seed'] = seed
         result['ntotal'] = ntotal
-        result['pe'] = scenario
-        
+        result['se'] = scenario
+        result['band'] = band
+        result['frequency'] = frequency
+
+        result['time_series'] = time_series
+        result['global_pe'] = global_pe
+        result['static_pe'] = static_pe
+        result['dynamic_pe'] = dynamic_pe
+
         a2r = numpy.pi / (3600.0 * 180.0)
-        
-        error_dirty_list = list()
         
         if time_series == '':
             global_pointing_error = global_pe
@@ -415,7 +422,7 @@ if __name__ == '__main__':
             file_name = 'PE_%.1f_arcsec' % scenario
             
             no_error_gtl, error_gtl = \
-                create_pointingerrors_gaintable(future_bvis_list, original_components,
+                create_pointing_errors_gaintable(future_bvis_list, original_components,
                                                 sub_vp_list=future_vp_list,
                                                 use_radec=use_radec,
                                                 pointing_error=a2r * pointing_error,
@@ -432,7 +439,7 @@ if __name__ == '__main__':
             file_name = 'PE_%s_%s' % (time_series, scenario)
             
             no_error_gtl, error_gtl = \
-                create_pointingerrors_gaintable(future_bvis_list, original_components,
+                create_pointing_errors_gaintable(future_bvis_list, original_components,
                                                 sub_vp_list=future_vp_list,
                                                 use_radec=use_radec,
                                                 time_series=time_series,
@@ -440,12 +447,16 @@ if __name__ == '__main__':
                                                 seeds=seeds,
                                                 show=show, basename=basename)
         
+        # Now make all the residual images
         vis_comp_chunk_dirty_list = \
             calculate_residual_from_gaintables(future_bvis_list, original_components,
                                                future_model_list,
                                                no_error_gtl, error_gtl)
         
+        # Add the resulting images
         error_dirty_list = sum_invert_results_arlexecute(vis_comp_chunk_dirty_list)
+        
+        # Actually compute the graph assembled above
         error_dirty, sumwt = arlexecute.compute(error_dirty_list, sync=True)
         print("Dirty image sumwt", sumwt)
         del error_dirty_list
@@ -453,7 +464,7 @@ if __name__ == '__main__':
         
         if show:
             show_image(error_dirty, cm='gray_r')
-            plt.savefig('%s.png' % file_name)
+            plt.savefig('residual_image.png')
             plt.show(block=False)
         
         qa = qa_image(error_dirty)
@@ -476,12 +487,6 @@ if __name__ == '__main__':
     
     print("Total processing %g times-baselines-components-scenarios" % ntotal)
     processing_rate = ntotal / (nworkers * (time.time() - time_started))
-    # Typical values:
-    # Tim-MBP, MacBookPro14,3 Intel Core i7 2.9 GHz, 5818.72 /s/worker
-    # Sheldon, Intel(R) Core(TM) i7-6900K CPU @ 3.20GHz, 22000.0 /s/worker
-    # CSD3, single node, Intel(R) Xeon(R) Gold 6142 CPU @ 2.60GHz, 29522.8 /s/worker
-    # CSD3, multinode, Intel(R) Xeon(R) Gold 6142 CPU @ 2.60GHz, 12600.0 /s/worker
-    #
     print("Processing rate of time-baseline-component-scenario = %g per worker-second" % processing_rate)
     
     for result in results:
