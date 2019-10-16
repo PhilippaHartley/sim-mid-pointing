@@ -81,7 +81,7 @@ export ARL_DASK_SCHEDULER=${scheduler}:8786
 echo "Scheduler is running at ${scheduler}"
 
 CMD="python ../../../azel_plot.py  --context s3sky --rmax 1e5 --flux_limit 0.003 \
---ngroup_visibility 24 --ngroup_components 50 --show True \
+   --show True \
 --seed 18051955  --pbtype MID_FEKO_B2 --memory 32 --integration_time 10 --use_agg True --time_series wind --time_chunk \
 1800 --shared_directory ../../../../shared | tee pointing_simulation.log"
 echo "About to execute $CMD"

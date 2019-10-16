@@ -81,7 +81,7 @@ export ARL_DASK_SCHEDULER=${scheduler}:8786
 echo "Scheduler is running at ${scheduler}"
 
 CMD="python  ../../../../pointing_simulation_distributed.py --context s3sky --rmax 1e5 --flux_limit 0.1 \
---ngroup 8 --show True \
+    --show True \
 --seed 18051955  --pbtype MID_GRASP --memory 32  --integration_time 10 --use_agg True --time_chunk \
 1800 --reference_pointing True --shared_directory ../../../../shared | tee pointing_simulation.log"
 echo "About to execute $CMD"
