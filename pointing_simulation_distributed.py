@@ -83,10 +83,12 @@ if __name__ == '__main__':
     parser.add_argument('--rmax', type=float, default=1e5,
                         help='Maximum distance of station from centre (m)')
     parser.add_argument('--band', type=str, default='B2', help="Band")
-    
-    parser.add_argument('--flux_limit', type=float, default=1.0, help='Flux limit (Jy)')
+    parser.add_argument('--integration_time', type=float, default=600, help='Integration time (s)')
+    parser.add_argument('--time_range', type=float, nargs=2, default=[-6.0, 6.0], help='Time range in hours')
+
     parser.add_argument('--npixel', type=int, default=512, help='Number of pixels in image')
-    parser.add_argument('--seed', type=int, default=18051955, help='Random number seed')
+    parser.add_argument('--use_natural', type=str, default='False', help='Use natural weighting?')
+
     parser.add_argument('--snapshot', type=str, default='False', help='Do snapshot only?')
     parser.add_argument('--opposite', type=str, default='False',
                         help='Move source to opposite side of pointing centre')
@@ -111,6 +113,7 @@ if __name__ == '__main__':
 
     # Simulation parameters
     parser.add_argument('--time_chunk', type=float, default=1800.0, help="Time for a chunk (s)")
+    parser.add_argument('--time_series', type=str, default='wind', help="Type of time series")
     parser.add_argument('--global_pe', type=float, nargs=2, default=[0.0, 0.0], help='Global pointing error')
     parser.add_argument('--static_pe', type=float, nargs=2, default=[0.0, 0.0], help='Multipliers for static errors')
     parser.add_argument('--dynamic_pe', type=float, default=1.0, help='Multiplier for dynamic errors')
@@ -141,13 +144,13 @@ if __name__ == '__main__':
     offset_dir = args.offset_dir
     pbtype = args.pbtype
     pbradius = args.pbradius
-    pointing_directory = args.pointing_directory
     rmax = args.rmax
     flux_limit = args.flux_limit
     npixel = args.npixel
     shared_directory = args.shared_directory
     
     # Simulation specific parameters
+    pointing_directory = args.pointing_directory
     time_series = args.time_series
     pointing_file = args.pointing_file
     global_pe = numpy.array(args.global_pe)
