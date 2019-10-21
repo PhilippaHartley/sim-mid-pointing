@@ -39,8 +39,8 @@ from wrappers.arlexecute.visibility.coalesce import convert_blockvisibility_to_v
 from workflows.arlexecute.imaging.imaging_arlexecute import invert_list_arlexecute_workflow, \
     sum_invert_results_arlexecute
 from workflows.arlexecute.imaging.imaging_arlexecute import weight_list_arlexecute_workflow
-from workflows.arlexecute.simulation.simulation_arlexecute import calculate_residual_from_gaintables, \
-    create_pointing_errors_gaintable, create_surface_errors_gaintable, create_standard_mid_simulation
+from workflows.arlexecute.simulation.simulation_arlexecute import calculate_residual_from_gaintables_arlexecute_workflow, \
+    create_pointing_errors_gaintable_arlexecute_workflow, create_standard_mid_simulation_arlexecute_workflow
 from workflows.shared.imaging.imaging_shared import sum_invert_results
 
 from wrappers.arlexecute.execution_support.arlexecute import arlexecute
@@ -108,6 +108,7 @@ if __name__ == '__main__':
     parser.add_argument('--nthreads', type=int, default=4, help='Number of threads')
     parser.add_argument('--memory', type=int, default=8, help='Memory per worker (GB)')
     parser.add_argument('--nworkers', type=int, default=8, help='Number of workers')
+    parser.add_argument('--serial', type=str, default='False', help='Use serial processing?')
     
     # Simulation parameters
     parser.add_argument('--time_chunk', type=float, default=1800.0, help="Time for a chunk (s)")
@@ -164,18 +165,28 @@ if __name__ == '__main__':
     nnodes = args.nnodes
     threads_per_worker = args.nthreads
     memory = args.memory
+    serial = args.serial == "True"
     
     basename = os.path.basename(os.getcwd())
     
-    # Setup dask. If an external scheduler is defined we use that. Otherwise we construct
-    # a LocalCluster
-    client = get_dask_Client(threads_per_worker=threads_per_worker,
-                             processes=threads_per_worker == 1,
-                             memory_limit=memory * 1024 * 1024 * 1024,
-                             n_workers=nworkers)
-    arlexecute.set_client(client=client)
-    # n_workers is only relevant if we are using LocalCluster (i.e. a single node) otherwise
-    # we need to read the actual number of workers
+    if serial:
+        print("Will use serial processing")
+        use_serial_invert = True
+        use_serial_predict = True
+        arlexecute.set_client(use_dask=False)
+        print(arlexecute.client)
+        nworkers = 1
+    else:
+        print("Will use dask processing")
+        if nworkers > 0:
+            client = get_dask_Client(n_workers=nworkers, memory_limit=memory * 1024 * 1024 * 1024,
+                                     threads_per_worker=threads_per_worker)
+            arlexecute.set_client(client=client)
+        else:
+            client = get_dask_Client()
+            arlexecute.set_client(client=client)
+    
+        print(arlexecute.client)
     actualnworkers = len(arlexecute.client.scheduler_info()['workers'])
     nworkers = actualnworkers
     print("Using %s Dask workers" % nworkers)
@@ -197,8 +208,8 @@ if __name__ == '__main__':
     channel_bandwidth = [1e7]
     phasecentre = SkyCoord(ra=ra * u.deg, dec=declination * u.deg, frame='icrs', equinox='J2000')
     
-    bvis_graph = create_standard_mid_simulation(band, rmax, phasecentre, time_range, time_chunk, integration_time,
-                                                shared_directory)
+    bvis_graph = create_standard_mid_simulation_arlexecute_workflow(band, rmax, phasecentre, time_range, time_chunk, integration_time,
+                                                                    shared_directory)
     future_bvis_list = arlexecute.persist(bvis_graph)
     bvis_list0 = arlexecute.compute(bvis_graph[0], sync=True)
     nchunks = len(bvis_graph)
@@ -328,7 +339,7 @@ if __name__ == '__main__':
                          for i, _ in enumerate(original_components)]
     
     # Make a set of seeds, one per bvis, to ensure that we can get the same errors on different passes
-    seeds = numpy.round(numpy.random.uniform(1, numpy.power(2, 31), len(future_bvis_list))).astype(('int'))
+    seeds = numpy.round(numpy.random.uniform(1, numpy.power(2, 31), len(future_bvis_list))).astype('int')
     print("Seeds per chunk:")
     pp.pprint(seeds)
     
@@ -395,14 +406,14 @@ if __name__ == '__main__':
             file_name = 'PE_%.1f_arcsec' % scenario
             
             no_error_gtl, error_gtl = \
-                create_pointing_errors_gaintable(future_bvis_list, original_components,
-                                                 sub_vp_list=future_vp_list,
-                                                 use_radec=use_radec,
-                                                 pointing_error=a2r * pointing_error,
-                                                 static_pointing_error=a2r * static_pointing_error,
-                                                 global_pointing_error=a2r * global_pointing_error,
-                                                 seeds=seeds,
-                                                 show=show, basename=basename)
+                create_pointing_errors_gaintable_arlexecute_workflow(future_bvis_list, original_components,
+                                                                     sub_vp_list=future_vp_list,
+                                                                     use_radec=use_radec,
+                                                                     pointing_error=a2r * pointing_error,
+                                                                     static_pointing_error=a2r * static_pointing_error,
+                                                                     global_pointing_error=a2r * global_pointing_error,
+                                                                     seeds=seeds,
+                                                                     show=show, basename=basename)
         
         else:
             result['static_pointing_error'] = [0.0, 0.0]
@@ -412,19 +423,19 @@ if __name__ == '__main__':
             file_name = 'PE_%s_%s' % (time_series, scenario)
             
             no_error_gtl, error_gtl = \
-                create_pointing_errors_gaintable(future_bvis_list, original_components,
-                                                 sub_vp_list=future_vp_list,
-                                                 use_radec=use_radec,
-                                                 time_series=time_series,
-                                                 time_series_type=scenario,
-                                                 seeds=seeds,
-                                                 show=show, basename=basename)
+                create_pointing_errors_gaintable_arlexecute_workflow(future_bvis_list, original_components,
+                                                                     sub_vp_list=future_vp_list,
+                                                                     use_radec=use_radec,
+                                                                     time_series=time_series,
+                                                                     time_series_type=scenario,
+                                                                     seeds=seeds,
+                                                                     show=show, basename=basename)
         
         # Now make all the residual images
         vis_comp_chunk_dirty_list = \
-            calculate_residual_from_gaintables(future_bvis_list, original_components,
-                                               future_model_list,
-                                               no_error_gtl, error_gtl)
+            calculate_residual_from_gaintables_arlexecute_workflow(future_bvis_list, original_components,
+                                                                   future_model_list,
+                                                                   no_error_gtl, error_gtl)
         
         # Add the resulting images
         error_dirty_list = sum_invert_results_arlexecute(vis_comp_chunk_dirty_list)
