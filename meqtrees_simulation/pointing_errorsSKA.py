@@ -24,7 +24,7 @@ def source_list(nsources,gap, centre, s, dirname, layout = 'grid'):
     count = 0
     lamb = 3e8/(1.4e9)
     HPBW = (70*lamb)/15.0 #in degrees
-    HPBW = 1.03*0.818511 #arl number
+    HPBW = 1.03*0.818511 #rascil number
     HPBW/=2.  
     
     print 'HPBW halved: ',HPBW

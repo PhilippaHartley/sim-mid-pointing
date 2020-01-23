@@ -17,34 +17,29 @@ import time
 
 import seqfile
 
-from data_models.parameters import arl_path
+from rascil.data_models.parameters import rascil_path
 
-results_dir = arl_path('test_results')
+results_dir = rascil_path('test_results')
 
 import numpy
 
 from astropy.coordinates import SkyCoord
 from astropy import units as u
 
-from data_models.polarisation import PolarisationFrame
+from rascil.data_models.polarisation import PolarisationFrame
 
-from wrappers.serial.image.operations import show_image, qa_image, export_image_to_fits
-from wrappers.serial.imaging.primary_beams import create_vp
-from wrappers.serial.imaging.base import create_image_from_visibility, advise_wide_field
-from processing_components.simulation.simulation_helpers import plot_azel, \
-    plot_uvcoverage, find_pb_width_null, create_simulation_components
-from wrappers.arlexecute.visibility.coalesce import convert_blockvisibility_to_visibility, \
-    convert_visibility_to_blockvisibility
+from rascil.processing_components import plot_azel, \
+    plot_uvcoverage, find_pb_width_null, create_simulation_components, convert_blockvisibility_to_visibility, \
+    convert_visibility_to_blockvisibility, show_image, qa_image, export_image_to_fits, create_vp, \
+    create_image_from_visibility, advise_wide_field
 
-from workflows.arlexecute.imaging.imaging_arlexecute import invert_list_arlexecute_workflow, \
-    sum_invert_results_arlexecute
-from workflows.arlexecute.imaging.imaging_arlexecute import weight_list_arlexecute_workflow
-from workflows.arlexecute.simulation.simulation_arlexecute import calculate_residual_from_gaintables_arlexecute_workflow, \
-    create_pointing_errors_gaintable_arlexecute_workflow, create_standard_mid_simulation_arlexecute_workflow
-from workflows.shared.imaging.imaging_shared import sum_invert_results
+from rascil.workflows import invert_list_rsexecute_workflow, \
+    sum_invert_results_rsexecute, weight_list_rsexecute_workflow, \
+    calculate_residual_from_gaintables_rsexecute_workflow, \
+    create_pointing_errors_gaintable_rsexecute_workflow, \
+    create_standard_mid_simulation_rsexecute_workflow, sum_invert_results
 
-from wrappers.arlexecute.execution_support.arlexecute import arlexecute
-from wrappers.arlexecute.execution_support.dask_init import get_dask_Client
+from workflows.rsexecute.execution_support.rsexecute import rsexecute, get_dask_client
 
 import logging
 
@@ -173,21 +168,21 @@ if __name__ == '__main__':
         print("Will use serial processing")
         use_serial_invert = True
         use_serial_predict = True
-        arlexecute.set_client(use_dask=False)
-        print(arlexecute.client)
+        rsexecute.set_client(use_dask=False)
+        print(rsexecute.client)
         nworkers = 1
     else:
         print("Will use dask processing")
         if nworkers > 0:
-            client = get_dask_Client(n_workers=nworkers, memory_limit=memory * 1024 * 1024 * 1024,
+            client = get_dask_client(n_workers=nworkers, memory_limit=memory * 1024 * 1024 * 1024,
                                      threads_per_worker=threads_per_worker)
-            arlexecute.set_client(client=client)
+            rsexecute.set_client(client=client)
         else:
-            client = get_dask_Client()
-            arlexecute.set_client(client=client)
+            client = get_dask_client()
+            rsexecute.set_client(client=client)
     
-        print(arlexecute.client)
-    actualnworkers = len(arlexecute.client.scheduler_info()['workers'])
+        print(rsexecute.client)
+    actualnworkers = len(rsexecute.client.scheduler_info()['workers'])
     nworkers = actualnworkers
     print("Using %s Dask workers" % nworkers)
     
@@ -208,17 +203,17 @@ if __name__ == '__main__':
     channel_bandwidth = [1e7]
     phasecentre = SkyCoord(ra=ra * u.deg, dec=declination * u.deg, frame='icrs', equinox='J2000')
     
-    bvis_graph = create_standard_mid_simulation_arlexecute_workflow(band, rmax, phasecentre, time_range, time_chunk, integration_time,
+    bvis_graph = create_standard_mid_simulation_rsexecute_workflow(band, rmax, phasecentre, time_range, time_chunk, integration_time,
                                                                     shared_directory)
-    future_bvis_list = arlexecute.persist(bvis_graph)
-    bvis_list0 = arlexecute.compute(bvis_graph[0], sync=True)
+    future_bvis_list = rsexecute.persist(bvis_graph)
+    bvis_list0 = rsexecute.compute(bvis_graph[0], sync=True)
     nchunks = len(bvis_graph)
     memory_use['bvis_list'] = nchunks * bvis_list0.size()
     
-    vis_graph = [arlexecute.execute(convert_blockvisibility_to_visibility)(bv) for bv in future_bvis_list]
-    future_vis_list = arlexecute.persist(vis_graph, sync=True)
+    vis_graph = [rsexecute.execute(convert_blockvisibility_to_visibility)(bv) for bv in future_bvis_list]
+    future_vis_list = rsexecute.persist(vis_graph, sync=True)
     
-    vis_list0 = arlexecute.compute(vis_graph[0], sync=True)
+    vis_list0 = rsexecute.compute(vis_graph[0], sync=True)
     memory_use['vis_list'] = nchunks * vis_list0.size()
     
     # We need the HWHM of the primary beam, and the location of the nulls
@@ -229,18 +224,18 @@ if __name__ == '__main__':
     FOV_deg = 8.0 * 1.36e9 / frequency[0]
     print('%s: HWHM beam = %g deg' % (pbtype, HWHM_deg))
     
-    advice_list = arlexecute.execute(advise_wide_field)(future_vis_list[0], guard_band_image=1.0, delA=0.02)
-    advice = arlexecute.compute(advice_list, sync=True)
+    advice_list = rsexecute.execute(advise_wide_field)(future_vis_list[0], guard_band_image=1.0, delA=0.02)
+    advice = rsexecute.compute(advice_list, sync=True)
     pb_npixel = 1024
     d2r = numpy.pi / 180.0
     pb_cellsize = d2r * FOV_deg / pb_npixel
     cellsize = advice['cellsize']
     
     if show:
-        vis_list = arlexecute.compute(vis_graph, sync=True)
+        vis_list = rsexecute.compute(vis_graph, sync=True)
         plot_uvcoverage(vis_list, title=basename)
         
-        bvis_list = arlexecute.compute(bvis_graph, sync=True)
+        bvis_list = rsexecute.compute(bvis_graph, sync=True)
         plot_azel(bvis_list, title=basename)
     
     # Now construct the components
@@ -275,17 +270,17 @@ if __name__ == '__main__':
     ntotal = ntimes * nbaselines * len(original_components) * len(scenarios)
     print("    Total processing %g times-baselines-components-scenarios" % ntotal)
     print("    Approximate total memory use for data = %.3f GB" % total_memory_use)
-    nworkers = len(arlexecute.client.scheduler_info()['workers'])
+    nworkers = len(rsexecute.client.scheduler_info()['workers'])
     print("    Using %s Dask workers" % nworkers)
     
     # Uniform weighting
-    psf_list = [arlexecute.execute(create_image_from_visibility)(v, npixel=npixel, frequency=frequency,
+    psf_list = [rsexecute.execute(create_image_from_visibility)(v, npixel=npixel, frequency=frequency,
                                                                  nchan=nfreqwin, cellsize=cellsize,
                                                                  phasecentre=phasecentre,
                                                                  polarisation_frame=PolarisationFrame("stokesI"))
                 for v in future_vis_list]
-    psf_list = arlexecute.compute(psf_list, sync=True)
-    future_psf_list = arlexecute.scatter(psf_list)
+    psf_list = rsexecute.compute(psf_list, sync=True)
+    future_psf_list = rsexecute.scatter(psf_list)
     del psf_list
     
     if use_natural:
@@ -293,44 +288,44 @@ if __name__ == '__main__':
     else:
         print("Using uniform weighting")
         
-        vis_list = weight_list_arlexecute_workflow(future_vis_list, future_psf_list)
-        vis_list = arlexecute.compute(vis_list, sync=True)
-        future_vis_list = arlexecute.scatter(vis_list)
+        vis_list = weight_list_rsexecute_workflow(future_vis_list, future_psf_list)
+        vis_list = rsexecute.compute(vis_list, sync=True)
+        future_vis_list = rsexecute.scatter(vis_list)
         del vis_list
         
-        bvis_list = [arlexecute.execute(convert_visibility_to_blockvisibility)(vis)
+        bvis_list = [rsexecute.execute(convert_visibility_to_blockvisibility)(vis)
                      for vis in future_vis_list]
-        bvis_list = arlexecute.compute(bvis_list, sync=True)
-        future_bvis_list = arlexecute.scatter(bvis_list)
+        bvis_list = rsexecute.compute(bvis_list, sync=True)
+        future_bvis_list = rsexecute.scatter(bvis_list)
         del bvis_list
     
     print("Inverting to get PSF")
-    psf_list = invert_list_arlexecute_workflow(future_vis_list, future_psf_list, '2d', dopsf=True)
-    psf_list = arlexecute.compute(psf_list, sync=True)
+    psf_list = invert_list_rsexecute_workflow(future_vis_list, future_psf_list, '2d', dopsf=True)
+    psf_list = rsexecute.compute(psf_list, sync=True)
     psf, sumwt = sum_invert_results(psf_list)
     print("PSF sumwt ", sumwt)
     if export_images:
-        export_image_to_fits(psf, 'PSF_arl.fits')
+        export_image_to_fits(psf, 'PSF_rascil.fits')
     if show:
         show_image(psf, cm='gray_r', title='%s PSF' % basename, vmin=-0.01, vmax=0.1)
-        plt.savefig('PSF_arl.png')
+        plt.savefig('PSF_rascil.png')
         plt.show(block=False)
     del psf_list
     del future_psf_list
     
     # ### Calculate the voltage pattern without errors
-    vp_list = [arlexecute.execute(create_image_from_visibility)(bv, npixel=pb_npixel, frequency=frequency,
+    vp_list = [rsexecute.execute(create_image_from_visibility)(bv, npixel=pb_npixel, frequency=frequency,
                                                                 nchan=nfreqwin, cellsize=pb_cellsize,
                                                                 phasecentre=phasecentre,
                                                                 override_cellsize=False) for bv in future_bvis_list]
     print("Constructing voltage pattern")
-    vp_list = [arlexecute.execute(create_vp)(vp, pbtype, pointingcentre=phasecentre, use_local=not use_radec)
+    vp_list = [rsexecute.execute(create_vp)(vp, pbtype, pointingcentre=phasecentre, use_local=not use_radec)
                for vp in vp_list]
-    future_vp_list = arlexecute.persist(vp_list)
+    future_vp_list = rsexecute.persist(vp_list)
     del vp_list
     
     # Make one image per component
-    future_model_list = [arlexecute.execute(create_image_from_visibility)(future_vis_list[0], npixel=npixel,
+    future_model_list = [rsexecute.execute(create_image_from_visibility)(future_vis_list[0], npixel=npixel,
                                                                           frequency=frequency,
                                                                           nchan=nfreqwin, cellsize=cellsize,
                                                                           phasecentre=offset_direction,
@@ -406,7 +401,7 @@ if __name__ == '__main__':
             file_name = 'PE_%.1f_arcsec' % scenario
             
             no_error_gtl, error_gtl = \
-                create_pointing_errors_gaintable_arlexecute_workflow(future_bvis_list, original_components,
+                create_pointing_errors_gaintable_rsexecute_workflow(future_bvis_list, original_components,
                                                                      sub_vp_list=future_vp_list,
                                                                      use_radec=use_radec,
                                                                      pointing_error=a2r * pointing_error,
@@ -423,7 +418,7 @@ if __name__ == '__main__':
             file_name = 'PE_%s_%s' % (time_series, scenario)
             
             no_error_gtl, error_gtl = \
-                create_pointing_errors_gaintable_arlexecute_workflow(future_bvis_list, original_components,
+                create_pointing_errors_gaintable_rsexecute_workflow(future_bvis_list, original_components,
                                                                      sub_vp_list=future_vp_list,
                                                                      use_radec=use_radec,
                                                                      time_series=time_series,
@@ -433,15 +428,15 @@ if __name__ == '__main__':
         
         # Now make all the residual images
         vis_comp_chunk_dirty_list = \
-            calculate_residual_from_gaintables_arlexecute_workflow(future_bvis_list, original_components,
+            calculate_residual_from_gaintables_rsexecute_workflow(future_bvis_list, original_components,
                                                                    future_model_list,
                                                                    no_error_gtl, error_gtl)
         
         # Add the resulting images
-        error_dirty_list = sum_invert_results_arlexecute(vis_comp_chunk_dirty_list)
+        error_dirty_list = sum_invert_results_rsexecute(vis_comp_chunk_dirty_list)
         
         # Actually compute the graph assembled above
-        error_dirty, sumwt = arlexecute.compute(error_dirty_list, sync=True)
+        error_dirty, sumwt = rsexecute.compute(error_dirty_list, sync=True)
         print("Dirty image sumwt", sumwt)
         del error_dirty_list
         print(qa_image(error_dirty))

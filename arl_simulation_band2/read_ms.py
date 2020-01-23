@@ -3,9 +3,9 @@ import sys
 
 sys.path.append(os.path.join('..', '..'))
 
-from data_models.parameters import arl_path
+from rascil.data_models.parameters import rascil_path
 
-results_dir = arl_path('test_results')
+results_dir = rascil_path('test_results')
 
 from matplotlib import pylab
 
@@ -20,10 +20,10 @@ from astropy import constants
 
 from matplotlib import pyplot as plt
 
-from wrappers.serial.visibility.base import create_visibility
-from wrappers.serial.simulation.configurations import create_named_configuration
+from rascil.processing_components.visibility.base import create_visibility
+from rascil.processing_components.simulation.configurations import create_named_configuration
 
-from data_models.polarisation import PolarisationFrame
+from rascil.data_models.polarisation import PolarisationFrame
 
 import logging
 
@@ -36,7 +36,7 @@ mpl_logger.setLevel(logging.WARNING)
 pylab.rcParams['figure.figsize'] = (12.0, 12.0)
 pylab.rcParams['image.cmap'] = 'rainbow'
 
-from processing_components.visibility.base import create_blockvisibility_from_ms
+from rascil.processing_components.visibility.base import create_blockvisibility_from_ms
 
 vis = create_blockvisibility_from_ms('PE_0.0_arcsec.ms')[0]
 

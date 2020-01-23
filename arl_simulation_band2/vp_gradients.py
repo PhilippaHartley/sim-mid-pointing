@@ -4,14 +4,14 @@
 """
 
 import logging
-from data_models.parameters import arl_path
-from processing_components.image.gradients import image_gradients
-from processing_components.image.operations import export_image_to_fits, show_image, import_image_from_fits
+from rascil.data_models.parameters import rascil_path
+from rascil.processing_components.image.gradients import image_gradients
+from rascil.processing_components.image.operations import export_image_to_fits, show_image, import_image_from_fits
 import numpy
 
 log = logging.getLogger(__name__)
 
-real_vp = import_image_from_fits(arl_path('data/models/MID_GRASP_VP_real.fits'))
+real_vp = import_image_from_fits(rascil_path('data/models/MID_GRASP_VP_real.fits'))
 gradx, grady = image_gradients(real_vp)
 
 gradxx, gradxy = image_gradients(gradx)

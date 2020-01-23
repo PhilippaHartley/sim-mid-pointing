@@ -13,8 +13,8 @@ import sys
 
 sys.path.append(os.path.join('..', '..'))
 
-from data_models.parameters import arl_path
-results_dir = arl_path('test_results')
+from rascil.data_models.parameters import rascil_path
+results_dir = rascil_path('test_results')
 
 
 from matplotlib import pylab
@@ -32,21 +32,21 @@ from matplotlib import pyplot as plt
 
 from processing_library.util.coordinate_support import *
 
-from processing_components.image.iterators import image_raster_iter
+from rascil.processing_components.image.iterators import image_raster_iter
 
-from wrappers.serial.visibility.base import create_visibility
-from wrappers.serial.skycomponent.operations import create_skycomponent
-from wrappers.serial.image.operations import show_image, export_image_to_fits
-from wrappers.serial.image.deconvolution import deconvolve_cube, restore_cube
-from wrappers.serial.visibility.iterators import vis_timeslice_iter
-from wrappers.serial.simulation.configurations import create_named_configuration
-from wrappers.serial.simulation.testing_support import create_test_image
-from wrappers.serial.imaging.base import create_image_from_visibility
-from wrappers.serial.imaging.base import advise_wide_field
+from rascil.processing_components.visibility.base import create_visibility
+from rascil.processing_components.skycomponent.operations import create_skycomponent
+from rascil.processing_components.image.operations import show_image, export_image_to_fits
+from rascil.processing_components.image.deconvolution import deconvolve_cube, restore_cube
+from rascil.processing_components.visibility.iterators import vis_timeslice_iter
+from rascil.processing_components.simulation.configurations import create_named_configuration
+from rascil.processing_components.simulation.testing_support import create_test_image
+from rascil.processing_components.imaging.base import create_image_from_visibility
+from rascil.processing_components.imaging.base import advise_wide_field
 
-from workflows.serial.imaging.imaging_serial import invert_list_serial_workflow, predict_list_serial_workflow
+from rascil.workflows.serial.imaging.imaging_serial import invert_list_serial_workflow, predict_list_serial_workflow
 
-from data_models.polarisation import PolarisationFrame
+from rascil.data_models.polarisation import PolarisationFrame
 
 import logging
 
@@ -112,7 +112,7 @@ def xyz_to_uvw(xyz, ha, dec):
 # In[7]:
 
 
-antfile=arl_path("data/configurations/MID_SKA-TEL-INSA-0000537_Rev05.txt")
+antfile=rascil_path("data/configurations/MID_SKA-TEL-INSA-0000537_Rev05.txt")
 antdiamlonglat = numpy.genfromtxt(antfile, usecols=[0, 1, 2], delimiter="\t")
 location = EarthLocation(lon="21.443803", lat="-30.712925", height=0.0)
 

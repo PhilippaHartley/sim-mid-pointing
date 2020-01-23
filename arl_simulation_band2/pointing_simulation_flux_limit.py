@@ -15,22 +15,22 @@ import os
 import sys
 import time
 
-from data_models.parameters import arl_path
+from rascil.data_models.parameters import rascil_path
 
-results_dir = arl_path('test_results')
+results_dir = rascil_path('test_results')
 
 import numpy
 
 from astropy.coordinates import SkyCoord
 from astropy import units as u
 
-from data_models.polarisation import PolarisationFrame
+from rascil.data_models.polarisation import PolarisationFrame
 
-from wrappers.serial.image.operations import show_image
+from rascil.processing_components.image.operations import show_image
 from processing_library.image.operations import create_image
-from wrappers.serial.imaging.primary_beams import create_pb
-from wrappers.serial.skycomponent.operations import apply_beam_to_skycomponent
-from wrappers.serial.skycomponent.base import copy_skycomponent
+from rascil.processing_components.imaging.primary_beams import create_pb
+from rascil.processing_components.skycomponent.operations import apply_beam_to_skycomponent
+from rascil.processing_components.skycomponent.base import copy_skycomponent
 
 import logging
 
@@ -109,7 +109,7 @@ ra = 15.0
 dec = -45.0
 phasecentre = SkyCoord(ra=ra * u.deg, dec=dec * u.deg, frame='icrs', equinox='J2000')
 
-from wrappers.serial.simulation.testing_support import create_test_skycomponents_from_s3
+from rascil.processing_components.simulation.testing_support import create_test_skycomponents_from_s3
 
 original_components = create_test_skycomponents_from_s3(flux_limit=0.0001,
                                                         phasecentre=phasecentre,

@@ -8,39 +8,39 @@ import time
 
 import seqfile
 
-from data_models.parameters import arl_path
+from rascil.data_models.parameters import rascil_path
 
-results_dir = arl_path('test_results')
+results_dir = rascil_path('test_results')
 
 import numpy
 
 from astropy.coordinates import SkyCoord, EarthLocation
 from astropy import units as u
 
-from data_models.polarisation import PolarisationFrame
-from data_models.memory_data_models import Skycomponent, SkyModel
-from data_models.data_model_helpers import export_pointingtable_to_hdf5
+from rascil.data_models.polarisation import PolarisationFrame
+from rascil.data_models.memory_data_models import Skycomponent, SkyModel
+from rascil.data_models.data_model_helpers import export_pointingtable_to_hdf5
 
-from wrappers.serial.visibility.base import create_blockvisibility
-from wrappers.serial.image.operations import show_image, qa_image, export_image_to_fits
-from wrappers.serial.simulation.configurations import create_configuration_from_MIDfile
-from wrappers.serial.simulation.testing_support import simulate_pointingtable, simulate_pointingtable_from_timeseries
-from wrappers.serial.simulation.noise import addnoise_visibility
-from wrappers.serial.imaging.primary_beams import create_vp, create_pb
-from wrappers.serial.imaging.base import create_image_from_visibility, advise_wide_field
-from wrappers.serial.calibration.pointing import create_pointingtable_from_blockvisibility
-from wrappers.serial.simulation.pointing import simulate_gaintable_from_pointingtable
-from wrappers.arlexecute.visibility.base import copy_visibility
-from wrappers.arlexecute.visibility.coalesce import convert_blockvisibility_to_visibility, \
+from rascil.processing_components.visibility.base import create_blockvisibility
+from rascil.processing_components.image.operations import show_image, qa_image, export_image_to_fits
+from rascil.processing_components.simulation.configurations import create_configuration_from_MIDfile
+from rascil.processing_components.simulation.testing_support import simulate_pointingtable, simulate_pointingtable_from_timeseries
+from rascil.processing_components.simulation.noise import addnoise_visibility
+from rascil.processing_components.imaging.primary_beams import create_vp, create_pb
+from rascil.processing_components.imaging.base import create_image_from_visibility, advise_wide_field
+from rascil.processing_components.calibration.pointing import create_pointingtable_from_blockvisibility
+from rascil.processing_components.simulation.pointing import simulate_gaintable_from_pointingtable
+from workflows.rsexecute.visibility.base import copy_visibility
+from workflows.rsexecute.visibility.coalesce import convert_blockvisibility_to_visibility, \
     convert_visibility_to_blockvisibility
 from processing_library.util.coordinate_support import hadec_to_azel
 
-from workflows.arlexecute.skymodel.skymodel_arlexecute import predict_skymodel_list_compsonly_arlexecute_workflow
-from workflows.arlexecute.imaging.imaging_arlexecute import invert_list_arlexecute_workflow
-from workflows.serial.imaging.imaging_serial import weight_list_serial_workflow
+from rascil.workflows.rsexecute.skymodel.skymodel_rsexecute import predict_skymodel_list_compsonly_rsexecute_workflow
+from rascil.workflows.rsexecute.imaging.imaging_rsexecute import invert_list_rsexecute_workflow
+from rascil.workflows.serial.imaging.imaging_serial import weight_list_serial_workflow
 
-from wrappers.arlexecute.execution_support.arlexecute import arlexecute
-from wrappers.arlexecute.execution_support.dask_init import get_dask_Client
+from workflows.rsexecute.execution_support.rsexecute import rsexecute
+from workflows.rsexecute.execution_support.dask_init import get_dask_client
 
 import logging
 
@@ -129,11 +129,11 @@ if __name__ == '__main__':
     basename = os.path.basename(os.getcwd())
     
     print("Using %s Dask workers" % nworkers)
-    client = get_dask_Client(threads_per_worker=threads_per_worker,
+    client = get_dask_client(threads_per_worker=threads_per_worker,
                              processes=threads_per_worker == 1,
                              memory_limit=memory * 1024 * 1024 * 1024,
                              n_workers=nworkers)
-    arlexecute.set_client(client=client)
+    rsexecute.set_client(client=client)
     
     # Set up details of simulated observation
     nfreqwin = 1
@@ -232,7 +232,7 @@ if __name__ == '__main__':
     else:
         # Make a skymodel from S3
         print("Constructing s3sky components")
-        from wrappers.serial.simulation.testing_support import create_test_skycomponents_from_s3
+        from rascil.processing_components.simulation.testing_support import create_test_skycomponents_from_s3
         
         original_components = create_test_skycomponents_from_s3(flux_limit=flux_limit,
                                                                 phasecentre=phasecentre,
@@ -255,12 +255,12 @@ if __name__ == '__main__':
         block_vis = convert_visibility_to_blockvisibility(vis)
     
     print("Inverting to get on-source PSF")
-    psf_list = invert_list_arlexecute_workflow([vis], [psf], '2d', dopsf=True)
-    psf, sumwt = arlexecute.compute(psf_list, sync=True)[0]
-    export_image_to_fits(psf, 'PSF_arl.fits')
+    psf_list = invert_list_rsexecute_workflow([vis], [psf], '2d', dopsf=True)
+    psf, sumwt = rsexecute.compute(psf_list, sync=True)[0]
+    export_image_to_fits(psf, 'PSF_rascil.fits')
     if show:
         show_image(psf, cm='gray_r', title='PSF', vmin=-0.01, vmax=0.1)
-        plt.savefig('PSF_arl.png')
+        plt.savefig('PSF_rascil.png')
         plt.show(block=False)
     
     model = create_image_from_visibility(vis, npixel=npixel, frequency=frequency,
@@ -276,8 +276,8 @@ if __name__ == '__main__':
         pb = create_pb(vp, pbtype, pointingcentre=phasecentre, use_local=not use_radec)
         print("Primary beam:", pb)
         show_image(pb, title='%s: primary beam' % context)
-        plt.savefig('PB_arl.png')
-        export_image_to_fits(pb, 'PB_arl.fits')
+        plt.savefig('PB_rascil.png')
+        export_image_to_fits(pb, 'PB_rascil.fits')
         plt.show(block=False)
     
     print("Constructing voltage pattern")
@@ -298,24 +298,24 @@ if __name__ == '__main__':
     no_error_blockvis = copy_visibility(block_vis, zero=True)
     
     print("Predicting error-free visibilities in chunks of %d skymodels" % ngroup)
-    future_vis = arlexecute.scatter(no_error_blockvis)
+    future_vis = rsexecute.scatter(no_error_blockvis)
     chunks = [no_error_sm[i:i + ngroup] for i in range(0, len(no_error_sm), ngroup)]
     for chunk in chunks:
-        temp_vis = predict_skymodel_list_compsonly_arlexecute_workflow(future_vis, chunk, context='2d', docal=True)
-        work_vis = arlexecute.compute(temp_vis, sync=True)
+        temp_vis = predict_skymodel_list_compsonly_rsexecute_workflow(future_vis, chunk, context='2d', docal=True)
+        work_vis = rsexecute.compute(temp_vis, sync=True)
         for w in work_vis:
             no_error_blockvis.data['vis'] += w.data['vis']
         assert numpy.max(numpy.abs(no_error_blockvis.data['vis'])) > 0.0
     
     no_error_vis = convert_blockvisibility_to_visibility(no_error_blockvis)
     print("Inverting to get dirty image")
-    dirty_list = invert_list_arlexecute_workflow([no_error_vis], [model], '2d')
-    dirty, sumwt = arlexecute.compute(dirty_list, sync=True)[0]
+    dirty_list = invert_list_rsexecute_workflow([no_error_vis], [model], '2d')
+    dirty, sumwt = rsexecute.compute(dirty_list, sync=True)[0]
     print(qa_image(dirty))
-    export_image_to_fits(dirty, 'dirty_arl.fits')
+    export_image_to_fits(dirty, 'dirty_rascil.fits')
     if show:
         show_image(dirty, cm='gray_r', title='Dirty image')  # , vmin=-0.01, vmax=0.1)
-        plt.savefig('dirty_arl.png')
+        plt.savefig('dirty_rascil.png')
         plt.show(block=False)
     
     if time_series == '':
@@ -399,11 +399,11 @@ if __name__ == '__main__':
         error_blockvis = copy_visibility(block_vis, zero=True)
         
         print("Predicting corrupted visibilities in chunks of %d skymodels" % ngroup)
-        future_vis = arlexecute.scatter(error_blockvis)
+        future_vis = rsexecute.scatter(error_blockvis)
         chunks = [error_sm[i:i + ngroup] for i in range(0, len(error_sm), ngroup)]
         for chunk in chunks:
-            temp_vis = predict_skymodel_list_compsonly_arlexecute_workflow(future_vis, chunk, context='2d', docal=True)
-            work_vis = arlexecute.compute(temp_vis, sync=True)
+            temp_vis = predict_skymodel_list_compsonly_rsexecute_workflow(future_vis, chunk, context='2d', docal=True)
+            work_vis = rsexecute.compute(temp_vis, sync=True)
             for w in work_vis:
                 error_blockvis.data['vis'] += w.data['vis']
             assert numpy.max(numpy.abs(error_blockvis.data['vis'])) > 0.0
@@ -413,12 +413,12 @@ if __name__ == '__main__':
         
         print("Inverting to get on-source dirty image")
         error_vis = convert_blockvisibility_to_visibility(error_blockvis)
-        dirty_list = invert_list_arlexecute_workflow([error_vis], [model], '2d')
-        dirty, sumwt = arlexecute.compute(dirty_list, sync=True)[0]
-        export_image_to_fits(dirty, 'PE_%.1f_arcsec_arl.fits' % pe)
+        dirty_list = invert_list_rsexecute_workflow([error_vis], [model], '2d')
+        dirty, sumwt = rsexecute.compute(dirty_list, sync=True)[0]
+        export_image_to_fits(dirty, 'PE_%.1f_arcsec_rascil.fits' % pe)
         if show:
-            show_image(dirty, cm='gray_r', title='Pointing error %.1f arcsec ARL' % pe)
-            plt.savefig('PE_%.1f_arcsec_arl.png' % pe)
+            show_image(dirty, cm='gray_r', title='Pointing error %.1f arcsec rascil' % pe)
+            plt.savefig('PE_%.1f_arcsec_rascil.png' % pe)
             plt.show(block=False)
         
         qa = qa_image(dirty)
@@ -432,8 +432,8 @@ if __name__ == '__main__':
             outlier_model = create_image_from_visibility(error_vis, npixel=npixel, frequency=frequency,
                                                          nchan=nfreqwin, cellsize=cellsize,
                                                          phasecentre=outlier_phasecentre)
-            outlier_dirty = invert_list_arlexecute_workflow([error_vis], [outlier_model], '2d')
-            outlier_dirty, outlier_sumwt = arlexecute.compute(outlier_dirty, sync=True)[0]
+            outlier_dirty = invert_list_rsexecute_workflow([error_vis], [outlier_model], '2d')
+            outlier_dirty, outlier_sumwt = rsexecute.compute(outlier_dirty, sync=True)[0]
             
             if show:
                 show_image(outlier_dirty, cm='gray_r', title='Outlier residual image (dec -35deg)')

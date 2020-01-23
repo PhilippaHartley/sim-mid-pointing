@@ -89,7 +89,7 @@ def hdf2npy(pe):
                 allerrs = np.vstack((allerrs,dnpy[:,:,i]))
             except:
                 allerrs = dnpy[:,:,i]
-        lerrs = allerrs[:,0].astype(np.float)                    ##### ARL PEs, in radians
+        lerrs = allerrs[:,0].astype(np.float)                    ##### rascil PEs, in radians
         merrs= allerrs[:,1].astype(np.float)
         lerrs*=206265
         merrs*=206265

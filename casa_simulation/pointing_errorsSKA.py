@@ -280,7 +280,7 @@ def corrupt(projectname, config_file_prefix,offset, dirname,PEs = False,  plot_a
                 pearr = np.vstack((pearr,pe32[:,:,i]))
             except:
                 pearr = pe32[:,:,i]
-        ra_offsets = pearr[:,0].astype(np.float)                    ##### ARL PEs
+        ra_offsets = pearr[:,0].astype(np.float)                    ##### rascil PEs
         dec_offsets= pearr[:,1].astype(np.float)
 
      #   plt.clf()

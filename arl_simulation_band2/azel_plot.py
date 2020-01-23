@@ -14,19 +14,19 @@ import os
 import sys
 import time
 
-from data_models.parameters import arl_path
+from rascil.data_models.parameters import rascil_path
 
-results_dir = arl_path('test_results')
+results_dir = rascil_path('test_results')
 
 import numpy
 
 from astropy.coordinates import SkyCoord, EarthLocation
 from astropy import units as u
 
-from data_models.polarisation import PolarisationFrame
+from rascil.data_models.polarisation import PolarisationFrame
 
-from wrappers.serial.visibility.base import create_blockvisibility
-from wrappers.serial.simulation.configurations import create_configuration_from_MIDfile
+from rascil.processing_components.visibility.base import create_blockvisibility
+from rascil.processing_components.simulation.configurations import create_configuration_from_MIDfile
 from processing_library.util.coordinate_support import hadec_to_azel
 
 import logging

@@ -14,13 +14,13 @@ import numpy
 
 from astropy.wcs import WCS
 
-from data_models.polarisation import PolarisationFrame
+from rascil.data_models.polarisation import PolarisationFrame
 
 from processing_library.image.operations import create_image_from_array
-from processing_components.image.operations import export_image_to_fits
+from rascil.processing_components.image.operations import export_image_to_fits
 
 
-def create_arl_image(pol_planes, cellsize, frequency, channel_bandwidth=1e6, shift_peak=False):
+def create_rascil_image(pol_planes, cellsize, frequency, channel_bandwidth=1e6, shift_peak=False):
     ny, nx = pol_planes[0].shape
     
     assert len(pol_planes) == 4
@@ -196,7 +196,7 @@ for b, freq in band:
                 plt.savefig(ofile)
                 plt.close()
             
-            vp_real, vp_imag, vp_amp, vp_phase = create_arl_image(pol_planes, cellsize, f*1e6, shift_peak=True)
+            vp_real, vp_imag, vp_amp, vp_phase = create_rascil_image(pol_planes, cellsize, f*1e6, shift_peak=True)
             export_image_to_fits(vp_real, fitsform.format(b=b, e=e, f=f, t='real'))
             export_image_to_fits(vp_imag, fitsform.format(b=b, e=e, f=f, t='imag'))
  #           export_image_to_fits(vp_amp, fitsform.format(b=b, e=e, f=f, t='amp'))

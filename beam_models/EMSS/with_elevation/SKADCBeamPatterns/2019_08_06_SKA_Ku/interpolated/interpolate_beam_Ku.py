@@ -4,7 +4,7 @@ import sys
 import numpy
 
 from processing_library.image.operations import create_empty_image_like
-from wrappers.serial.image.operations import export_image_to_fits, import_image_from_fits
+from rascil.processing_components.image.operations import export_image_to_fits, import_image_from_fits
 
 import matplotlib.pyplot as plt
 
